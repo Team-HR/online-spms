@@ -16,7 +16,7 @@
                         <router-link :to="{name:'dashboard'}" class="nav-link">PCR <span class="sr-only">(current)</span></router-link>
                     </li>
                     <li class="nav-item active">
-                        <router-link :to="{name:'rating-scale-matrix'}" class="nav-link">Rating Scale Matrix <span class="sr-only">(current)</span></router-link>
+                        <router-link :to="{name:'rsm'}" class="nav-link">Rating Scale Matrix <span class="sr-only">(current)</span></router-link>
                     </li>
                 </ul>
                 <div class="ml-auto">

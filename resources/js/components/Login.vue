@@ -8,8 +8,8 @@
                         <hr/>
                         <form action="javascript:void(0)" class="row" method="post">
                             <div class="form-group col-12">
-                                <label for="email" class="font-weight-bold">Email</label>
-                                <input type="text" v-model="auth.email" name="email" id="email" class="form-control">
+                                <label for="username" class="font-weight-bold">Username</label>
+                                <input type="text" v-model="auth.username" name="username" id="username" class="form-control">
                             </div>
                             <div class="form-group col-12">
                                 <label for="password" class="font-weight-bold">Password</label>
@@ -21,7 +21,7 @@
                                 </button>
                             </div>
                             <div class="col-12 text-center">
-                                <label>Don't have an account? <router-link :to="{name:'register'}">Register Now!</router-link></label>
+                                <!-- <label>Don't have an account? <router-link :to="{name:'register'}">Register Now!</router-link></label> -->
                             </div>
                         </form>
                     </div>
@@ -38,7 +38,7 @@ export default {
     data(){
         return {
             auth:{
-                email:"",
+                username:"",
                 password:""
             },
             processing:false

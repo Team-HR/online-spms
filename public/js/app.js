@@ -1950,6 +1950,10 @@ var DahboardLayout = function DahboardLayout() {
 var Dashboard = function Dashboard() {
   return __webpack_require__.e(/*! import() | resource/js/components/dashboard */ "resource/js/components/dashboard").then(__webpack_require__.bind(__webpack_require__, /*! ../components/Dashboard.vue */ "./resources/js/components/Dashboard.vue"));
 };
+
+var RatingScaleMatrix = function RatingScaleMatrix() {
+  return __webpack_require__.e(/*! import() */ "resources_js_components_RatingScaleMatrix_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../components/RatingScaleMatrix.vue */ "./resources/js/components/RatingScaleMatrix.vue"));
+};
 /* Authenticated Component */
 
 
@@ -1981,6 +1985,13 @@ var Routes = [{
     component: Dashboard,
     meta: {
       title: "Dashboard"
+    }
+  }, {
+    name: "rsm",
+    path: "/rsm",
+    component: RatingScaleMatrix,
+    meta: {
+      title: "Rating Scale Matrix"
     }
   }]
 }];
@@ -2088,21 +2099,71 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var vuex_persistedstate__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex-persistedstate */ "./node_modules/vuex-persistedstate/dist/vuex-persistedstate.es.js");
 /* harmony import */ var _auth__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./auth */ "./resources/js/store/auth.js");
+/* harmony import */ var _rsm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./rsm */ "./resources/js/store/rsm.js");
 
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_2__.default.use(vuex__WEBPACK_IMPORTED_MODULE_3__.default);
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_3__.default.Store({
+
+vue__WEBPACK_IMPORTED_MODULE_3__.default.use(vuex__WEBPACK_IMPORTED_MODULE_4__.default);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_4__.default.Store({
   plugins: [(0,vuex_persistedstate__WEBPACK_IMPORTED_MODULE_0__.default)()],
   modules: {
-    auth: _auth__WEBPACK_IMPORTED_MODULE_1__.default
+    auth: _auth__WEBPACK_IMPORTED_MODULE_1__.default,
+    rsm: _rsm__WEBPACK_IMPORTED_MODULE_2__.default
   }
 }));
+
+/***/ }),
+
+/***/ "./resources/js/store/rsm.js":
+/*!***********************************!*\
+  !*** ./resources/js/store/rsm.js ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../router */ "./resources/js/router/index.js");
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  namespaced: true,
+  state: {
+    items: []
+  },
+  getters: {
+    items: function items(state) {
+      return state.items;
+    }
+  },
+  mutations: {
+    SET_ITEMS: function SET_ITEMS(state, value) {
+      state.items = value;
+    }
+  },
+  actions: {
+    get_items: function get_items(_ref) {
+      var commit = _ref.commit;
+      return axios__WEBPACK_IMPORTED_MODULE_0___default().get('/api/rsm').then(function (_ref2) {
+        var data = _ref2.data;
+        commit('SET_ITEMS', data);
+      })["catch"](function (_ref3) {
+        var data = _ref3.response.data;
+        alert("ERROR FETCHING DATA!");
+      });
+    }
+  }
+});
 
 /***/ }),
 
@@ -54026,7 +54087,7 @@ var index = {
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resource/js/components/login":1,"resource/js/components/register":1,"resource/js/components/layouts/dashboard":1,"resource/js/components/dashboard":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resource/js/components/login":1,"resource/js/components/register":1,"resource/js/components/layouts/dashboard":1,"resource/js/components/dashboard":1,"resources_js_components_RatingScaleMatrix_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

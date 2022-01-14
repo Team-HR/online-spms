@@ -1039,10 +1039,7 @@ var render = function() {
                 [
                   _c(
                     "router-link",
-                    {
-                      staticClass: "nav-link",
-                      attrs: { to: { name: "rating-scale-matrix" } }
-                    },
+                    { staticClass: "nav-link", attrs: { to: { name: "rsm" } } },
                     [
                       _vm._v("Rating Scale Matrix "),
                       _c("span", { staticClass: "sr-only" }, [

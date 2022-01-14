@@ -15,64 +15,74 @@ const DahboardLayout = () => import('../components/Layouts/Dashboard.vue' /* web
 
 /* Authenticated Component */
 const Dashboard = () => import('../components/Dashboard.vue' /* webpackChunkName: "resource/js/components/dashboard" */)
+const RatingScaleMatrix = () => import('../components/RatingScaleMatrix.vue')
 /* Authenticated Component */
 
 
 const Routes = [
     {
-        name:"login",
-        path:"/login",
-        component:Login,
-        meta:{
-            middleware:"guest",
-            title:`Login`
+        name: "login",
+        path: "/login",
+        component: Login,
+        meta: {
+            middleware: "guest",
+            title: `Login`
         }
     },
     {
-        name:"register",
-        path:"/register",
-        component:Register,
-        meta:{
-            middleware:"guest",
-            title:`Register`
+        name: "register",
+        path: "/register",
+        component: Register,
+        meta: {
+            middleware: "guest",
+            title: `Register`
         }
     },
+
     {
-        path:"/",
-        component:DahboardLayout,
-        meta:{
-            middleware:"auth"
+        path: "/",
+        component: DahboardLayout,
+        meta: {
+            middleware: "auth"
         },
-        children:[
+        children: [
             {
-                name:"dashboard",
+                name: "dashboard",
                 path: '/',
                 component: Dashboard,
-                meta:{
-                    title:`Dashboard`
+                meta: {
+                    title: `Dashboard`
                 }
-            }
+            },
+            {
+                name: "rsm",
+                path: "/rsm",
+                component: RatingScaleMatrix,
+                meta: {
+                    title: `Rating Scale Matrix`
+                }
+            },
         ]
     }
 ]
 
-var router  = new VueRouter({
+var router = new VueRouter({
     mode: 'history',
     routes: Routes
 })
 
 router.beforeEach((to, from, next) => {
     document.title = `${to.meta.title} - ${process.env.MIX_APP_NAME}`
-    if(to.meta.middleware=="guest"){
-        if(store.state.auth.authenticated){
-            next({name:"dashboard"})
+    if (to.meta.middleware == "guest") {
+        if (store.state.auth.authenticated) {
+            next({ name: "dashboard" })
         }
         next()
-    }else{
-        if(store.state.auth.authenticated){
+    } else {
+        if (store.state.auth.authenticated) {
             next()
-        }else{
-            next({name:"login"})
+        } else {
+            next({ name: "login" })
         }
     }
 })
