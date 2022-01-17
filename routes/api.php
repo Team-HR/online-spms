@@ -23,3 +23,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::middleware('auth:sanctum')->get('/rsm', [RatingScaleMatrixController::class, 'getRatingScaleMatrix']);
+Route::middleware('auth:sanctum')->post('/rsm/add_new_mfo', [RatingScaleMatrixController::class, 'addNewMfo']);

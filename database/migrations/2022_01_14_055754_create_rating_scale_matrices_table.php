@@ -18,14 +18,10 @@ class CreateRatingScaleMatricesTable extends Migration
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->unsignedBigInteger('department_id');
             $table->string('code')->nullable();
-            $table->integer('order');
+            $table->integer('order_number');
             $table->string('function');
             $table->tinyInteger('period');
             $table->integer('year');
-            $table->string('success_indicator')->nullable();
-            $table->string('quality')->nullable();
-            $table->string('efficiency')->nullable();
-            $table->string('timeliness')->nullable();
             $table->timestamps();
         });
     }

@@ -4,22 +4,20 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Employee;
 
-class Employee extends Model
+class RatingScaleMatrixIncumbent extends Model
 {
     use HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'user_id',
-        'last_name',
-        'first_name',
-        'middle_name',
-        'ext_name',
-        'department_id'
+        'rating_scale_matrix_success_indicator_id',
+        'employee_id'
     ];
 
     /**
@@ -39,15 +37,8 @@ class Employee extends Model
     public function getFullNameAttribute()
     {
         $full_name = "";
-
-        $full_name .= $this->last_name . ", ";
-        $full_name .= $this->first_name;
-
-        // middle initial
-        $full_name .= ($this->middle_name && $this->middle_name !== ".") ? " " . $this->middle_name[0] . "." : "";
-
-        // name ext
-        $full_name .=  ($this->ext_name && $this->ext_name !== ".") ? " " . $this->ext_name: "";
+        $employee = Employee::find($this->employee_id);
+        $full_name = $employee->full_name;
         return $full_name;
     }
 }

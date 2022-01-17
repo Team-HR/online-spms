@@ -15,7 +15,7 @@ const DahboardLayout = () => import('../components/Layouts/Dashboard.vue' /* web
 
 /* Authenticated Component */
 const Dashboard = () => import('../components/Dashboard.vue' /* webpackChunkName: "resource/js/components/dashboard" */)
-const RatingScaleMatrix = () => import('../components/RatingScaleMatrix.vue')
+const RatingScaleMatrix = () => import('../components/RatingScaleMatrixComponent.vue')
 /* Authenticated Component */
 
 

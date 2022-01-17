@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\RatingScaleMatrixSuccessIndicator;
 
 class RatingScaleMatrix extends Model
 {
@@ -20,10 +21,36 @@ class RatingScaleMatrix extends Model
         'order',
         'function',
         'period',
-        'year',
-        'success_indicator',
-        'quality',
-        'efficiency',
-        'timeliness',
+        'year'
     ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    // protected $appends = [
+    //     'success_indicators',
+    // ];
+
+   /**
+     * The columns to be hidden.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        // 'success_indicators',
+    ];
+
+    /**
+     * Get the success indicators of the mfo/pap.
+     *
+     * @return array
+     */
+    // public function getSuccessIndicatorsAttribute()
+    // {
+    //     $success_indicators = [];
+    //     $success_indicators = RatingScaleMatrixSuccessIndicator::where('rating_scale_matrix_id','=',$this->id)->get();
+    //     return $success_indicators;
+    // }
 }
