@@ -27,6 +27,7 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="navbarDropdownMenuLink">
                                 <a class="dropdown-item" href="javascript:void(0)" @click="logout">Logout</a>
+                                <a class="dropdown-item" href="javascript:void(0)" @click="get_user">Get User</a>
                             </div>
                         </li>
                     </ul>
@@ -50,14 +51,22 @@ export default {
     },
     methods:{
         ...mapActions({
-            signOut:"auth/logout"
+            signOut:"auth/logout",
         }),
         async logout(){
             await axios.post('/logout').then(({data})=>{
                 this.signOut()
                 this.$router.push({name:"login"})
             })
+        },
+        async get_user(){
+            await axios.get('/api/user').then(({data})=>{
+                console.log(data);
+                // this.signOut()
+                // this.$router.push({name:"login"})
+            })
         }
+        
     }
 }
 </script>

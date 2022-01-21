@@ -9,11 +9,11 @@
           <div class="card-body">
             <p class="mb-0">Rating Scale Matrix</p>
             <p>{{ items }}</p>
-            <table class="table table-hover table-bordered border-red">
+            <table class="table table-bordered border-red">
               <thead>
                 <tr class="text-center">
                   <th scope="col"></th>
-                  <th scope="col"></th>
+                  <!-- <th scope="col">CODE</th> -->
                   <th scope="col">MFO/PAP</th>
                   <th scope="col">SUCCESS INDICATOR</th>
                   <th scope="col">PERFORMANCE MEASURE</th>
@@ -27,16 +27,27 @@
               <tbody>
                 <tr v-for="(item, i) in items" :key="i">
                   <td v-if="item.code" :rowspan="item.rowspan"></td>
-                  <td v-if="item.code" :rowspan="item.rowspan">
+                  <!-- <td v-if="item.code" :rowspan="item.rowspan" style="vertical-align:middle;">
                     <span>
                       <a href="javascript:void(0)">{{ item.code }}</a>
                     </span>
-                  </td>
-                  <td v-if="item.code" :rowspan="item.rowspan" :colspan="!item.success_indicator?'9':''">
-                    {{item.function}}
+                  </td> -->
+                  <!-- tab-size: 2; -->
+                  <!-- add_tabs(item.order_number_mfo) + -->
+                  <!-- :style="'tab-size:' + item.order_number_mfo" -->
+                  <td
+                    v-if="item.code"
+                    :rowspan="item.rowspan"
+                    :colspan="!item.success_indicator ? '9' : ''"
+                    style="vertical-align: middle"
+                    :style="set_text_indent(item.order_number_mfo)"
+                  >
+                    {{ item.code + " " + item.function }}
                   </td>
                   <template v-if="item.success_indicator">
-                    <td>{{ item.success_indicator }}</td>
+                    <td style="vertical-align: middle">
+                      {{ item.success_indicator }}
+                    </td>
                     <td>
                       <span
                         v-for="(
@@ -152,7 +163,8 @@ export default {
           });
         })
         .catch(({ response: { data } }) => {
-          alert("ERROR FETCHING DATA!");
+          alert(data.message);
+          console.log(data);
         });
     },
     async getItems() {
@@ -167,8 +179,16 @@ export default {
           this.items = JSON.parse(JSON.stringify(data));
         })
         .catch(({ response: { data } }) => {
-          alert("ERROR FETCHING DATA!");
+          alert(data.message);
+          console.log(data);
         });
+    },
+
+    set_text_indent(order_number_mfo) {
+      var tabs = "";
+      if (!order_number_mfo) return tabs;
+      tabs = "text-indent:" + 15 * order_number_mfo + "px";
+      return tabs;
     },
   },
   mounted() {

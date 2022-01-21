@@ -1,4 +1,4 @@
-(self["webpackChunk"] = self["webpackChunk"] || []).push([["resource/js/components/layouts/dashboard"],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([["resource/js/components/layouts/appnavbarcomponent"],{
 
 /***/ "./node_modules/@babel/runtime/regenerator/index.js":
 /*!**********************************************************!*\
@@ -91,16 +91,22 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     signOut: "auth/logout"
   })), {}, {
     logout: function logout() {
+      var _this = this;
+
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios.post('/logout').then(function (_ref) {// this.signOut()
-                  // this.$router.push({name:"login"})
-
+                return axios.post('/logout').then(function (_ref) {
                   var data = _ref.data;
+
+                  _this.signOut();
+
+                  _this.$router.push({
+                    name: "login"
+                  });
                 });
 
               case 2:

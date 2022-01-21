@@ -153,6 +153,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "ratingscalematrix",
   data: function data() {
@@ -191,7 +202,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   });
                 })["catch"](function (_ref2) {
                   var data = _ref2.response.data;
-                  alert("ERROR FETCHING DATA!");
+                  alert(data.message);
+                  console.log(data);
                 });
 
               case 2:
@@ -221,7 +233,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   _this2.items = JSON.parse(JSON.stringify(data));
                 })["catch"](function (_ref4) {
                   var data = _ref4.response.data;
-                  alert("ERROR FETCHING DATA!");
+                  alert(data.message);
+                  console.log(data);
                 });
 
               case 2:
@@ -231,6 +244,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee2);
       }))();
+    },
+    set_text_indent: function set_text_indent(order_number_mfo) {
+      var tabs = "";
+      if (!order_number_mfo) return tabs;
+      tabs = "text-indent:" + 15 * order_number_mfo + "px";
+      return tabs;
     }
   },
   mounted: function mounted() {
@@ -1097,171 +1116,159 @@ var render = function() {
             _vm._v(" "),
             _c("p", [_vm._v(_vm._s(_vm.items))]),
             _vm._v(" "),
-            _c(
-              "table",
-              { staticClass: "table table-hover table-bordered border-red" },
-              [
-                _vm._m(1),
-                _vm._v(" "),
-                _c(
-                  "tbody",
-                  _vm._l(_vm.items, function(item, i) {
-                    return _c(
-                      "tr",
-                      { key: i },
-                      [
-                        item.code
-                          ? _c("td", { attrs: { rowspan: item.rowspan } })
-                          : _vm._e(),
-                        _vm._v(" "),
-                        item.code
-                          ? _c("td", { attrs: { rowspan: item.rowspan } }, [
-                              _c("span", [
-                                _c(
-                                  "a",
-                                  { attrs: { href: "javascript:void(0)" } },
-                                  [_vm._v(_vm._s(item.code))]
-                                )
-                              ])
-                            ])
-                          : _vm._e(),
-                        _vm._v(" "),
-                        item.code
-                          ? _c(
+            _c("table", { staticClass: "table table-bordered border-red" }, [
+              _vm._m(1),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.items, function(item, i) {
+                  return _c(
+                    "tr",
+                    { key: i },
+                    [
+                      item.code
+                        ? _c("td", { attrs: { rowspan: item.rowspan } })
+                        : _vm._e(),
+                      _vm._v(" "),
+                      item.code
+                        ? _c(
+                            "td",
+                            {
+                              staticStyle: { "vertical-align": "middle" },
+                              style: _vm.set_text_indent(item.order_number_mfo),
+                              attrs: {
+                                rowspan: item.rowspan,
+                                colspan: !item.success_indicator ? "9" : ""
+                              }
+                            },
+                            [
+                              _vm._v(
+                                "\n                  " +
+                                  _vm._s(item.code + " " + item.function) +
+                                  "\n                "
+                              )
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      item.success_indicator
+                        ? [
+                            _c(
                               "td",
-                              {
-                                attrs: {
-                                  rowspan: item.rowspan,
-                                  colspan: !item.success_indicator ? "9" : ""
-                                }
-                              },
+                              { staticStyle: { "vertical-align": "middle" } },
                               [
                                 _vm._v(
-                                  "\n                  " +
-                                    _vm._s(item.function) +
-                                    "\n                "
+                                  "\n                    " +
+                                    _vm._s(item.success_indicator) +
+                                    "\n                  "
                                 )
                               ]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        item.success_indicator
-                          ? [
-                              _c("td", [
-                                _vm._v(_vm._s(item.success_indicator))
-                              ]),
-                              _vm._v(" "),
-                              _c(
-                                "td",
-                                _vm._l(item.performance_measures, function(
-                                  performance_measure,
-                                  pf
-                                ) {
-                                  return _c("span", { key: pf }, [
-                                    _vm._v(
-                                      "\n                      " +
-                                        _vm._s(performance_measure) +
-                                        "\n                      "
-                                    ),
-                                    pf + 1 !== item.performance_measures.length
-                                      ? _c("br")
-                                      : _vm._e()
-                                  ])
-                                }),
-                                0
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "td",
-                                _vm._l(item.quality, function(quality, q) {
-                                  return _c("span", { key: q }, [
-                                    _c("b", [_vm._v(_vm._s(quality.score))]),
-                                    _vm._v(
-                                      " - " +
-                                        _vm._s(quality.desc) +
-                                        "\n                      "
-                                    ),
-                                    q + 1 !== item.quality.length
-                                      ? _c("br")
-                                      : _vm._e()
-                                  ])
-                                }),
-                                0
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "td",
-                                _vm._l(item.efficiency, function(
-                                  efficiency,
-                                  e
-                                ) {
-                                  return _c("span", { key: e }, [
-                                    _c("b", [_vm._v(_vm._s(efficiency.score))]),
-                                    _vm._v(
-                                      " - " +
-                                        _vm._s(efficiency.desc) +
-                                        "\n                      "
-                                    ),
-                                    e + 1 !== item.efficiency.length
-                                      ? _c("br")
-                                      : _vm._e()
-                                  ])
-                                }),
-                                0
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "td",
-                                _vm._l(item.timeliness, function(
-                                  timeliness,
-                                  t
-                                ) {
-                                  return _c("span", { key: t }, [
-                                    _c("b", [_vm._v(_vm._s(timeliness.score))]),
-                                    _vm._v(
-                                      " - " +
-                                        _vm._s(timeliness.desc) +
-                                        "\n                      "
-                                    ),
-                                    t + 1 !== item.timeliness.length
-                                      ? _c("br")
-                                      : _vm._e()
-                                  ])
-                                }),
-                                0
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "td",
-                                _vm._l(item.incumbents, function(incumbent, i) {
-                                  return _c("span", { key: i }, [
-                                    _c(
-                                      "a",
-                                      { attrs: { href: "javascript:void(0)" } },
-                                      [_vm._v(_vm._s(incumbent.full_name))]
-                                    ),
-                                    _vm._v(" "),
-                                    i + 1 !== item.incumbents.length
-                                      ? _c("br")
-                                      : _vm._e()
-                                  ])
-                                }),
-                                0
-                              ),
-                              _vm._v(" "),
-                              _vm._m(2, true),
-                              _vm._v(" "),
-                              _vm._m(3, true)
-                            ]
-                          : _vm._e()
-                      ],
-                      2
-                    )
-                  }),
-                  0
-                )
-              ]
-            ),
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "td",
+                              _vm._l(item.performance_measures, function(
+                                performance_measure,
+                                pf
+                              ) {
+                                return _c("span", { key: pf }, [
+                                  _vm._v(
+                                    "\n                      " +
+                                      _vm._s(performance_measure) +
+                                      "\n                      "
+                                  ),
+                                  pf + 1 !== item.performance_measures.length
+                                    ? _c("br")
+                                    : _vm._e()
+                                ])
+                              }),
+                              0
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "td",
+                              _vm._l(item.quality, function(quality, q) {
+                                return _c("span", { key: q }, [
+                                  _c("b", [_vm._v(_vm._s(quality.score))]),
+                                  _vm._v(
+                                    " - " +
+                                      _vm._s(quality.desc) +
+                                      "\n                      "
+                                  ),
+                                  q + 1 !== item.quality.length
+                                    ? _c("br")
+                                    : _vm._e()
+                                ])
+                              }),
+                              0
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "td",
+                              _vm._l(item.efficiency, function(efficiency, e) {
+                                return _c("span", { key: e }, [
+                                  _c("b", [_vm._v(_vm._s(efficiency.score))]),
+                                  _vm._v(
+                                    " - " +
+                                      _vm._s(efficiency.desc) +
+                                      "\n                      "
+                                  ),
+                                  e + 1 !== item.efficiency.length
+                                    ? _c("br")
+                                    : _vm._e()
+                                ])
+                              }),
+                              0
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "td",
+                              _vm._l(item.timeliness, function(timeliness, t) {
+                                return _c("span", { key: t }, [
+                                  _c("b", [_vm._v(_vm._s(timeliness.score))]),
+                                  _vm._v(
+                                    " - " +
+                                      _vm._s(timeliness.desc) +
+                                      "\n                      "
+                                  ),
+                                  t + 1 !== item.timeliness.length
+                                    ? _c("br")
+                                    : _vm._e()
+                                ])
+                              }),
+                              0
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "td",
+                              _vm._l(item.incumbents, function(incumbent, i) {
+                                return _c("span", { key: i }, [
+                                  _c(
+                                    "a",
+                                    { attrs: { href: "javascript:void(0)" } },
+                                    [_vm._v(_vm._s(incumbent.full_name))]
+                                  ),
+                                  _vm._v(" "),
+                                  i + 1 !== item.incumbents.length
+                                    ? _c("br")
+                                    : _vm._e()
+                                ])
+                              }),
+                              0
+                            ),
+                            _vm._v(" "),
+                            _vm._m(2, true),
+                            _vm._v(" "),
+                            _vm._m(3, true)
+                          ]
+                        : _vm._e()
+                    ],
+                    2
+                  )
+                }),
+                0
+              )
+            ]),
             _vm._v(" "),
             _c(
               "form",
@@ -1347,8 +1354,6 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", { staticClass: "text-center" }, [
-        _c("th", { attrs: { scope: "col" } }),
-        _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }),
         _vm._v(" "),
         _c("th", { attrs: { scope: "col" } }, [_vm._v("MFO/PAP")]),

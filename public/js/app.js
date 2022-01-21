@@ -1939,8 +1939,8 @@ var Register = function Register() {
 /* Layouts */
 
 
-var DahboardLayout = function DahboardLayout() {
-  return __webpack_require__.e(/*! import() | resource/js/components/layouts/dashboard */ "resource/js/components/layouts/dashboard").then(__webpack_require__.bind(__webpack_require__, /*! ../components/Layouts/Dashboard.vue */ "./resources/js/components/Layouts/Dashboard.vue"));
+var AppNavbarComponent = function AppNavbarComponent() {
+  return __webpack_require__.e(/*! import() | resource/js/components/layouts/appnavbarcomponent */ "resource/js/components/layouts/appnavbarcomponent").then(__webpack_require__.bind(__webpack_require__, /*! ../components/Layouts/AppNavbarComponent.vue */ "./resources/js/components/Layouts/AppNavbarComponent.vue"));
 };
 /* Layouts */
 
@@ -1975,7 +1975,7 @@ var Routes = [{
   }
 }, {
   path: "/",
-  component: DahboardLayout,
+  component: AppNavbarComponent,
   meta: {
     middleware: "auth"
   },
@@ -2011,13 +2011,15 @@ router.beforeEach(function (to, from, next) {
 
     next();
   } else {
+    // store.dispatch('auth/fetchuser').then(() => {
     if (_store__WEBPACK_IMPORTED_MODULE_0__.default.state.auth.authenticated) {
       next();
     } else {
       next({
         name: "login"
       });
-    }
+    } // })
+
   }
 });
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (router);
@@ -2082,7 +2084,21 @@ __webpack_require__.r(__webpack_exports__);
       var commit = _ref4.commit;
       commit('SET_USER', {});
       commit('SET_AUTHENTICATED', false);
-    }
+    },
+    // test for checking if user is authed start
+    fetchuser: function fetchuser(_ref5) {
+      var commit = _ref5.commit;
+      return axios__WEBPACK_IMPORTED_MODULE_0___default().get('/api/user').then(function (_ref6) {
+        var data = _ref6.data;
+        commit('SET_USER', data);
+        commit('SET_AUTHENTICATED', true);
+      })["catch"](function (_ref7) {
+        var data = _ref7.response.data;
+        commit('SET_USER', {});
+        commit('SET_AUTHENTICATED', false);
+      });
+    } // test for checking if user is authed end
+
   }
 });
 
@@ -54087,7 +54103,7 @@ var index = {
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resource/js/components/login":1,"resource/js/components/register":1,"resource/js/components/layouts/dashboard":1,"resource/js/components/dashboard":1,"resources_js_components_RatingScaleMatrixComponent_vue":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resource/js/components/login":1,"resource/js/components/register":1,"resource/js/components/layouts/appnavbarcomponent":1,"resource/js/components/dashboard":1,"resources_js_components_RatingScaleMatrixComponent_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

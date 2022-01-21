@@ -10,7 +10,7 @@ const Register = () => import('../components/Register.vue' /* webpackChunkName: 
 /* Guest Component */
 
 /* Layouts */
-const DahboardLayout = () => import('../components/Layouts/Dashboard.vue' /* webpackChunkName: "resource/js/components/layouts/dashboard" */)
+const AppNavbarComponent = () => import('../components/Layouts/AppNavbarComponent.vue' /* webpackChunkName: "resource/js/components/layouts/appnavbarcomponent" */)
 /* Layouts */
 
 /* Authenticated Component */
@@ -41,7 +41,7 @@ const Routes = [
 
     {
         path: "/",
-        component: DahboardLayout,
+        component: AppNavbarComponent,
         meta: {
             middleware: "auth"
         },
@@ -79,11 +79,15 @@ router.beforeEach((to, from, next) => {
         }
         next()
     } else {
+        // store.dispatch('auth/fetchuser').then(() => {
         if (store.state.auth.authenticated) {
             next()
         } else {
             next({ name: "login" })
         }
+        // })
+
+
     }
 })
 
