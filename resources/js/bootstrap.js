@@ -7,12 +7,11 @@ window._ = require('lodash');
  */
 
 try {
-    window.Popper = require('@popperjs/core').default;
-    window.$ = window.jQuery = require('jquery');
-
-    require('bootstrap');
-    window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle.js');
-
+    // window.Popper = require('@popperjs/core').default;
+    // window.$ = window.jQuery = require('jquery');
+    // require('bootstrap');
+    window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle')
+    
 } catch (e) {
     console.log(e); 
 }

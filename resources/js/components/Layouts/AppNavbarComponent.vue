@@ -32,12 +32,6 @@
                 Home</router-link
               >
             </li>
-             <li class="nav-item">
-              <a class="nav-link" href="javascript:void(0)" @click="logout">
-                <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                Logout</a
-              >
-            </li>
             <li class="nav-item">
               <router-link :to="{ name: 'rsm' }" class="nav-link">
                 <i class="fa-solid fa-scale-balanced"></i>
@@ -46,58 +40,29 @@
             </li>
           </ul>
           <div class="ms-auto">
-            <ul class="navbar-nav">
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
-                  id="navbarDropdownMenuLink"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Dropdown link
-                </a>
-                <ul
-                  class="dropdown-menu"
-                  aria-labelledby="navbarDropdownMenuLink"
-                >
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                  </li>
-                </ul>
-              </li>
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
-                  id="navbarDropdownMenuLink"
-                  role="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  <i class="fa-solid fa-user"></i>
-                  {{ user.name }}
-                </a>
-                <ul
-                  class="dropdown-menu"
-                  aria-labelledby="navbarDropdownMenuLink"
-                >
-                  <li>
-                    <a
-                      class="dropdown-item"
-                      href="javascript:void(0)"
-                      @click="logout"
-                    >
-                      <i class="fa-solid fa-arrow-right-from-bracket"></i>
-                      Logout</a
-                    >
-                  </li>
-                </ul>
-              </li>
-            </ul>
+            <div class="dropdown">
+              <button
+                class="btn btn-secondary dropdown-toggle"
+                type="button"
+                id="dropdownMenuButton2"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                {{user.name}}
+              </button>
+              <ul
+                class="dropdown-menu dropdown-menu-dark"
+                aria-labelledby="dropdownMenuButton2"
+              >
+                <!-- <li><a class="dropdown-item active" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li>
+                  <a class="dropdown-item" href="#">Something else here</a>
+                </li> -->
+                <li><hr class="dropdown-divider" /></li>
+                <li><a class="dropdown-item" href="#" @click="logout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>

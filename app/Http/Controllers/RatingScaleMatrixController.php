@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 
 class RatingScaleMatrixController extends Controller
 {
+    public function test () {
+        return response()->json("HELLO-WORLD!");
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -94,7 +98,7 @@ class RatingScaleMatrixController extends Controller
             'function' => $function,
         ]);
 
-        return  response()->json("saved!");
+        return  response()->json($request);
     }
 
     

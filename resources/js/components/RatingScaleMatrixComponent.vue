@@ -1,5 +1,6 @@
 <template>
   <div class="container-fluid">
+    <SuccessIndicatorModal id="successindicatormodal" />
     <div
       data-bs-backdrop="static"
       data-bs-keyboard="false"
@@ -7,7 +8,11 @@
       id="editMfoModal"
       tabindex="-1"
     >
-      <div class="modal-dialog modal-lg">
+      <form
+        id="form_edit_mfo"
+        @submit.prevent="save_edit_mfo()"
+        class="modal-dialog modal-lg"
+      >
         <div class="modal-content">
           <div class="modal-header">
             <!-- {{edit_mfo_item.code +" "+edit_mfo_item.function}} -->
@@ -20,11 +25,7 @@
             ></button>
           </div>
           <div class="modal-body">
-            <form
-              id="form_edit_mfo"
-              class="row g-2"
-              @submit.prevent="save_edit_mfo()"
-            >
+            <div class="row g-2">
               <div class="col-3">
                 <div class="form-floating">
                   <input
@@ -49,7 +50,7 @@
                   <label for="mfo_title">MFO/PAP Title:</label>
                 </div>
               </div>
-            </form>
+            </div>
           </div>
           <div class="modal-footer">
             <button
@@ -59,14 +60,13 @@
             >
               Cancel
             </button>
-            <button form="form_edit_mfo" type="submit" class="btn btn-primary">
-              Save changes
-            </button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
           </div>
         </div>
-      </div>
+      </form>
     </div>
     <div class="row">
+      {{ items }}
       <div class="col-12">
         <div class="card shadow-sm">
           <div class="card-header">
@@ -74,12 +74,10 @@
           </div>
           <div class="card-body">
             <p class="mb-0">Rating Scale Matrix</p>
-            <!-- <p>{{ items }}</p> -->
             <table class="table table-bordered">
               <thead>
                 <tr class="text-center">
                   <th scope="col"></th>
-                  <!-- <th scope="col">CODE</th> -->
                   <th scope="col">MFO/PAP</th>
                   <th scope="col">SUCCESS INDICATOR</th>
                   <th scope="col">PERFORMANCE MEASURE</th>
@@ -92,23 +90,87 @@
               </thead>
               <tbody>
                 <tr v-for="(item, i) in items" :key="i">
-                  <td v-if="item.code" :rowspan="item.rowspan"></td>
+                  <td
+                    style="vertical-align: middle"
+                    v-if="item.code"
+                    :rowspan="item.rowspan"
+                  >
+                    <span class="dropdown">
+                      <button
+                        class="
+                          btn btn-sm btn-light
+                          dropdown-toggle
+                          text-success
+                        "
+                        type="button"
+                        id="dropdownMenu2"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        <i class="fa-solid fa-gear"></i>
+                        Configure
+                      </button>
+                      <ul
+                        class="dropdown-menu shadow-lg"
+                        aria-labelledby="dropdownMenu2"
+                      >
+                        <li>
+                          <button
+                            class="dropdown-item"
+                            type="button"
+                            @click="edit_mfo(item)"
+                            data-bs-toggle="modal"
+                            data-bs-target="#editMfoModal"
+                          >
+                            <i class="fa-solid fa-pen-to-square"></i>
+                            Edit MFO/PAP
+                          </button>
+                        </li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li>
+                          <button
+                            class="dropdown-item"
+                            type="button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#successindicatormodal"
+                          >
+                            <i class="fa-solid fa-square-plus"></i>
+                            Add Success Indicator
+                          </button>
+                        </li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li>
+                          <button class="dropdown-item" type="button">
+                            <i class="fa-solid fa-layer-group"></i>
+                            Change MFO Parent
+                          </button>
+                        </li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li>
+                          <button class="dropdown-item" type="button">
+                            <i class="fa-solid fa-turn-down"></i>
+                            Add Subfunction
+                          </button>
+                        </li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li>
+                          <a class="dropdown-item text-danger" href="#">
+                            <i class="fa-solid fa-trash-can"></i>
+                            Delete MFO/PAP
+                          </a>
+                        </li>
+                      </ul>
+                    </span>
+                  </td>
                   <td
                     v-if="item.code"
                     :rowspan="item.rowspan"
                     :colspan="!item.success_indicator ? '9' : ''"
                     style="vertical-align: middle"
                   >
-                    <a
-                      class="btn btn-outline-success btn-sm"
-                      data-bs-toggle="modal"
-                      data-bs-target="#editMfoModal"
-                      href="javascript:void(0)"
-                      :style="set_text_indent(item.order_number_mfo)"
-                      @click="edit_mfo(item)"
-                      ><i class="fa-solid fa-pen-to-square"></i> Edit</a
-                    >
-                    {{ item.code + " " + item.function }}
+                    <span :style="set_text_indent(item.order_number_mfo)">
+                      {{ item.code + " " + item.function }}
+                    </span>
                   </td>
                   <template v-if="item.success_indicator">
                     <td style="vertical-align: middle">
@@ -153,26 +215,28 @@
                         <br v-if="i + 1 !== item.incumbents.length" />
                       </span>
                     </td>
-                    <td>
-                      <a
-                        class="btn btn-outline-success btn-sm"
-                        href="javascript:void(0)"
-                        title="Edit this success indicator"
-                        ><i class="fa-solid fa-pen-to-square"></i> Edit</a
+                    <td style="vertical-align: middle">
+                      <button
+                        class="btn btn-sm text-success"
+                        title="Edit success indicator"
                       >
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        Edit
+                      </button>
                     </td>
-                    <td>
-                      <a
-                        class="btn btn-outline-danger btn-sm"
-                        href="javascript:void(0)"
-                        ><i class="fa-solid fa-eraser"></i> Delete</a
+                    <td style="vertical-align: middle">
+                      <button
+                        class="btn btn-sm text-danger"
+                        title="Delete success indicator"
                       >
+                        <i class="fa-solid fa-eraser"></i>
+                        Delete
+                      </button>
                     </td>
                   </template>
                 </tr>
               </tbody>
             </table>
-
             <form class="row g-3" @submit.prevent="submit_new_mfo()">
               <div class="col-auto">
                 <input
@@ -202,8 +266,12 @@
 </template>
 
 <script>
+import SuccessIndicatorModal from "./RSM/SuccessIndicatorModal.vue";
 export default {
   name: "ratingscalematrix",
+  components: {
+    SuccessIndicatorModal,
+  },
   data() {
     return {
       period: 1,
@@ -220,7 +288,7 @@ export default {
     edit_mfo(item) {
       var item = JSON.parse(JSON.stringify(item));
       this.edit_mfo_item = {
-        id: item.id,
+        id: item.rating_scale_matrix_id,
         code: item.code,
         function: item.function,
       };
@@ -235,13 +303,14 @@ export default {
         })
         .then(({ data }) => {
           console.log("action submit form!: ", data);
-          $("#editMfoModal").modal("hide");
-          $(".modal-backdrop").remove();
+          var myModalEl = document.getElementById("editMfoModal");
+          var modal = bootstrap.Modal.getInstance(myModalEl); // Returns a Bootstrap modal instance
+          modal.hide()
           this.getItems().then(() => {});
         })
         .catch(({ response: { data } }) => {
-          alert(data.message);
-          console.log(data);
+          // alert(response);
+          // console.log(response);
         });
     },
     async submit_new_mfo() {
