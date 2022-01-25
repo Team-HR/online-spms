@@ -79,6 +79,74 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "dashboard-layout",
@@ -99,7 +167,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios.post('/logout').then(function (_ref) {
+                return axios.post("/logout").then(function (_ref) {
                   var data = _ref.data;
 
                   _this.signOut();
@@ -124,7 +192,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return axios.get('/api/user').then(function (_ref2) {
+                return axios.get("/api/user").then(function (_ref2) {
                   var data = _ref2.data;
                   console.log(data); // this.signOut()
                   // this.$router.push({name:"login"})
@@ -990,151 +1058,164 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c(
-      "nav",
-      { staticClass: "navbar navbar-expand-lg navbar-dark bg-dark" },
-      [
-        _c(
-          "router-link",
-          { staticClass: "navbar-brand", attrs: { to: { name: "dashboard" } } },
-          [
-            _vm._v("Online SPMS "),
-            _c("span", { staticClass: "sr-only" }, [_vm._v("(current)")])
-          ]
-        ),
-        _vm._v(" "),
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "div",
-          {
-            staticClass: "collapse navbar-collapse",
-            attrs: { id: "navbarSupportedContent" }
-          },
-          [
-            _c("ul", { staticClass: "navbar-nav mr-auto" }, [
+    _c("nav", { staticClass: "navbar navbar-expand-lg navbar-dark bg-dark" }, [
+      _c(
+        "div",
+        { staticClass: "container-fluid" },
+        [
+          _c(
+            "router-link",
+            {
+              staticClass: "navbar-brand",
+              attrs: { to: { name: "dashboard" } }
+            },
+            [
+              _c("i", { staticClass: "fa-solid fa-tachograph-digital" }),
+              _vm._v("\n        Online SPMS\n      ")
+            ]
+          ),
+          _vm._v(" "),
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "collapse navbar-collapse",
+              attrs: { id: "navbarScroll" }
+            },
+            [
               _c(
-                "li",
-                { staticClass: "nav-item active" },
+                "ul",
+                {
+                  staticClass:
+                    "navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll",
+                  staticStyle: { "--bs-scroll-height": "100px" }
+                },
                 [
                   _c(
-                    "router-link",
-                    {
-                      staticClass: "nav-link",
-                      attrs: { to: { name: "dashboard" } }
-                    },
+                    "li",
+                    { staticClass: "nav-item" },
                     [
-                      _vm._v("Home "),
-                      _c("span", { staticClass: "sr-only" }, [
-                        _vm._v("(current)")
-                      ])
-                    ]
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "li",
-                { staticClass: "nav-item active" },
-                [
-                  _c(
-                    "router-link",
-                    {
-                      staticClass: "nav-link",
-                      attrs: { to: { name: "dashboard" } }
-                    },
-                    [
-                      _vm._v("PCR "),
-                      _c("span", { staticClass: "sr-only" }, [
-                        _vm._v("(current)")
-                      ])
-                    ]
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c(
-                "li",
-                { staticClass: "nav-item active" },
-                [
-                  _c(
-                    "router-link",
-                    { staticClass: "nav-link", attrs: { to: { name: "rsm" } } },
-                    [
-                      _vm._v("Rating Scale Matrix "),
-                      _c("span", { staticClass: "sr-only" }, [
-                        _vm._v("(current)")
-                      ])
-                    ]
-                  )
-                ],
-                1
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "ml-auto" }, [
-              _c("ul", { staticClass: "navbar-nav" }, [
-                _c("li", { staticClass: "nav-item dropdown" }, [
-                  _c(
-                    "a",
-                    {
-                      staticClass: "nav-link dropdown-toggle",
-                      attrs: {
-                        href: "#",
-                        id: "navbarDropdownMenuLink",
-                        role: "button",
-                        "data-toggle": "dropdown",
-                        "aria-haspopup": "true",
-                        "aria-expanded": "false"
-                      }
-                    },
-                    [
-                      _vm._v(
-                        "\n                            " +
-                          _vm._s(_vm.user.name) +
-                          "\n                        "
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "nav-link",
+                          attrs: {
+                            to: { name: "dashboard" },
+                            "aria-current": "page"
+                          }
+                        },
+                        [
+                          _c("i", { staticClass: "fa-solid fa-house" }),
+                          _vm._v("\n              Home")
+                        ]
                       )
-                    ]
+                    ],
+                    1
                   ),
                   _vm._v(" "),
+                  _c("li", { staticClass: "nav-item" }, [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "nav-link",
+                        attrs: { href: "javascript:void(0)" },
+                        on: { click: _vm.logout }
+                      },
+                      [
+                        _c("i", {
+                          staticClass: "fa-solid fa-arrow-right-from-bracket"
+                        }),
+                        _vm._v("\n              Logout")
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
                   _c(
-                    "div",
-                    {
-                      staticClass: "dropdown-menu dropdown-menu-lg-right",
-                      attrs: { "aria-labelledby": "navbarDropdownMenuLink" }
-                    },
+                    "li",
+                    { staticClass: "nav-item" },
                     [
                       _c(
-                        "a",
+                        "router-link",
                         {
-                          staticClass: "dropdown-item",
-                          attrs: { href: "javascript:void(0)" },
-                          on: { click: _vm.logout }
+                          staticClass: "nav-link",
+                          attrs: { to: { name: "rsm" } }
                         },
-                        [_vm._v("Logout")]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "a",
-                        {
-                          staticClass: "dropdown-item",
-                          attrs: { href: "javascript:void(0)" },
-                          on: { click: _vm.get_user }
-                        },
-                        [_vm._v("Get User")]
+                        [
+                          _c("i", {
+                            staticClass: "fa-solid fa-scale-balanced"
+                          }),
+                          _vm._v("\n              Rating Scale Matrix")
+                        ]
                       )
-                    ]
+                    ],
+                    1
                   )
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "ms-auto" }, [
+                _c("ul", { staticClass: "navbar-nav" }, [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _c("li", { staticClass: "nav-item dropdown" }, [
+                    _c(
+                      "a",
+                      {
+                        staticClass: "nav-link dropdown-toggle",
+                        attrs: {
+                          href: "#",
+                          id: "navbarDropdownMenuLink",
+                          role: "button",
+                          "data-bs-toggle": "dropdown",
+                          "aria-expanded": "false"
+                        }
+                      },
+                      [
+                        _c("i", { staticClass: "fa-solid fa-user" }),
+                        _vm._v(
+                          "\n                " +
+                            _vm._s(_vm.user.name) +
+                            "\n              "
+                        )
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "ul",
+                      {
+                        staticClass: "dropdown-menu",
+                        attrs: { "aria-labelledby": "navbarDropdownMenuLink" }
+                      },
+                      [
+                        _c("li", [
+                          _c(
+                            "a",
+                            {
+                              staticClass: "dropdown-item",
+                              attrs: { href: "javascript:void(0)" },
+                              on: { click: _vm.logout }
+                            },
+                            [
+                              _c("i", {
+                                staticClass:
+                                  "fa-solid fa-arrow-right-from-bracket"
+                              }),
+                              _vm._v("\n                    Logout")
+                            ]
+                          )
+                        ])
+                      ]
+                    )
+                  ])
                 ])
               ])
-            ])
-          ]
-        )
-      ],
-      1
-    ),
+            ]
+          )
+        ],
+        1
+      )
+    ]),
     _vm._v(" "),
     _c("main", { staticClass: "mt-3" }, [_c("router-view")], 1)
   ])
@@ -1150,15 +1231,63 @@ var staticRenderFns = [
         staticClass: "navbar-toggler",
         attrs: {
           type: "button",
-          "data-toggle": "collapse",
-          "data-target": "#navbarSupportedContent",
-          "aria-controls": "navbarSupportedContent",
+          "data-bs-toggle": "collapse",
+          "data-bs-target": "#navbarScroll",
+          "aria-controls": "navbarScroll",
           "aria-expanded": "false",
           "aria-label": "Toggle navigation"
         }
       },
       [_c("span", { staticClass: "navbar-toggler-icon" })]
     )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("li", { staticClass: "nav-item dropdown" }, [
+      _c(
+        "a",
+        {
+          staticClass: "nav-link dropdown-toggle",
+          attrs: {
+            href: "#",
+            id: "navbarDropdownMenuLink",
+            role: "button",
+            "data-bs-toggle": "dropdown",
+            "aria-expanded": "false"
+          }
+        },
+        [_vm._v("\n                Dropdown link\n              ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "ul",
+        {
+          staticClass: "dropdown-menu",
+          attrs: { "aria-labelledby": "navbarDropdownMenuLink" }
+        },
+        [
+          _c("li", [
+            _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
+              _vm._v("Action")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
+              _vm._v("Another action")
+            ])
+          ]),
+          _vm._v(" "),
+          _c("li", [
+            _c("a", { staticClass: "dropdown-item", attrs: { href: "#" } }, [
+              _vm._v("Something else here")
+            ])
+          ])
+        ]
+      )
+    ])
   }
 ]
 render._withStripped = true

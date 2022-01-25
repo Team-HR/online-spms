@@ -1,9 +1,8 @@
 {
-    "/js/app.js": "/js/app.js?id=9de79bb5a250998de30a",
+    "/js/app.js": "/js/app.js?id=448ac9704960a82db371",
     "/js/resource/js/components/login.js": "/js/resource/js/components/login.js?id=dad0ccee69f8b75204f3",
     "/js/resource/js/components/register.js": "/js/resource/js/components/register.js?id=63d5fcc7bb40100dc39f",
-    "/js/resource/js/components/layouts/dashboard.js": "/js/resource/js/components/layouts/dashboard.js?id=bc3044a97fe7c5003c74",
+    "/js/resource/js/components/layouts/appnavbarcomponent.js": "/js/resource/js/components/layouts/appnavbarcomponent.js?id=1f9c3f6db43fce83814d",
     "/js/resource/js/components/dashboard.js": "/js/resource/js/components/dashboard.js?id=f1b862615bb8a413e24e",
-    "/css/app.css": "/css/app.css?id=5905ee336cdf051b8e43",
-    "/js/resource/js/components/layouts/appnavbarcomponent.js": "/js/resource/js/components/layouts/appnavbarcomponent.js?id=c1e6ba5965576e32fdf8"
+    "/css/app.css": "/css/app.css?id=ae62498ebbfbbaedab13"
 }

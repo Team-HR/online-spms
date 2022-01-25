@@ -55,8 +55,7 @@ class RatingScaleMatrixController extends Controller
     }
 
 
-
-    public function addNewMfo(Request $request)
+    public function add_new_mfo(Request $request)
     {
         $department_id = auth()->user()->department_id;
         $period = $request->period;
@@ -72,6 +71,33 @@ class RatingScaleMatrixController extends Controller
         $mfo->save();
         return  response()->json($mfo);
     }
+
+    public function save_edit_mfo(Request $request)
+    {
+        // $department_id = auth()->user()->department_id;
+        $id = $request->id;
+        $code = $request->code;
+        $function = $request->function;
+        // $mfo = new RatingScaleMatrix;
+        // $mfo->parent_id = null;
+        // $mfo->department_id = $department_id;
+        // $mfo->code = $request->new_mfo['category'];
+        // $mfo->order_number = 1;
+        // $mfo->function = $request->new_mfo['title'];
+        // $mfo->period = $period;
+        // $mfo->year = $year;
+        // $mfo->save();
+
+        RatingScaleMatrix::where('id', $id)
+        ->update([
+            'code' => $code,
+            'function' => $function,
+        ]);
+
+        return  response()->json("saved!");
+    }
+
+    
 
     /**
      * Show the form for creating a new resource.

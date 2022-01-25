@@ -1,72 +1,139 @@
 <template>
-    <div>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <!-- <a href="javascript:void(0)" > -->
-                <router-link :to="{name:'dashboard'}" class="navbar-brand">Online SPMS <span class="sr-only">(current)</span></router-link>
-            <!-- </a> -->
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <router-link :to="{name:'dashboard'}" class="nav-link">Home <span class="sr-only">(current)</span></router-link>
-                    </li>
-                    <li class="nav-item active">
-                        <router-link :to="{name:'dashboard'}" class="nav-link">PCR <span class="sr-only">(current)</span></router-link>
-                    </li>
-                    <li class="nav-item active">
-                        <router-link :to="{name:'rsm'}" class="nav-link">Rating Scale Matrix <span class="sr-only">(current)</span></router-link>
-                    </li>
+  <div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div class="container-fluid">
+        <router-link :to="{ name: 'dashboard' }" class="navbar-brand">
+          <i class="fa-solid fa-tachograph-digital"></i>
+          Online SPMS
+        </router-link>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarScroll"
+          aria-controls="navbarScroll"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarScroll">
+          <ul
+            class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll"
+            style="--bs-scroll-height: 100px"
+          >
+            <li class="nav-item">
+              <router-link
+                :to="{ name: 'dashboard' }"
+                class="nav-link"
+                aria-current="page"
+              >
+                <i class="fa-solid fa-house"></i>
+                Home</router-link
+              >
+            </li>
+             <li class="nav-item">
+              <a class="nav-link" href="javascript:void(0)" @click="logout">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                Logout</a
+              >
+            </li>
+            <li class="nav-item">
+              <router-link :to="{ name: 'rsm' }" class="nav-link">
+                <i class="fa-solid fa-scale-balanced"></i>
+                Rating Scale Matrix</router-link
+              >
+            </li>
+          </ul>
+          <div class="ms-auto">
+            <ul class="navbar-nav">
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdownMenuLink"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Dropdown link
+                </a>
+                <ul
+                  class="dropdown-menu"
+                  aria-labelledby="navbarDropdownMenuLink"
+                >
+                  <li><a class="dropdown-item" href="#">Action</a></li>
+                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                  </li>
                 </ul>
-                <div class="ml-auto">
-                    <ul class="navbar-nav">
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                {{ user.name }}
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-lg-right" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="javascript:void(0)" @click="logout">Logout</a>
-                                <a class="dropdown-item" href="javascript:void(0)" @click="get_user">Get User</a>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <main class="mt-3">
-            <router-view></router-view>
-        </main>
-    </div>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="navbarDropdownMenuLink"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  <i class="fa-solid fa-user"></i>
+                  {{ user.name }}
+                </a>
+                <ul
+                  class="dropdown-menu"
+                  aria-labelledby="navbarDropdownMenuLink"
+                >
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="javascript:void(0)"
+                      @click="logout"
+                    >
+                      <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                      Logout</a
+                    >
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <main class="mt-3">
+      <router-view></router-view>
+    </main>
+  </div>
 </template>
 
 <script>
-import {mapActions} from 'vuex'
+import { mapActions } from "vuex";
 export default {
-    name:"dashboard-layout",
-    data(){
-        return {
-            user:this.$store.state.auth.user
-        }
+  name: "dashboard-layout",
+  data() {
+    return {
+      user: this.$store.state.auth.user,
+    };
+  },
+  methods: {
+    ...mapActions({
+      signOut: "auth/logout",
+    }),
+    async logout() {
+      await axios.post("/logout").then(({ data }) => {
+        this.signOut();
+        this.$router.push({ name: "login" });
+      });
     },
-    methods:{
-        ...mapActions({
-            signOut:"auth/logout",
-        }),
-        async logout(){
-            await axios.post('/logout').then(({data})=>{
-                this.signOut()
-                this.$router.push({name:"login"})
-            })
-        },
-        async get_user(){
-            await axios.get('/api/user').then(({data})=>{
-                console.log(data);
-                // this.signOut()
-                // this.$router.push({name:"login"})
-            })
-        }
-        
-    }
-}
+    async get_user() {
+      await axios.get("/api/user").then(({ data }) => {
+        console.log(data);
+        // this.signOut()
+        // this.$router.push({name:"login"})
+      });
+    },
+  },
+};
 </script>

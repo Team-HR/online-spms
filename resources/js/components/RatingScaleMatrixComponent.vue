@@ -1,5 +1,71 @@
 <template>
   <div class="container-fluid">
+    <div
+      data-bs-backdrop="static"
+      data-bs-keyboard="false"
+      class="modal fade"
+      id="editMfoModal"
+      tabindex="-1"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <!-- {{edit_mfo_item.code +" "+edit_mfo_item.function}} -->
+            <h5 class="modal-title">Edit MFO/PAP</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form
+              id="form_edit_mfo"
+              class="row g-2"
+              @submit.prevent="save_edit_mfo()"
+            >
+              <div class="col-3">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="category_number"
+                    placeholder="Category Number"
+                    v-model="edit_mfo_item.code"
+                  />
+                  <label for="category_number">Category Number:</label>
+                </div>
+              </div>
+              <div class="col-9">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="mfo_title"
+                    placeholder="Title"
+                    v-model="edit_mfo_item.function"
+                  />
+                  <label for="mfo_title">MFO/PAP Title:</label>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancel
+            </button>
+            <button form="form_edit_mfo" type="submit" class="btn btn-primary">
+              Save changes
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="row">
       <div class="col-12">
         <div class="card shadow-sm">
@@ -8,8 +74,8 @@
           </div>
           <div class="card-body">
             <p class="mb-0">Rating Scale Matrix</p>
-            <p>{{ items }}</p>
-            <table class="table table-bordered border-red">
+            <!-- <p>{{ items }}</p> -->
+            <table class="table table-bordered">
               <thead>
                 <tr class="text-center">
                   <th scope="col"></th>
@@ -27,21 +93,21 @@
               <tbody>
                 <tr v-for="(item, i) in items" :key="i">
                   <td v-if="item.code" :rowspan="item.rowspan"></td>
-                  <!-- <td v-if="item.code" :rowspan="item.rowspan" style="vertical-align:middle;">
-                    <span>
-                      <a href="javascript:void(0)">{{ item.code }}</a>
-                    </span>
-                  </td> -->
-                  <!-- tab-size: 2; -->
-                  <!-- add_tabs(item.order_number_mfo) + -->
-                  <!-- :style="'tab-size:' + item.order_number_mfo" -->
                   <td
                     v-if="item.code"
                     :rowspan="item.rowspan"
                     :colspan="!item.success_indicator ? '9' : ''"
                     style="vertical-align: middle"
-                    :style="set_text_indent(item.order_number_mfo)"
                   >
+                    <a
+                      class="btn btn-outline-success btn-sm"
+                      data-bs-toggle="modal"
+                      data-bs-target="#editMfoModal"
+                      href="javascript:void(0)"
+                      :style="set_text_indent(item.order_number_mfo)"
+                      @click="edit_mfo(item)"
+                      ><i class="fa-solid fa-pen-to-square"></i> Edit</a
+                    >
                     {{ item.code + " " + item.function }}
                   </td>
                   <template v-if="item.success_indicator">
@@ -88,10 +154,19 @@
                       </span>
                     </td>
                     <td>
-                      <a href="javascript:void(0)">Edit</a>
+                      <a
+                        class="btn btn-outline-success btn-sm"
+                        href="javascript:void(0)"
+                        title="Edit this success indicator"
+                        ><i class="fa-solid fa-pen-to-square"></i> Edit</a
+                      >
                     </td>
                     <td>
-                      <a href="javascript:void(0)">Delete</a>
+                      <a
+                        class="btn btn-outline-danger btn-sm"
+                        href="javascript:void(0)"
+                        ><i class="fa-solid fa-eraser"></i> Delete</a
+                      >
                     </td>
                   </template>
                 </tr>
@@ -100,9 +175,6 @@
 
             <form class="row g-3" @submit.prevent="submit_new_mfo()">
               <div class="col-auto">
-                <!-- <label for="category" class="form-label"
-                  >Category Number:</label
-                > -->
                 <input
                   type="text"
                   class="form-control"
@@ -111,9 +183,6 @@
                 />
               </div>
               <div class="col-auto">
-                <!-- <label for="function_title" class="form-label"
-                  >MFO/PAP Title</label
-                > -->
                 <input
                   type="text"
                   class="form-control"
@@ -144,9 +213,37 @@ export default {
         title: "",
       },
       items: [],
+      edit_mfo_item: {},
     };
   },
   methods: {
+    edit_mfo(item) {
+      var item = JSON.parse(JSON.stringify(item));
+      this.edit_mfo_item = {
+        id: item.id,
+        code: item.code,
+        function: item.function,
+      };
+      console.log(this.edit_mfo_item);
+    },
+    async save_edit_mfo() {
+      await axios
+        .post("/api/rsm/save_edit_mfo", {
+          id: this.edit_mfo_item.id,
+          code: this.edit_mfo_item.code,
+          function: this.edit_mfo_item.function,
+        })
+        .then(({ data }) => {
+          console.log("action submit form!: ", data);
+          $("#editMfoModal").modal("hide");
+          $(".modal-backdrop").remove();
+          this.getItems().then(() => {});
+        })
+        .catch(({ response: { data } }) => {
+          alert(data.message);
+          console.log(data);
+        });
+    },
     async submit_new_mfo() {
       await axios
         .post("/api/rsm/add_new_mfo", {
@@ -155,8 +252,6 @@ export default {
           year: this.year,
         })
         .then(({ data }) => {
-          // alert(data);
-          // this.items = JSON.parse(JSON.stringify(data));
           this.getItems().then(() => {
             this.new_mfo.category = "";
             this.new_mfo.title = "";
@@ -187,7 +282,7 @@ export default {
     set_text_indent(order_number_mfo) {
       var tabs = "";
       if (!order_number_mfo) return tabs;
-      tabs = "text-indent:" + 15 * order_number_mfo + "px";
+      tabs = "margin-left:" + 15 * order_number_mfo + "px;";
       return tabs;
     },
   },

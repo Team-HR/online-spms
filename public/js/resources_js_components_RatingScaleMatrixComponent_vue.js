@@ -164,6 +164,75 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "ratingscalematrix",
   data: function data() {
@@ -174,11 +243,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         category: "",
         title: ""
       },
-      items: []
+      items: [],
+      edit_mfo_item: {}
     };
   },
   methods: {
-    submit_new_mfo: function submit_new_mfo() {
+    edit_mfo: function edit_mfo(item) {
+      var item = JSON.parse(JSON.stringify(item));
+      this.edit_mfo_item = {
+        id: item.id,
+        code: item.code,
+        "function": item["function"]
+      };
+      console.log(this.edit_mfo_item);
+    },
+    save_edit_mfo: function save_edit_mfo() {
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
@@ -187,19 +266,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios.post("/api/rsm/add_new_mfo", {
-                  new_mfo: _this.new_mfo,
-                  period: _this.period,
-                  year: _this.year
+                return axios.post("/api/rsm/save_edit_mfo", {
+                  id: _this.edit_mfo_item.id,
+                  code: _this.edit_mfo_item.code,
+                  "function": _this.edit_mfo_item["function"]
                 }).then(function (_ref) {
                   var data = _ref.data;
+                  console.log("action submit form!: ", data);
+                  $("#editMfoModal").modal("hide");
+                  $(".modal-backdrop").remove();
 
-                  // alert(data);
-                  // this.items = JSON.parse(JSON.stringify(data));
-                  _this.getItems().then(function () {
-                    _this.new_mfo.category = "";
-                    _this.new_mfo.title = "";
-                  });
+                  _this.getItems().then(function () {});
                 })["catch"](function (_ref2) {
                   var data = _ref2.response.data;
                   alert(data.message);
@@ -214,7 +291,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee);
       }))();
     },
-    getItems: function getItems() {
+    submit_new_mfo: function submit_new_mfo() {
       var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
@@ -223,14 +300,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return axios.get("/api/rsm", {
-                  params: {
-                    period: _this2.period,
-                    year: _this2.year
-                  }
+                return axios.post("/api/rsm/add_new_mfo", {
+                  new_mfo: _this2.new_mfo,
+                  period: _this2.period,
+                  year: _this2.year
                 }).then(function (_ref3) {
                   var data = _ref3.data;
-                  _this2.items = JSON.parse(JSON.stringify(data));
+
+                  _this2.getItems().then(function () {
+                    _this2.new_mfo.category = "";
+                    _this2.new_mfo.title = "";
+                  });
                 })["catch"](function (_ref4) {
                   var data = _ref4.response.data;
                   alert(data.message);
@@ -245,10 +325,41 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee2);
       }))();
     },
+    getItems: function getItems() {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return axios.get("/api/rsm", {
+                  params: {
+                    period: _this3.period,
+                    year: _this3.year
+                  }
+                }).then(function (_ref5) {
+                  var data = _ref5.data;
+                  _this3.items = JSON.parse(JSON.stringify(data));
+                })["catch"](function (_ref6) {
+                  var data = _ref6.response.data;
+                  alert(data.message);
+                  console.log(data);
+                });
+
+              case 2:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3);
+      }))();
+    },
     set_text_indent: function set_text_indent(order_number_mfo) {
       var tabs = "";
       if (!order_number_mfo) return tabs;
-      tabs = "text-indent:" + 15 * order_number_mfo + "px";
+      tabs = "margin-left:" + 15 * order_number_mfo + "px;";
       return tabs;
     }
   },
@@ -1106,18 +1217,131 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container-fluid" }, [
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          "data-bs-backdrop": "static",
+          "data-bs-keyboard": "false",
+          id: "editMfoModal",
+          tabindex: "-1"
+        }
+      },
+      [
+        _c("div", { staticClass: "modal-dialog modal-lg" }, [
+          _c("div", { staticClass: "modal-content" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal-body" }, [
+              _c(
+                "form",
+                {
+                  staticClass: "row g-2",
+                  attrs: { id: "form_edit_mfo" },
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.save_edit_mfo()
+                    }
+                  }
+                },
+                [
+                  _c("div", { staticClass: "col-3" }, [
+                    _c("div", { staticClass: "form-floating" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.edit_mfo_item.code,
+                            expression: "edit_mfo_item.code"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          id: "category_number",
+                          placeholder: "Category Number"
+                        },
+                        domProps: { value: _vm.edit_mfo_item.code },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.edit_mfo_item,
+                              "code",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "category_number" } }, [
+                        _vm._v("Category Number:")
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-9" }, [
+                    _c("div", { staticClass: "form-floating" }, [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.edit_mfo_item.function,
+                            expression: "edit_mfo_item.function"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          type: "text",
+                          id: "mfo_title",
+                          placeholder: "Title"
+                        },
+                        domProps: { value: _vm.edit_mfo_item.function },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.edit_mfo_item,
+                              "function",
+                              $event.target.value
+                            )
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("label", { attrs: { for: "mfo_title" } }, [
+                        _vm._v("MFO/PAP Title:")
+                      ])
+                    ])
+                  ])
+                ]
+              )
+            ]),
+            _vm._v(" "),
+            _vm._m(1)
+          ])
+        ])
+      ]
+    ),
+    _vm._v(" "),
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "col-12" }, [
         _c("div", { staticClass: "card shadow-sm" }, [
-          _vm._m(0),
+          _vm._m(2),
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
             _c("p", { staticClass: "mb-0" }, [_vm._v("Rating Scale Matrix")]),
             _vm._v(" "),
-            _c("p", [_vm._v(_vm._s(_vm.items))]),
-            _vm._v(" "),
-            _c("table", { staticClass: "table table-bordered border-red" }, [
-              _vm._m(1),
+            _c("table", { staticClass: "table table-bordered" }, [
+              _vm._m(3),
               _vm._v(" "),
               _c(
                 "tbody",
@@ -1135,13 +1359,37 @@ var render = function() {
                             "td",
                             {
                               staticStyle: { "vertical-align": "middle" },
-                              style: _vm.set_text_indent(item.order_number_mfo),
                               attrs: {
                                 rowspan: item.rowspan,
                                 colspan: !item.success_indicator ? "9" : ""
                               }
                             },
                             [
+                              _c(
+                                "a",
+                                {
+                                  staticClass: "btn btn-outline-success btn-sm",
+                                  style: _vm.set_text_indent(
+                                    item.order_number_mfo
+                                  ),
+                                  attrs: {
+                                    "data-bs-toggle": "modal",
+                                    "data-bs-target": "#editMfoModal",
+                                    href: "javascript:void(0)"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.edit_mfo(item)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "fa-solid fa-pen-to-square"
+                                  }),
+                                  _vm._v(" Edit")
+                                ]
+                              ),
                               _vm._v(
                                 "\n                  " +
                                   _vm._s(item.code + " " + item.function) +
@@ -1257,9 +1505,9 @@ var render = function() {
                               0
                             ),
                             _vm._v(" "),
-                            _vm._m(2, true),
+                            _vm._m(4, true),
                             _vm._v(" "),
-                            _vm._m(3, true)
+                            _vm._m(5, true)
                           ]
                         : _vm._e()
                     ],
@@ -1330,7 +1578,7 @@ var render = function() {
                   })
                 ]),
                 _vm._v(" "),
-                _vm._m(4)
+                _vm._m(6)
               ]
             )
           ])
@@ -1340,6 +1588,47 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c("h5", { staticClass: "modal-title" }, [_vm._v("Edit MFO/PAP")]),
+      _vm._v(" "),
+      _c("button", {
+        staticClass: "btn-close",
+        attrs: {
+          type: "button",
+          "data-bs-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-bs-dismiss": "modal" }
+        },
+        [_vm._v("\n            Cancel\n          ")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-primary",
+          attrs: { form: "form_edit_mfo", type: "submit" }
+        },
+        [_vm._v("\n            Save changes\n          ")]
+      )
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -1379,7 +1668,17 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("td", [
-      _c("a", { attrs: { href: "javascript:void(0)" } }, [_vm._v("Edit")])
+      _c(
+        "a",
+        {
+          staticClass: "btn btn-outline-success btn-sm",
+          attrs: {
+            href: "javascript:void(0)",
+            title: "Edit this success indicator"
+          }
+        },
+        [_c("i", { staticClass: "fa-solid fa-pen-to-square" }), _vm._v(" Edit")]
+      )
     ])
   },
   function() {
@@ -1387,7 +1686,14 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("td", [
-      _c("a", { attrs: { href: "javascript:void(0)" } }, [_vm._v("Delete")])
+      _c(
+        "a",
+        {
+          staticClass: "btn btn-outline-danger btn-sm",
+          attrs: { href: "javascript:void(0)" }
+        },
+        [_c("i", { staticClass: "fa-solid fa-eraser" }), _vm._v(" Delete")]
+      )
     ])
   },
   function() {
