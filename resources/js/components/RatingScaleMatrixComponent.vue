@@ -1,6 +1,10 @@
 <template>
   <div class="container-fluid">
-    <SuccessIndicatorModal id="successindicatormodal" />
+    <SuccessIndicatorModal
+      id="successindicatormodal"
+      :success_indicator_id="edit_success_indicator_id"
+      @test="getItems()"
+    />
     <div
       data-bs-backdrop="static"
       data-bs-keyboard="false"
@@ -66,7 +70,6 @@
       </form>
     </div>
     <div class="row">
-      {{ items }}
       <div class="col-12">
         <div class="card shadow-sm">
           <div class="card-header">
@@ -133,6 +136,7 @@
                             type="button"
                             data-bs-toggle="modal"
                             data-bs-target="#successindicatormodal"
+                            @click="add_success_indicator()"
                           >
                             <i class="fa-solid fa-square-plus"></i>
                             Add Success Indicator
@@ -191,37 +195,45 @@
                     </td>
                     <td>
                       <span v-for="(quality, q) in item.quality" :key="q">
-                        <b>{{ quality.score }}</b> - {{ quality.desc }}
-                        <br v-if="q + 1 !== item.quality.length" />
+                        <div v-if="item.quality[5 - q - 1]">
+                          <b>{{ 5 - q }}</b> - {{ item.quality[5 - q - 1] }}
+                          <br />
+                        </div>
                       </span>
                     </td>
                     <td>
                       <span v-for="(efficiency, e) in item.efficiency" :key="e">
-                        <b>{{ efficiency.score }}</b> - {{ efficiency.desc }}
-                        <br v-if="e + 1 !== item.efficiency.length" />
+                        <div v-if="item.efficiency[5 - e - 1]">
+                          <b>{{ 5 - e }}</b> - {{ item.efficiency[5 - e - 1] }}
+                          <br />
+                        </div>
                       </span>
                     </td>
                     <td>
                       <span v-for="(timeliness, t) in item.timeliness" :key="t">
-                        <b>{{ timeliness.score }}</b> - {{ timeliness.desc }}
-                        <br v-if="t + 1 !== item.timeliness.length" />
+                        <div v-if="item.timeliness[5 - t - 1]">
+                          <b>{{ 5 - t }}</b> - {{ item.timeliness[5 - t - 1] }}
+                          <br />
+                        </div>
                       </span>
                     </td>
-                    <td>
-                      <span v-for="(incumbent, i) in item.incumbents" :key="i">
-                        <a href="javascript:void(0)">{{
+                    <td nowrap>
+                      <div v-for="(incumbent, i) in item.incumbents" :key="i">
+                        <a class="link-info" href="javascript:void(0)">{{
                           incumbent.full_name
                         }}</a>
                         <br v-if="i + 1 !== item.incumbents.length" />
-                      </span>
+                      </div>
                     </td>
                     <td style="vertical-align: middle">
                       <button
                         class="btn btn-sm text-success"
                         title="Edit success indicator"
+                        data-bs-toggle="modal"
+                        data-bs-target="#successindicatormodal"
+                        @click="edit_success_indicator(item.id)"
                       >
-                        <i class="fa-solid fa-pen-to-square"></i>
-                        Edit
+                        <i class="fa-solid fa-pen-to-square text-success"></i>
                       </button>
                     </td>
                     <td style="vertical-align: middle">
@@ -229,8 +241,7 @@
                         class="btn btn-sm text-danger"
                         title="Delete success indicator"
                       >
-                        <i class="fa-solid fa-eraser"></i>
-                        Delete
+                        <i class="fa-solid fa-eraser text-danger"></i>
                       </button>
                     </td>
                   </template>
@@ -282,9 +293,16 @@ export default {
       },
       items: [],
       edit_mfo_item: {},
+      edit_success_indicator_id: 0,
     };
   },
   methods: {
+    add_success_indicator() {
+      this.edit_success_indicator_id = 0;
+    },
+    edit_success_indicator(id) {
+      this.edit_success_indicator_id = id;
+    },
     edit_mfo(item) {
       var item = JSON.parse(JSON.stringify(item));
       this.edit_mfo_item = {
@@ -305,7 +323,7 @@ export default {
           console.log("action submit form!: ", data);
           var myModalEl = document.getElementById("editMfoModal");
           var modal = bootstrap.Modal.getInstance(myModalEl); // Returns a Bootstrap modal instance
-          modal.hide()
+          modal.hide();
           this.getItems().then(() => {});
         })
         .catch(({ response: { data } }) => {
@@ -344,7 +362,7 @@ export default {
         })
         .catch(({ response: { data } }) => {
           alert(data.message);
-          console.log(data);
+          // console.log(data);
         });
     },
 
@@ -357,6 +375,12 @@ export default {
   },
   mounted() {
     this.getItems();
+
+    // successindicatormodal
+
+    // var myModalEl = document.getElementById("successindicatormodal");
+    // var modal = bootstrap.Modal.getOrCreateInstance(myModalEl); // Returns a Bootstrap modal instance
+    // modal.show();
   },
 };
 </script>

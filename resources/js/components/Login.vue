@@ -4,14 +4,14 @@
             <div class="col-12 col-md-6 offset-md-3">
                 <div class="card shadow sm">
                     <div class="card-body">
-                        <h1 class="text-center">Login</h1>
+                        <h1 class="text-center">Online SPMS Login</h1>
                         <hr/>
                         <form action="javascript:void(0)" class="row" method="post">
-                            <div class="form-group col-12">
+                            <div class="form-group col-12 mb-2">
                                 <label for="username" class="font-weight-bold">Username</label>
                                 <input type="text" v-model="auth.username" name="username" id="username" class="form-control">
                             </div>
-                            <div class="form-group col-12">
+                            <div class="form-group col-12 mb-2">
                                 <label for="password" class="font-weight-bold">Password</label>
                                 <input type="password" v-model="auth.password" name="password" id="password" class="form-control">
                             </div>

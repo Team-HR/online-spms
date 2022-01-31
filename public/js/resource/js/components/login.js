@@ -980,7 +980,9 @@ var render = function () {
       _c("div", { staticClass: "col-12 col-md-6 offset-md-3" }, [
         _c("div", { staticClass: "card shadow sm" }, [
           _c("div", { staticClass: "card-body" }, [
-            _c("h1", { staticClass: "text-center" }, [_vm._v("Login")]),
+            _c("h1", { staticClass: "text-center" }, [
+              _vm._v("Online SPMS Login"),
+            ]),
             _vm._v(" "),
             _c("hr"),
             _vm._v(" "),
@@ -991,7 +993,7 @@ var render = function () {
                 attrs: { action: "javascript:void(0)", method: "post" },
               },
               [
-                _c("div", { staticClass: "form-group col-12" }, [
+                _c("div", { staticClass: "form-group col-12 mb-2" }, [
                   _c(
                     "label",
                     {
@@ -1024,7 +1026,7 @@ var render = function () {
                   }),
                 ]),
                 _vm._v(" "),
-                _c("div", { staticClass: "form-group col-12" }, [
+                _c("div", { staticClass: "form-group col-12 mb-2" }, [
                   _c(
                     "label",
                     {

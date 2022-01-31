@@ -9,8 +9,67 @@ use Illuminate\Http\Request;
 
 class RatingScaleMatrixController extends Controller
 {
-    public function test () {
+    public function test()
+    {
         return response()->json("HELLO-WORLD!");
+    }
+
+    public function get_success_indicator(Request $request)
+    {
+        $id = $request->id;
+
+        $rsm_indicator = RatingScaleMatrixSuccessIndicator::find($id);
+
+        return response()->json($rsm_indicator);
+    }
+
+    /* 
+        Save success indicators new additions and edits
+    */
+    public function save_success_indicator(Request $request)
+    {
+
+        $id = $request->id;
+
+        $success_indicator = $request->success_indicator;
+        $quality = $request->quality;
+        $quality = !empty($quality) ? $quality : null;
+        $efficiency = $request->efficiency;
+        $efficiency = !empty($efficiency) ? $efficiency : null;
+        $timeliness = $request->timeliness;
+        $timeliness = !empty($timeliness) ? $timeliness : null;
+        $incumbents = $request->incumbents;
+
+        // foreach ($efficiency as $score => $desc) {
+        //     $efficiency[] = [
+        //         'score' => $score+1,
+        //         'desc'  => $desc
+        //     ];
+        //     unset($efficiency[$score]);
+        // }
+        // $efficiency = array_values($efficiency);
+
+
+        $test = [
+            'id' => $id,
+            'success_indicator' => $success_indicator,
+            'quality' => $quality,
+            'efficiency' => $efficiency,
+            'timeliness' => $timeliness
+        ];
+
+
+        $rsm_success_indicator = RatingScaleMatrixSuccessIndicator::where('id', $id)
+            ->update([
+                'success_indicator' => $success_indicator,
+                'quality' => $quality,
+                'efficiency' => $efficiency,
+                'timeliness' => $timeliness
+            ]);
+
+        // $rsm_success_indicator->save();
+
+        return response()->json($test);
     }
 
     /**
@@ -93,15 +152,15 @@ class RatingScaleMatrixController extends Controller
         // $mfo->save();
 
         RatingScaleMatrix::where('id', $id)
-        ->update([
-            'code' => $code,
-            'function' => $function,
-        ]);
+            ->update([
+                'code' => $code,
+                'function' => $function,
+            ]);
 
         return  response()->json($request);
     }
 
-    
+
 
     /**
      * Show the form for creating a new resource.

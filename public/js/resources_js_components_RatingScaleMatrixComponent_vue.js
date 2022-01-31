@@ -22,6 +22,141 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -175,7 +310,7 @@ __webpack_require__.r(__webpack_exports__);
   name: "successindicatormodal",
   props: {
     title: String,
-    likes: Number,
+    success_indicator_id: Number,
     isPublished: Boolean,
     commentIds: Array,
     author: Object,
@@ -184,10 +319,218 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   data: function data() {
-    return {};
+    return {
+      employeeSearch: "",
+      employees: [],
+      success_indicator: "",
+      quality: [],
+      efficiency: [],
+      timeliness: [],
+      incumbents: []
+    };
   },
-  methods: {},
-  mounted: function mounted() {}
+  watch: {
+    success_indicator_id: function success_indicator_id(newValue) {
+      // console.log("success_indicator_id", newValue);
+      this.success_indicator = "";
+      this.quality = [];
+      this.efficiency = [];
+      this.timeliness = [];
+      this.incumbents = [];
+
+      if (newValue > 0) {
+        this.get_success_indicator();
+      }
+    },
+    employeeSearch: function employeeSearch(newValue, oldValue) {
+      // console.log(newValue);
+      if (newValue == "") {
+        this.employees = [];
+      } else this.get_employees_list();
+    }
+  },
+  methods: {
+    get_success_indicator: function get_success_indicator() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _this.success_indicator = "";
+                _this.quality = [];
+                _this.efficiency = [];
+                _this.timeliness = [];
+                _this.incumbents = [];
+                _context.next = 7;
+                return axios.get("/api/rsm/get_success_indicator", {
+                  params: {
+                    id: _this.success_indicator_id
+                  }
+                }).then(function (_ref) {
+                  var data = _ref.data;
+                  _this.success_indicator = data.success_indicator;
+                  /* remap incumbent array */
+
+                  /* remap incumbent array */
+                  var incumbents = JSON.parse(JSON.stringify(data.incumbents));
+                  incumbents.forEach(function (element) {
+                    _this.incumbents.push({
+                      id: element.employee_id,
+                      full_name: element.full_name
+                    });
+                  });
+                  /* sort incumbents by full_name ascending after push*/
+
+                  /* sort incumbents by full_name ascending after push*/
+                  _this.incumbents.sort(function (x, y) {
+                    var a = x.full_name.toUpperCase(),
+                        b = y.full_name.toUpperCase();
+                    return a == b ? 0 : a > b ? 1 : -1;
+                  });
+                  /* quality parsing */
+
+
+                  /* quality parsing */
+                  if (data.quality) {
+                    var quality = JSON.parse(JSON.stringify(data.quality));
+                    quality.forEach(function (element) {
+                      // this.quality[element.score] = element.desc;
+                      _this.quality.push(element);
+                    });
+                  }
+                  /* efficiency parsing */
+
+
+                  /* efficiency parsing */
+                  if (data.efficiency) {
+                    var efficiency = JSON.parse(JSON.stringify(data.efficiency));
+                    efficiency.forEach(function (element) {
+                      // this.efficiency[element.score - 1] = element.desc;
+                      _this.efficiency.push(element);
+                    });
+                  } // /* timeliness parsing */
+
+
+                  // /* timeliness parsing */
+                  if (data.timeliness) {
+                    var timeliness = JSON.parse(JSON.stringify(data.timeliness));
+                    timeliness.forEach(function (element) {
+                      // this.timeliness[element.score - 1] = element.desc;
+                      _this.timeliness.push(element);
+                    });
+                  }
+
+                  console.log("/api/rsm/get_success_indicator", data);
+                })["catch"](function (err) {
+                  console.error(err);
+                });
+
+              case 7:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
+    },
+    submit_form: function submit_form() {
+      var _this2 = this;
+
+      var payload = {
+        success_indicator: this.success_indicator,
+        quality: this.quality,
+        efficiency: this.efficiency,
+        timeliness: this.timeliness,
+        incumbents: this.incumbents
+      }; // console.log(payload);
+
+      axios({
+        method: "post",
+        url: "/api/rsm/save_success_indicator",
+        data: {
+          id: this.success_indicator_id,
+          success_indicator: this.success_indicator,
+          quality: this.quality,
+          efficiency: this.efficiency,
+          timeliness: this.timeliness,
+          incumbents: this.incumbents
+        }
+      }).then(function (_ref2) {
+        var data = _ref2.data;
+
+        _this2.$emit("test");
+      });
+    },
+
+    /* 
+      adds the selected 
+      employee to list of incumbents
+    */
+    add_to_incumbents: function add_to_incumbents(i) {
+      var employee = this.employees[i];
+      this.employees.splice(i);
+      this.incumbents.push(employee);
+      /* sort incumbents by full_name ascending after push*/
+
+      this.incumbents.sort(function (x, y) {
+        var a = x.full_name.toUpperCase(),
+            b = y.full_name.toUpperCase();
+        return a == b ? 0 : a > b ? 1 : -1;
+      }); // console.log(this.incumbents);
+
+      this.employeeSearch = "";
+    },
+
+    /* 
+      remove the selected
+      employee from list of incumbents
+    */
+    remove_from_incumbent: function remove_from_incumbent(i) {
+      this.incumbents.splice(i, 1);
+      /* for search to work employeeSearch must be empty */
+
+      this.employeeSearch = "";
+    },
+
+    /* 
+      gets list of available
+      employees from db except the employees
+      existing in list of incumbents
+    */
+    get_employees_list: function get_employees_list() {
+      var _this3 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return axios.post("api/employees", {
+                  name: _this3.employeeSearch,
+                  excepts: _this3.incumbents
+                }).then(function (_ref3) {
+                  var data = _ref3.data;
+                  // console.log(data);
+                  _this3.employees = JSON.parse(JSON.stringify(data));
+                })["catch"](function (err) {
+                  console.error(err);
+                });
+
+              case 2:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    }
+  },
+  mounted: function mounted() {// this.get_employees_list();
+    // console.log(this.success_indicator_id)
+  }
 });
 
 /***/ }),
@@ -479,6 +822,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "ratingscalematrix",
@@ -494,10 +848,17 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         title: ""
       },
       items: [],
-      edit_mfo_item: {}
+      edit_mfo_item: {},
+      edit_success_indicator_id: 0
     };
   },
   methods: {
+    add_success_indicator: function add_success_indicator() {
+      this.edit_success_indicator_id = 0;
+    },
+    edit_success_indicator: function edit_success_indicator(id) {
+      this.edit_success_indicator_id = id;
+    },
     edit_mfo: function edit_mfo(item) {
       var item = JSON.parse(JSON.stringify(item));
       this.edit_mfo_item = {
@@ -597,8 +958,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   _this3.items = JSON.parse(JSON.stringify(data));
                 })["catch"](function (_ref6) {
                   var data = _ref6.response.data;
-                  alert(data.message);
-                  console.log(data);
+                  alert(data.message); // console.log(data);
                 });
 
               case 2:
@@ -617,7 +977,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   mounted: function mounted() {
-    this.getItems();
+    this.getItems(); // successindicatormodal
+    // var myModalEl = document.getElementById("successindicatormodal");
+    // var modal = bootstrap.Modal.getOrCreateInstance(myModalEl); // Returns a Bootstrap modal instance
+    // modal.show();
   }
 });
 
@@ -1566,26 +1929,58 @@ var render = function () {
                 on: {
                   submit: function ($event) {
                     $event.preventDefault()
+                    return _vm.submit_form()
                   },
                 },
               },
               [
-                _vm._m(1),
+                _c("div", { staticClass: "row g-2 mb-2" }, [
+                  _c("div", { staticClass: "col" }, [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.success_indicator,
+                          expression: "success_indicator",
+                        },
+                      ],
+                      staticClass: "form-control",
+                      staticStyle: { height: "100px" },
+                      attrs: { id: "success_indicator", placeholder: "...." },
+                      domProps: { value: _vm.success_indicator },
+                      on: {
+                        input: function ($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.success_indicator = $event.target.value
+                        },
+                      },
+                    }),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c("hr"),
+                _vm._v(" "),
+                _vm._m(2),
                 _vm._v(" "),
                 _c(
                   "div",
                   {
-                    staticClass: "accordion",
+                    staticClass: "accordion accordion-flush",
                     attrs: { id: "accordionPanelsStayOpenExample" },
                   },
                   [
                     _c("div", { staticClass: "accordion-item" }, [
-                      _vm._m(2),
+                      _vm._m(3),
                       _vm._v(" "),
                       _c(
                         "div",
                         {
-                          staticClass: "accordion-collapse collapse show",
+                          staticClass: "accordion-collapse collapse",
                           attrs: {
                             id: "panelsStayOpen-collapseOne",
                             "aria-labelledby": "panelsStayOpen-headingOne",
@@ -1614,12 +2009,35 @@ var render = function () {
                                   ),
                                   _vm._v(" "),
                                   _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.quality[5 - (n - 1) - 1],
+                                        expression: "quality[5 - (n - 1) - 1]",
+                                      },
+                                    ],
                                     staticClass: "form-control",
                                     attrs: {
                                       type: "text",
                                       "aria-label": "Sizing example input",
                                       "aria-describedby":
                                         "inputGroup-sizing-sm",
+                                    },
+                                    domProps: {
+                                      value: _vm.quality[5 - (n - 1) - 1],
+                                    },
+                                    on: {
+                                      input: function ($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.quality,
+                                          5 - (n - 1) - 1,
+                                          $event.target.value
+                                        )
+                                      },
                                     },
                                   }),
                                 ]
@@ -1632,12 +2050,12 @@ var render = function () {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "accordion-item" }, [
-                      _vm._m(3),
+                      _vm._m(4),
                       _vm._v(" "),
                       _c(
                         "div",
                         {
-                          staticClass: "accordion-collapse collapse show",
+                          staticClass: "accordion-collapse collapse",
                           attrs: {
                             id: "panelsStayOpen-collapseTwo",
                             "aria-labelledby": "panelsStayOpen-headingTwo",
@@ -1666,12 +2084,36 @@ var render = function () {
                                   ),
                                   _vm._v(" "),
                                   _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.efficiency[5 - (n - 1) - 1],
+                                        expression:
+                                          "efficiency[5 - (n - 1) - 1]",
+                                      },
+                                    ],
                                     staticClass: "form-control",
                                     attrs: {
                                       type: "text",
                                       "aria-label": "Sizing example input",
                                       "aria-describedby":
                                         "inputGroup-sizing-sm",
+                                    },
+                                    domProps: {
+                                      value: _vm.efficiency[5 - (n - 1) - 1],
+                                    },
+                                    on: {
+                                      input: function ($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.efficiency,
+                                          5 - (n - 1) - 1,
+                                          $event.target.value
+                                        )
+                                      },
                                     },
                                   }),
                                 ]
@@ -1684,12 +2126,12 @@ var render = function () {
                     ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "accordion-item" }, [
-                      _vm._m(4),
+                      _vm._m(5),
                       _vm._v(" "),
                       _c(
                         "div",
                         {
-                          staticClass: "accordion-collapse collapse show",
+                          staticClass: "accordion-collapse collapse",
                           attrs: {
                             id: "panelsStayOpen-collapseThree",
                             "aria-labelledby": "panelsStayOpen-headingThree",
@@ -1718,12 +2160,36 @@ var render = function () {
                                   ),
                                   _vm._v(" "),
                                   _c("input", {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.timeliness[5 - (n - 1) - 1],
+                                        expression:
+                                          "timeliness[5 - (n - 1) - 1]",
+                                      },
+                                    ],
                                     staticClass: "form-control",
                                     attrs: {
                                       type: "text",
                                       "aria-label": "Sizing example input",
                                       "aria-describedby":
                                         "inputGroup-sizing-sm",
+                                    },
+                                    domProps: {
+                                      value: _vm.timeliness[5 - (n - 1) - 1],
+                                    },
+                                    on: {
+                                      input: function ($event) {
+                                        if ($event.target.composing) {
+                                          return
+                                        }
+                                        _vm.$set(
+                                          _vm.timeliness,
+                                          5 - (n - 1) - 1,
+                                          $event.target.value
+                                        )
+                                      },
                                     },
                                   }),
                                 ]
@@ -1736,11 +2202,164 @@ var render = function () {
                     ]),
                   ]
                 ),
+                _vm._v(" "),
+                _c("hr"),
+                _vm._v(" "),
+                _vm._m(6),
+                _vm._v(" "),
+                _c("div", { staticClass: "mt-2" }, [
+                  _c("div", { staticClass: "accordion" }, [
+                    _c("div", { staticClass: "accordion-item" }, [
+                      _vm._m(7),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass: "accordion-collapse collapse",
+                          attrs: { id: "assignEmployeePanel" },
+                        },
+                        [
+                          _c("div", { staticClass: "accordion-body" }, [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.employeeSearch,
+                                  expression: "employeeSearch",
+                                },
+                              ],
+                              staticClass: "form-control",
+                              attrs: {
+                                width: "500",
+                                placeholder:
+                                  "Search name of employee to add here...",
+                              },
+                              domProps: { value: _vm.employeeSearch },
+                              on: {
+                                input: function ($event) {
+                                  if ($event.target.composing) {
+                                    return
+                                  }
+                                  _vm.employeeSearch = $event.target.value
+                                },
+                              },
+                            }),
+                            _vm._v(" "),
+                            _c(
+                              "div",
+                              { staticClass: "list-group mt-2" },
+                              [
+                                _vm.employees.length == 0
+                                  ? _c(
+                                      "button",
+                                      {
+                                        staticClass:
+                                          "list-group-item list-group-item-action",
+                                        staticStyle: { "text-align": "center" },
+                                        attrs: { type: "button", disabled: "" },
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                        ----\n                      "
+                                        ),
+                                      ]
+                                    )
+                                  : _vm._e(),
+                                _vm._v(" "),
+                                _vm._l(_vm.employees, function (employee, e) {
+                                  return _c(
+                                    "button",
+                                    {
+                                      key: e,
+                                      staticClass:
+                                        "list-group-item list-group-item-action",
+                                      attrs: { type: "button" },
+                                      on: {
+                                        click: function ($event) {
+                                          return _vm.add_to_incumbents(e)
+                                        },
+                                      },
+                                    },
+                                    [
+                                      _vm._v(
+                                        "\n                        " +
+                                          _vm._s(employee.full_name) +
+                                          "\n                        "
+                                      ),
+                                      _vm._m(8, true),
+                                    ]
+                                  )
+                                }),
+                              ],
+                              2
+                            ),
+                          ]),
+                        ]
+                      ),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "div",
+                    { staticClass: "list-group my-2" },
+                    [
+                      _vm.incumbents.length == 0
+                        ? _c(
+                            "button",
+                            {
+                              staticClass:
+                                "list-group-item list-group-item-action",
+                              staticStyle: { "text-align": "center" },
+                              attrs: { type: "button", disabled: "" },
+                            },
+                            [
+                              _vm._v(
+                                "\n                -- None --\n              "
+                              ),
+                            ]
+                          )
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _vm._l(_vm.incumbents, function (incumbent, i) {
+                        return _c(
+                          "div",
+                          { key: i, staticClass: "list-group-item" },
+                          [
+                            _c(
+                              "button",
+                              {
+                                staticClass:
+                                  "btn text-danger btn-light btn-sm me-2",
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.remove_from_incumbent(i)
+                                  },
+                                },
+                              },
+                              [
+                                _vm._v(
+                                  "\n                  Remove\n                "
+                                ),
+                              ]
+                            ),
+                            _vm._v(
+                              "\n                " +
+                                _vm._s(incumbent.full_name) +
+                                "\n                "
+                            ),
+                          ]
+                        )
+                      }),
+                    ],
+                    2
+                  ),
+                ]),
               ]
             ),
           ]),
           _vm._v(" "),
-          _vm._m(5),
+          _vm._m(9),
         ]),
       ]),
     ]
@@ -1752,7 +2371,9 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "modal-header" }, [
-      _c("h5", { staticClass: "modal-title" }, [_vm._v("Success Indicator")]),
+      _c("h5", { staticClass: "modal-title" }, [
+        _vm._v("Add New Success Indicator"),
+      ]),
       _vm._v(" "),
       _c("button", {
         staticClass: "btn-close",
@@ -1768,23 +2389,22 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row g-2 mb-2" }, [
-      _c("div", { staticClass: "col" }, [
-        _c("div", { staticClass: "form-floating" }, [
-          _c("textarea", {
-            staticClass: "form-control",
-            staticStyle: { height: "100px" },
-            attrs: {
-              id: "success_indicator",
-              placeholder: "Success Indicator",
-            },
-          }),
-          _vm._v(" "),
-          _c("label", { attrs: { for: "success_indicator" } }, [
-            _vm._v("Success Indicator:"),
-          ]),
-        ]),
-      ]),
+    return _c(
+      "label",
+      { staticClass: "form-label", attrs: { for: "success_indicator" } },
+      [
+        _c("i", { staticClass: "fa-solid fa-trophy" }),
+        _vm._v(" Success Indicator:"),
+      ]
+    )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { staticClass: "form-label" }, [
+      _c("i", { staticClass: "fa-solid fa-pen-ruler" }),
+      _vm._v(" Performance\n            Measures:"),
     ])
   },
   function () {
@@ -1801,7 +2421,7 @@ var staticRenderFns = [
         _c(
           "button",
           {
-            staticClass: "accordion-button",
+            staticClass: "accordion-button collapsed",
             attrs: {
               type: "button",
               "data-bs-toggle": "collapse",
@@ -1810,7 +2430,7 @@ var staticRenderFns = [
               "aria-controls": "panelsStayOpen-collapseOne",
             },
           },
-          [_vm._v("\n                  QUALITY\n                ")]
+          [_vm._v("\n                  Quality\n                ")]
         ),
       ]
     )
@@ -1829,7 +2449,7 @@ var staticRenderFns = [
         _c(
           "button",
           {
-            staticClass: "accordion-button",
+            staticClass: "accordion-button collapsed",
             attrs: {
               type: "button",
               "data-bs-toggle": "collapse",
@@ -1838,7 +2458,7 @@ var staticRenderFns = [
               "aria-controls": "panelsStayOpen-collapseTwo",
             },
           },
-          [_vm._v("\n                  EFFICIENCY\n                ")]
+          [_vm._v("\n                  Efficiency\n                ")]
         ),
       ]
     )
@@ -1857,7 +2477,7 @@ var staticRenderFns = [
         _c(
           "button",
           {
-            staticClass: "accordion-button",
+            staticClass: "accordion-button collapsed",
             attrs: {
               type: "button",
               "data-bs-toggle": "collapse",
@@ -1866,10 +2486,52 @@ var staticRenderFns = [
               "aria-controls": "panelsStayOpen-collapseThree",
             },
           },
-          [_vm._v("\n                  TIMELINESS\n                ")]
+          [_vm._v("\n                  Timeliness\n                ")]
         ),
       ]
     )
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { staticClass: "form-label" }, [
+      _c("i", { staticClass: "fa-solid fa-user-tag" }),
+      _vm._v(" Assigned Employees:"),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("h2", { staticClass: "accordion-header" }, [
+      _c(
+        "button",
+        {
+          staticClass: "accordion-button collapsed",
+          attrs: {
+            type: "button",
+            "data-bs-toggle": "collapse",
+            "data-bs-target": "#assignEmployeePanel",
+          },
+        },
+        [
+          _c("i", { staticClass: "fa-solid fa-plus me-2" }),
+          _vm._v("\n                    Add\n                    "),
+          _c("i", { staticStyle: { color: "grey" } }, [
+            _vm._v("(Click here to add)"),
+          ]),
+        ]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("span", { staticClass: "text-success" }, [
+      _c("i", [_vm._v("(Click to add)")]),
+    ])
   },
   function () {
     var _vm = this
@@ -1889,7 +2551,11 @@ var staticRenderFns = [
         "button",
         {
           staticClass: "btn btn-primary",
-          attrs: { form: "form_edit_mfo", type: "submit" },
+          attrs: {
+            form: "form_edit_mfo",
+            type: "submit",
+            "data-bs-dismiss": "modal",
+          },
         },
         [_vm._v("\n          Save changes\n        ")]
       ),
@@ -1922,7 +2588,17 @@ var render = function () {
     "div",
     { staticClass: "container-fluid" },
     [
-      _c("SuccessIndicatorModal", { attrs: { id: "successindicatormodal" } }),
+      _c("SuccessIndicatorModal", {
+        attrs: {
+          id: "successindicatormodal",
+          success_indicator_id: _vm.edit_success_indicator_id,
+        },
+        on: {
+          test: function ($event) {
+            return _vm.getItems()
+          },
+        },
+      }),
       _vm._v(" "),
       _c(
         "div",
@@ -2040,7 +2716,6 @@ var render = function () {
       ),
       _vm._v(" "),
       _c("div", { staticClass: "row" }, [
-        _vm._v("\n    " + _vm._s(_vm.items) + "\n    "),
         _c("div", { staticClass: "col-12" }, [
           _c("div", { staticClass: "card shadow-sm" }, [
             _vm._m(2),
@@ -2108,6 +2783,35 @@ var render = function () {
                                       _vm._v(" "),
                                       _vm._m(5, true),
                                       _vm._v(" "),
+                                      _c("li", [
+                                        _c(
+                                          "button",
+                                          {
+                                            staticClass: "dropdown-item",
+                                            attrs: {
+                                              type: "button",
+                                              "data-bs-toggle": "modal",
+                                              "data-bs-target":
+                                                "#successindicatormodal",
+                                            },
+                                            on: {
+                                              click: function ($event) {
+                                                return _vm.add_success_indicator()
+                                              },
+                                            },
+                                          },
+                                          [
+                                            _c("i", {
+                                              staticClass:
+                                                "fa-solid fa-square-plus",
+                                            }),
+                                            _vm._v(
+                                              "\n                          Add Success Indicator\n                        "
+                                            ),
+                                          ]
+                                        ),
+                                      ]),
+                                      _vm._v(" "),
                                       _vm._m(6, true),
                                       _vm._v(" "),
                                       _vm._m(7, true),
@@ -2119,8 +2823,6 @@ var render = function () {
                                       _vm._m(10, true),
                                       _vm._v(" "),
                                       _vm._m(11, true),
-                                      _vm._v(" "),
-                                      _vm._m(12, true),
                                     ]
                                   ),
                                 ]),
@@ -2199,14 +2901,16 @@ var render = function () {
                                 "td",
                                 _vm._l(item.quality, function (quality, q) {
                                   return _c("span", { key: q }, [
-                                    _c("b", [_vm._v(_vm._s(quality.score))]),
-                                    _vm._v(
-                                      " - " +
-                                        _vm._s(quality.desc) +
-                                        "\n                      "
-                                    ),
-                                    q + 1 !== item.quality.length
-                                      ? _c("br")
+                                    item.quality[5 - q - 1]
+                                      ? _c("div", [
+                                          _c("b", [_vm._v(_vm._s(5 - q))]),
+                                          _vm._v(
+                                            " - " +
+                                              _vm._s(item.quality[5 - q - 1]) +
+                                              "\n                        "
+                                          ),
+                                          _c("br"),
+                                        ])
                                       : _vm._e(),
                                   ])
                                 }),
@@ -2219,16 +2923,18 @@ var render = function () {
                                   item.efficiency,
                                   function (efficiency, e) {
                                     return _c("span", { key: e }, [
-                                      _c("b", [
-                                        _vm._v(_vm._s(efficiency.score)),
-                                      ]),
-                                      _vm._v(
-                                        " - " +
-                                          _vm._s(efficiency.desc) +
-                                          "\n                      "
-                                      ),
-                                      e + 1 !== item.efficiency.length
-                                        ? _c("br")
+                                      item.efficiency[5 - e - 1]
+                                        ? _c("div", [
+                                            _c("b", [_vm._v(_vm._s(5 - e))]),
+                                            _vm._v(
+                                              " - " +
+                                                _vm._s(
+                                                  item.efficiency[5 - e - 1]
+                                                ) +
+                                                "\n                        "
+                                            ),
+                                            _c("br"),
+                                          ])
                                         : _vm._e(),
                                     ])
                                   }
@@ -2242,16 +2948,18 @@ var render = function () {
                                   item.timeliness,
                                   function (timeliness, t) {
                                     return _c("span", { key: t }, [
-                                      _c("b", [
-                                        _vm._v(_vm._s(timeliness.score)),
-                                      ]),
-                                      _vm._v(
-                                        " - " +
-                                          _vm._s(timeliness.desc) +
-                                          "\n                      "
-                                      ),
-                                      t + 1 !== item.timeliness.length
-                                        ? _c("br")
+                                      item.timeliness[5 - t - 1]
+                                        ? _c("div", [
+                                            _c("b", [_vm._v(_vm._s(5 - t))]),
+                                            _vm._v(
+                                              " - " +
+                                                _vm._s(
+                                                  item.timeliness[5 - t - 1]
+                                                ) +
+                                                "\n                        "
+                                            ),
+                                            _c("br"),
+                                          ])
                                         : _vm._e(),
                                     ])
                                   }
@@ -2261,13 +2969,15 @@ var render = function () {
                               _vm._v(" "),
                               _c(
                                 "td",
+                                { attrs: { nowrap: "" } },
                                 _vm._l(
                                   item.incumbents,
                                   function (incumbent, i) {
-                                    return _c("span", { key: i }, [
+                                    return _c("div", { key: i }, [
                                       _c(
                                         "a",
                                         {
+                                          staticClass: "link-info",
                                           attrs: { href: "javascript:void(0)" },
                                         },
                                         [_vm._v(_vm._s(incumbent.full_name))]
@@ -2282,9 +2992,39 @@ var render = function () {
                                 0
                               ),
                               _vm._v(" "),
-                              _vm._m(13, true),
+                              _c(
+                                "td",
+                                { staticStyle: { "vertical-align": "middle" } },
+                                [
+                                  _c(
+                                    "button",
+                                    {
+                                      staticClass: "btn btn-sm text-success",
+                                      attrs: {
+                                        title: "Edit success indicator",
+                                        "data-bs-toggle": "modal",
+                                        "data-bs-target":
+                                          "#successindicatormodal",
+                                      },
+                                      on: {
+                                        click: function ($event) {
+                                          return _vm.edit_success_indicator(
+                                            item.id
+                                          )
+                                        },
+                                      },
+                                    },
+                                    [
+                                      _c("i", {
+                                        staticClass:
+                                          "fa-solid fa-pen-to-square text-success",
+                                      }),
+                                    ]
+                                  ),
+                                ]
+                              ),
                               _vm._v(" "),
-                              _vm._m(14, true),
+                              _vm._m(12, true),
                             ]
                           : _vm._e(),
                       ],
@@ -2355,7 +3095,7 @@ var render = function () {
                     }),
                   ]),
                   _vm._v(" "),
-                  _vm._m(15),
+                  _vm._m(13),
                 ]
               ),
             ]),
@@ -2473,30 +3213,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("li", [
-      _c(
-        "button",
-        {
-          staticClass: "dropdown-item",
-          attrs: {
-            type: "button",
-            "data-bs-toggle": "modal",
-            "data-bs-target": "#successindicatormodal",
-          },
-        },
-        [
-          _c("i", { staticClass: "fa-solid fa-square-plus" }),
-          _vm._v(
-            "\n                          Add Success Indicator\n                        "
-          ),
-        ]
-      ),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("li", [_c("hr", { staticClass: "dropdown-divider" })])
   },
   function () {
@@ -2570,31 +3286,10 @@ var staticRenderFns = [
       _c(
         "button",
         {
-          staticClass: "btn btn-sm text-success",
-          attrs: { title: "Edit success indicator" },
-        },
-        [
-          _c("i", { staticClass: "fa-solid fa-pen-to-square" }),
-          _vm._v("\n                      Edit\n                    "),
-        ]
-      ),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", { staticStyle: { "vertical-align": "middle" } }, [
-      _c(
-        "button",
-        {
           staticClass: "btn btn-sm text-danger",
           attrs: { title: "Delete success indicator" },
         },
-        [
-          _c("i", { staticClass: "fa-solid fa-eraser" }),
-          _vm._v("\n                      Delete\n                    "),
-        ]
+        [_c("i", { staticClass: "fa-solid fa-eraser text-danger" })]
       ),
     ])
   },
