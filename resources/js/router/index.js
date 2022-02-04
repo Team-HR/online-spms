@@ -15,7 +15,7 @@ const AppNavbarComponent = () => import('../components/Layouts/AppNavbarComponen
 
 /* Authenticated Component */
 const Dashboard = () => import('../components/Dashboard.vue' /* webpackChunkName: "resource/js/components/dashboard" */)
-const RatingScaleMatrix = () => import('../components/RatingScaleMatrixComponent.vue')
+const RatingScaleMatrix = () => import('../pages/rating_scale_matrix/Index.vue')
 /* Authenticated Component */
 
 

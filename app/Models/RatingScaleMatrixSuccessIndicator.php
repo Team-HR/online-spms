@@ -14,6 +14,8 @@ class RatingScaleMatrixSuccessIndicator extends Model
      * @var array
      */
     protected $fillable = [
+        'rating_scale_matrix_id',
+        'order_number',
         'success_indicator',
         'quality',
         'efficiency',

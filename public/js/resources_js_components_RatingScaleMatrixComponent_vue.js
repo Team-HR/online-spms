@@ -311,6 +311,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   props: {
     title: String,
     success_indicator_id: Number,
+    rating_scale_matrix_id: Number,
     isPublished: Boolean,
     commentIds: Array,
     author: Object,
@@ -331,7 +332,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   watch: {
     success_indicator_id: function success_indicator_id(newValue) {
-      // console.log("success_indicator_id", newValue);
+      // console.log("success_indicator_id", newValue)
       this.success_indicator = "";
       this.quality = [];
       this.efficiency = [];
@@ -342,6 +343,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         this.get_success_indicator();
       }
     },
+    // rating_scale_matrix_id(newValue) {
+    //   this.success_indicator = "";
+    //   this.quality = [];
+    //   this.efficiency = [];
+    //   this.timeliness = [];
+    //   this.incumbents = [];
+    // },
     employeeSearch: function employeeSearch(newValue, oldValue) {
       // console.log(newValue);
       if (newValue == "") {
@@ -436,32 +444,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     },
     submit_form: function submit_form() {
-      var _this2 = this;
-
       var payload = {
+        rating_scale_matrix_id: this.rating_scale_matrix_id,
+        success_indicator_id: this.success_indicator_id,
         success_indicator: this.success_indicator,
         quality: this.quality,
         efficiency: this.efficiency,
         timeliness: this.timeliness,
         incumbents: this.incumbents
-      }; // console.log(payload);
-
-      axios({
-        method: "post",
-        url: "/api/rsm/save_success_indicator",
-        data: {
-          id: this.success_indicator_id,
-          success_indicator: this.success_indicator,
-          quality: this.quality,
-          efficiency: this.efficiency,
-          timeliness: this.timeliness,
-          incumbents: this.incumbents
-        }
-      }).then(function (_ref2) {
-        var data = _ref2.data;
-
-        _this2.$emit("test");
-      });
+      };
+      console.log("submitted payload:", payload); // axios({
+      //   method: "post",
+      //   url: "/api/rsm/save_success_indicator",
+      //   data: {
+      //     id: this.success_indicator_id,
+      //     success_indicator: this.success_indicator,
+      //     quality: this.quality,
+      //     efficiency: this.efficiency,
+      //     timeliness: this.timeliness,
+      //     incumbents: this.incumbents,
+      //   },
+      // }).then(({ data }) => {
+      //   this.$emit("submittedform");
+      // });
     },
 
     /* 
@@ -500,7 +505,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       existing in list of incumbents
     */
     get_employees_list: function get_employees_list() {
-      var _this3 = this;
+      var _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
@@ -509,12 +514,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 0:
                 _context2.next = 2;
                 return axios.post("api/employees", {
-                  name: _this3.employeeSearch,
-                  excepts: _this3.incumbents
-                }).then(function (_ref3) {
-                  var data = _ref3.data;
+                  name: _this2.employeeSearch,
+                  excepts: _this2.incumbents
+                }).then(function (_ref2) {
+                  var data = _ref2.data;
                   // console.log(data);
-                  _this3.employees = JSON.parse(JSON.stringify(data));
+                  _this2.employees = JSON.parse(JSON.stringify(data));
                 })["catch"](function (err) {
                   console.error(err);
                 });
@@ -528,9 +533,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }))();
     }
   },
-  mounted: function mounted() {// this.get_employees_list();
-    // console.log(this.success_indicator_id)
-  }
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -833,6 +836,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "ratingscalematrix",
@@ -849,14 +853,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       },
       items: [],
       edit_mfo_item: {},
+      edit_rating_scale_matrix_id: 0,
       edit_success_indicator_id: 0
     };
   },
   methods: {
-    add_success_indicator: function add_success_indicator() {
+    add_success_indicator: function add_success_indicator(item) {
+      // console.log(item.rating_scale_matrix_id);
+      this.edit_rating_scale_matrix_id = item.rating_scale_matrix_id;
       this.edit_success_indicator_id = 0;
     },
     edit_success_indicator: function edit_success_indicator(id) {
+      this.edit_rating_scale_matrix_id = 0;
       this.edit_success_indicator_id = id;
     },
     edit_mfo: function edit_mfo(item) {
@@ -1910,460 +1918,445 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "modal fade",
-      attrs: { id: "editMfoModal", tabindex: "-1" },
-    },
-    [
-      _c("div", { staticClass: "modal-dialog modal-lg" }, [
-        _c("div", { staticClass: "modal-content" }, [
-          _vm._m(0),
-          _vm._v(" "),
-          _c("div", { staticClass: "modal-body" }, [
-            _c(
-              "form",
-              {
-                attrs: { id: "form_edit_mfo" },
-                on: {
-                  submit: function ($event) {
-                    $event.preventDefault()
-                    return _vm.submit_form()
-                  },
+  return _c("div", { staticClass: "modal fade", attrs: { tabindex: "-1" } }, [
+    _c("div", { staticClass: "modal-dialog modal-lg" }, [
+      _c("div", { staticClass: "modal-content" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "modal-body" }, [
+          _c(
+            "form",
+            {
+              attrs: { id: "form_edit_mfo" },
+              on: {
+                submit: function ($event) {
+                  $event.preventDefault()
+                  return _vm.submit_form()
                 },
               },
-              [
-                _c("div", { staticClass: "row g-2 mb-2" }, [
-                  _c("div", { staticClass: "col" }, [
-                    _vm._m(1),
+            },
+            [
+              _c("div", { staticClass: "row g-2 mb-2" }, [
+                _c("div", { staticClass: "col" }, [
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _c("textarea", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.success_indicator,
+                        expression: "success_indicator",
+                      },
+                    ],
+                    staticClass: "form-control",
+                    staticStyle: { height: "100px" },
+                    attrs: { id: "success_indicator", placeholder: "...." },
+                    domProps: { value: _vm.success_indicator },
+                    on: {
+                      input: function ($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.success_indicator = $event.target.value
+                      },
+                    },
+                  }),
+                ]),
+              ]),
+              _vm._v(" "),
+              _c("hr"),
+              _vm._v(" "),
+              _vm._m(2),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "accordion accordion-flush",
+                  attrs: { id: "accordionPanelsStayOpenExample" },
+                },
+                [
+                  _c("div", { staticClass: "accordion-item" }, [
+                    _vm._m(3),
                     _vm._v(" "),
-                    _c("textarea", {
-                      directives: [
-                        {
-                          name: "model",
-                          rawName: "v-model",
-                          value: _vm.success_indicator,
-                          expression: "success_indicator",
-                        },
-                      ],
-                      staticClass: "form-control",
-                      staticStyle: { height: "100px" },
-                      attrs: { id: "success_indicator", placeholder: "...." },
-                      domProps: { value: _vm.success_indicator },
-                      on: {
-                        input: function ($event) {
-                          if ($event.target.composing) {
-                            return
-                          }
-                          _vm.success_indicator = $event.target.value
+                    _c(
+                      "div",
+                      {
+                        staticClass: "accordion-collapse collapse",
+                        attrs: {
+                          id: "panelsStayOpen-collapseOne",
+                          "aria-labelledby": "panelsStayOpen-headingOne",
                         },
                       },
-                    }),
-                  ]),
-                ]),
-                _vm._v(" "),
-                _c("hr"),
-                _vm._v(" "),
-                _vm._m(2),
-                _vm._v(" "),
-                _c(
-                  "div",
-                  {
-                    staticClass: "accordion accordion-flush",
-                    attrs: { id: "accordionPanelsStayOpenExample" },
-                  },
-                  [
-                    _c("div", { staticClass: "accordion-item" }, [
-                      _vm._m(3),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass: "accordion-collapse collapse",
-                          attrs: {
-                            id: "panelsStayOpen-collapseOne",
-                            "aria-labelledby": "panelsStayOpen-headingOne",
-                          },
-                        },
-                        [
-                          _c(
-                            "div",
-                            { staticClass: "accordion-body" },
-                            _vm._l(5, function (n) {
-                              return _c(
-                                "div",
-                                {
-                                  key: n,
-                                  staticClass:
-                                    "input-group input-group-sm mb-1",
-                                },
-                                [
-                                  _c(
-                                    "span",
-                                    {
-                                      staticClass: "input-group-text",
-                                      attrs: { id: "inputGroup-sizing-sm" },
-                                    },
-                                    [_vm._v(_vm._s(5 - (n - 1)) + "=")]
-                                  ),
-                                  _vm._v(" "),
-                                  _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.quality[5 - (n - 1) - 1],
-                                        expression: "quality[5 - (n - 1) - 1]",
-                                      },
-                                    ],
-                                    staticClass: "form-control",
-                                    attrs: {
-                                      type: "text",
-                                      "aria-label": "Sizing example input",
-                                      "aria-describedby":
-                                        "inputGroup-sizing-sm",
-                                    },
-                                    domProps: {
-                                      value: _vm.quality[5 - (n - 1) - 1],
-                                    },
-                                    on: {
-                                      input: function ($event) {
-                                        if ($event.target.composing) {
-                                          return
-                                        }
-                                        _vm.$set(
-                                          _vm.quality,
-                                          5 - (n - 1) - 1,
-                                          $event.target.value
-                                        )
-                                      },
-                                    },
-                                  }),
-                                ]
-                              )
-                            }),
-                            0
-                          ),
-                        ]
-                      ),
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "accordion-item" }, [
-                      _vm._m(4),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass: "accordion-collapse collapse",
-                          attrs: {
-                            id: "panelsStayOpen-collapseTwo",
-                            "aria-labelledby": "panelsStayOpen-headingTwo",
-                          },
-                        },
-                        [
-                          _c(
-                            "div",
-                            { staticClass: "accordion-body" },
-                            _vm._l(5, function (n) {
-                              return _c(
-                                "div",
-                                {
-                                  key: n,
-                                  staticClass:
-                                    "input-group input-group-sm mb-1",
-                                },
-                                [
-                                  _c(
-                                    "span",
-                                    {
-                                      staticClass: "input-group-text",
-                                      attrs: { id: "inputGroup-sizing-sm" },
-                                    },
-                                    [_vm._v(_vm._s(5 - (n - 1)) + "=")]
-                                  ),
-                                  _vm._v(" "),
-                                  _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.efficiency[5 - (n - 1) - 1],
-                                        expression:
-                                          "efficiency[5 - (n - 1) - 1]",
-                                      },
-                                    ],
-                                    staticClass: "form-control",
-                                    attrs: {
-                                      type: "text",
-                                      "aria-label": "Sizing example input",
-                                      "aria-describedby":
-                                        "inputGroup-sizing-sm",
-                                    },
-                                    domProps: {
-                                      value: _vm.efficiency[5 - (n - 1) - 1],
-                                    },
-                                    on: {
-                                      input: function ($event) {
-                                        if ($event.target.composing) {
-                                          return
-                                        }
-                                        _vm.$set(
-                                          _vm.efficiency,
-                                          5 - (n - 1) - 1,
-                                          $event.target.value
-                                        )
-                                      },
-                                    },
-                                  }),
-                                ]
-                              )
-                            }),
-                            0
-                          ),
-                        ]
-                      ),
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "accordion-item" }, [
-                      _vm._m(5),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass: "accordion-collapse collapse",
-                          attrs: {
-                            id: "panelsStayOpen-collapseThree",
-                            "aria-labelledby": "panelsStayOpen-headingThree",
-                          },
-                        },
-                        [
-                          _c(
-                            "div",
-                            { staticClass: "accordion-body" },
-                            _vm._l(5, function (n) {
-                              return _c(
-                                "div",
-                                {
-                                  key: n,
-                                  staticClass:
-                                    "input-group input-group-sm mb-1",
-                                },
-                                [
-                                  _c(
-                                    "span",
-                                    {
-                                      staticClass: "input-group-text",
-                                      attrs: { id: "inputGroup-sizing-sm" },
-                                    },
-                                    [_vm._v(_vm._s(5 - (n - 1)) + "=")]
-                                  ),
-                                  _vm._v(" "),
-                                  _c("input", {
-                                    directives: [
-                                      {
-                                        name: "model",
-                                        rawName: "v-model",
-                                        value: _vm.timeliness[5 - (n - 1) - 1],
-                                        expression:
-                                          "timeliness[5 - (n - 1) - 1]",
-                                      },
-                                    ],
-                                    staticClass: "form-control",
-                                    attrs: {
-                                      type: "text",
-                                      "aria-label": "Sizing example input",
-                                      "aria-describedby":
-                                        "inputGroup-sizing-sm",
-                                    },
-                                    domProps: {
-                                      value: _vm.timeliness[5 - (n - 1) - 1],
-                                    },
-                                    on: {
-                                      input: function ($event) {
-                                        if ($event.target.composing) {
-                                          return
-                                        }
-                                        _vm.$set(
-                                          _vm.timeliness,
-                                          5 - (n - 1) - 1,
-                                          $event.target.value
-                                        )
-                                      },
-                                    },
-                                  }),
-                                ]
-                              )
-                            }),
-                            0
-                          ),
-                        ]
-                      ),
-                    ]),
-                  ]
-                ),
-                _vm._v(" "),
-                _c("hr"),
-                _vm._v(" "),
-                _vm._m(6),
-                _vm._v(" "),
-                _c("div", { staticClass: "mt-2" }, [
-                  _c("div", { staticClass: "accordion" }, [
-                    _c("div", { staticClass: "accordion-item" }, [
-                      _vm._m(7),
-                      _vm._v(" "),
-                      _c(
-                        "div",
-                        {
-                          staticClass: "accordion-collapse collapse",
-                          attrs: { id: "assignEmployeePanel" },
-                        },
-                        [
-                          _c("div", { staticClass: "accordion-body" }, [
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model",
-                                  value: _vm.employeeSearch,
-                                  expression: "employeeSearch",
-                                },
-                              ],
-                              staticClass: "form-control",
-                              attrs: {
-                                width: "500",
-                                placeholder:
-                                  "Search name of employee to add here...",
-                              },
-                              domProps: { value: _vm.employeeSearch },
-                              on: {
-                                input: function ($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.employeeSearch = $event.target.value
-                                },
-                              },
-                            }),
-                            _vm._v(" "),
-                            _c(
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "accordion-body" },
+                          _vm._l(5, function (n) {
+                            return _c(
                               "div",
-                              { staticClass: "list-group mt-2" },
+                              {
+                                key: n,
+                                staticClass: "input-group input-group-sm mb-1",
+                              },
                               [
-                                _vm.employees.length == 0
-                                  ? _c(
-                                      "button",
-                                      {
-                                        staticClass:
-                                          "list-group-item list-group-item-action",
-                                        staticStyle: { "text-align": "center" },
-                                        attrs: { type: "button", disabled: "" },
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                        ----\n                      "
-                                        ),
-                                      ]
-                                    )
-                                  : _vm._e(),
+                                _c(
+                                  "span",
+                                  {
+                                    staticClass: "input-group-text",
+                                    attrs: { id: "inputGroup-sizing-sm" },
+                                  },
+                                  [_vm._v(_vm._s(5 - (n - 1)) + "=")]
+                                ),
                                 _vm._v(" "),
-                                _vm._l(_vm.employees, function (employee, e) {
-                                  return _c(
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.quality[5 - (n - 1) - 1],
+                                      expression: "quality[5 - (n - 1) - 1]",
+                                    },
+                                  ],
+                                  staticClass: "form-control",
+                                  attrs: {
+                                    type: "text",
+                                    "aria-label": "Sizing example input",
+                                    "aria-describedby": "inputGroup-sizing-sm",
+                                  },
+                                  domProps: {
+                                    value: _vm.quality[5 - (n - 1) - 1],
+                                  },
+                                  on: {
+                                    input: function ($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.quality,
+                                        5 - (n - 1) - 1,
+                                        $event.target.value
+                                      )
+                                    },
+                                  },
+                                }),
+                              ]
+                            )
+                          }),
+                          0
+                        ),
+                      ]
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "accordion-item" }, [
+                    _vm._m(4),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "accordion-collapse collapse",
+                        attrs: {
+                          id: "panelsStayOpen-collapseTwo",
+                          "aria-labelledby": "panelsStayOpen-headingTwo",
+                        },
+                      },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "accordion-body" },
+                          _vm._l(5, function (n) {
+                            return _c(
+                              "div",
+                              {
+                                key: n,
+                                staticClass: "input-group input-group-sm mb-1",
+                              },
+                              [
+                                _c(
+                                  "span",
+                                  {
+                                    staticClass: "input-group-text",
+                                    attrs: { id: "inputGroup-sizing-sm" },
+                                  },
+                                  [_vm._v(_vm._s(5 - (n - 1)) + "=")]
+                                ),
+                                _vm._v(" "),
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.efficiency[5 - (n - 1) - 1],
+                                      expression: "efficiency[5 - (n - 1) - 1]",
+                                    },
+                                  ],
+                                  staticClass: "form-control",
+                                  attrs: {
+                                    type: "text",
+                                    "aria-label": "Sizing example input",
+                                    "aria-describedby": "inputGroup-sizing-sm",
+                                  },
+                                  domProps: {
+                                    value: _vm.efficiency[5 - (n - 1) - 1],
+                                  },
+                                  on: {
+                                    input: function ($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.efficiency,
+                                        5 - (n - 1) - 1,
+                                        $event.target.value
+                                      )
+                                    },
+                                  },
+                                }),
+                              ]
+                            )
+                          }),
+                          0
+                        ),
+                      ]
+                    ),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "accordion-item" }, [
+                    _vm._m(5),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "accordion-collapse collapse",
+                        attrs: {
+                          id: "panelsStayOpen-collapseThree",
+                          "aria-labelledby": "panelsStayOpen-headingThree",
+                        },
+                      },
+                      [
+                        _c(
+                          "div",
+                          { staticClass: "accordion-body" },
+                          _vm._l(5, function (n) {
+                            return _c(
+                              "div",
+                              {
+                                key: n,
+                                staticClass: "input-group input-group-sm mb-1",
+                              },
+                              [
+                                _c(
+                                  "span",
+                                  {
+                                    staticClass: "input-group-text",
+                                    attrs: { id: "inputGroup-sizing-sm" },
+                                  },
+                                  [_vm._v(_vm._s(5 - (n - 1)) + "=")]
+                                ),
+                                _vm._v(" "),
+                                _c("input", {
+                                  directives: [
+                                    {
+                                      name: "model",
+                                      rawName: "v-model",
+                                      value: _vm.timeliness[5 - (n - 1) - 1],
+                                      expression: "timeliness[5 - (n - 1) - 1]",
+                                    },
+                                  ],
+                                  staticClass: "form-control",
+                                  attrs: {
+                                    type: "text",
+                                    "aria-label": "Sizing example input",
+                                    "aria-describedby": "inputGroup-sizing-sm",
+                                  },
+                                  domProps: {
+                                    value: _vm.timeliness[5 - (n - 1) - 1],
+                                  },
+                                  on: {
+                                    input: function ($event) {
+                                      if ($event.target.composing) {
+                                        return
+                                      }
+                                      _vm.$set(
+                                        _vm.timeliness,
+                                        5 - (n - 1) - 1,
+                                        $event.target.value
+                                      )
+                                    },
+                                  },
+                                }),
+                              ]
+                            )
+                          }),
+                          0
+                        ),
+                      ]
+                    ),
+                  ]),
+                ]
+              ),
+              _vm._v(" "),
+              _c("hr"),
+              _vm._v(" "),
+              _vm._m(6),
+              _vm._v(" "),
+              _c("div", { staticClass: "mt-2" }, [
+                _c("div", { staticClass: "accordion" }, [
+                  _c("div", { staticClass: "accordion-item" }, [
+                    _vm._m(7),
+                    _vm._v(" "),
+                    _c(
+                      "div",
+                      {
+                        staticClass: "accordion-collapse collapse",
+                        attrs: { id: "assignEmployeePanel" },
+                      },
+                      [
+                        _c("div", { staticClass: "accordion-body" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.employeeSearch,
+                                expression: "employeeSearch",
+                              },
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              width: "500",
+                              placeholder:
+                                "Search name of employee to add here...",
+                            },
+                            domProps: { value: _vm.employeeSearch },
+                            on: {
+                              input: function ($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.employeeSearch = $event.target.value
+                              },
+                            },
+                          }),
+                          _vm._v(" "),
+                          _c(
+                            "div",
+                            { staticClass: "list-group mt-2" },
+                            [
+                              _vm.employees.length == 0
+                                ? _c(
                                     "button",
                                     {
-                                      key: e,
                                       staticClass:
                                         "list-group-item list-group-item-action",
-                                      attrs: { type: "button" },
-                                      on: {
-                                        click: function ($event) {
-                                          return _vm.add_to_incumbents(e)
-                                        },
-                                      },
+                                      staticStyle: { "text-align": "center" },
+                                      attrs: { type: "button", disabled: "" },
                                     },
                                     [
                                       _vm._v(
-                                        "\n                        " +
-                                          _vm._s(employee.full_name) +
-                                          "\n                        "
+                                        "\n                        ----\n                      "
                                       ),
-                                      _vm._m(8, true),
                                     ]
                                   )
-                                }),
-                              ],
-                              2
-                            ),
-                          ]),
-                        ]
-                      ),
-                    ]),
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "list-group my-2" },
-                    [
-                      _vm.incumbents.length == 0
-                        ? _c(
-                            "button",
-                            {
-                              staticClass:
-                                "list-group-item list-group-item-action",
-                              staticStyle: { "text-align": "center" },
-                              attrs: { type: "button", disabled: "" },
-                            },
-                            [
-                              _vm._v(
-                                "\n                -- None --\n              "
-                              ),
-                            ]
-                          )
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm._l(_vm.incumbents, function (incumbent, i) {
-                        return _c(
-                          "div",
-                          { key: i, staticClass: "list-group-item" },
-                          [
-                            _c(
-                              "button",
-                              {
-                                staticClass:
-                                  "btn text-danger btn-light btn-sm me-2",
-                                on: {
-                                  click: function ($event) {
-                                    return _vm.remove_from_incumbent(i)
+                                : _vm._e(),
+                              _vm._v(" "),
+                              _vm._l(_vm.employees, function (employee, e) {
+                                return _c(
+                                  "button",
+                                  {
+                                    key: e,
+                                    staticClass:
+                                      "list-group-item list-group-item-action",
+                                    attrs: { type: "button" },
+                                    on: {
+                                      click: function ($event) {
+                                        return _vm.add_to_incumbents(e)
+                                      },
+                                    },
                                   },
-                                },
-                              },
-                              [
-                                _vm._v(
-                                  "\n                  Remove\n                "
-                                ),
-                              ]
-                            ),
+                                  [
+                                    _vm._v(
+                                      "\n                        " +
+                                        _vm._s(employee.full_name) +
+                                        "\n                        "
+                                    ),
+                                    _vm._m(8, true),
+                                  ]
+                                )
+                              }),
+                            ],
+                            2
+                          ),
+                        ]),
+                      ]
+                    ),
+                  ]),
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "list-group my-2" },
+                  [
+                    _vm.incumbents.length == 0
+                      ? _c(
+                          "button",
+                          {
+                            staticClass:
+                              "list-group-item list-group-item-action",
+                            staticStyle: { "text-align": "center" },
+                            attrs: { type: "button", disabled: "" },
+                          },
+                          [
                             _vm._v(
-                              "\n                " +
-                                _vm._s(incumbent.full_name) +
-                                "\n                "
+                              "\n                -- None --\n              "
                             ),
                           ]
                         )
-                      }),
-                    ],
-                    2
-                  ),
-                ]),
-              ]
-            ),
-          ]),
-          _vm._v(" "),
-          _vm._m(9),
+                      : _vm._e(),
+                    _vm._v(" "),
+                    _vm._l(_vm.incumbents, function (incumbent, i) {
+                      return _c(
+                        "div",
+                        { key: i, staticClass: "list-group-item" },
+                        [
+                          _c(
+                            "button",
+                            {
+                              staticClass:
+                                "btn text-danger btn-light btn-sm me-2",
+                              on: {
+                                click: function ($event) {
+                                  return _vm.remove_from_incumbent(i)
+                                },
+                              },
+                            },
+                            [
+                              _vm._v(
+                                "\n                  Remove\n                "
+                              ),
+                            ]
+                          ),
+                          _vm._v(
+                            "\n                " +
+                              _vm._s(incumbent.full_name) +
+                              "\n                "
+                          ),
+                        ]
+                      )
+                    }),
+                  ],
+                  2
+                ),
+              ]),
+            ]
+          ),
         ]),
+        _vm._v(" "),
+        _vm._m(9),
       ]),
-    ]
-  )
+    ]),
+  ])
 }
 var staticRenderFns = [
   function () {
@@ -2592,9 +2585,10 @@ var render = function () {
         attrs: {
           id: "successindicatormodal",
           success_indicator_id: _vm.edit_success_indicator_id,
+          rating_scale_matrix_id: _vm.edit_rating_scale_matrix_id,
         },
         on: {
-          test: function ($event) {
+          submittedform: function ($event) {
             return _vm.getItems()
           },
         },
@@ -2796,7 +2790,9 @@ var render = function () {
                                             },
                                             on: {
                                               click: function ($event) {
-                                                return _vm.add_success_indicator()
+                                                return _vm.add_success_indicator(
+                                                  item
+                                                )
                                               },
                                             },
                                           },

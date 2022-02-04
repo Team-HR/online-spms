@@ -3,17 +3,163 @@
 namespace App\Http\Controllers;
 
 use App\Models\RatingScaleMatrix;
+use App\Models\RatingScaleMatrixIncumbent;
 use App\Models\RatingScaleMatrixSuccessIndicator;
 use Facade\FlareClient\Http\Response;
 use Illuminate\Http\Request;
+use PhpParser\Node\Stmt\Echo_;
 
 class RatingScaleMatrixController extends Controller
 {
-    public function test()
+    public $mfos = [];
+
+    public function getRatingScaleMatrix()
     {
-        return response()->json("HELLO-WORLD!");
+        $department_id = 13;
+        $period = 1;
+        $year = 2022;
+
+        $parent_mfos = RatingScaleMatrix::select('*')
+            ->where('parent_id', '=', NULL)
+            ->where('department_id', '=', $department_id)
+            ->where('period', '=', $period)
+            ->where('year', '=', $year)
+            ->get();
+
+        $data = [];
+        foreach ($parent_mfos as $mfo) {
+            $id = $mfo['id'];
+            $indent = 0;
+            $data[] = [
+                'id' => $id,
+                'indent' => $indent,
+                'parent_id' => $mfo['parent_id'],
+                'order_number' => $mfo['order_number'],
+                'function' => $mfo['function'],
+                'code' => $mfo['code'],
+                /* 
+                    Iterate function to get children mfos so and so...
+                */
+                'children' => $this->getChildren($indent, $id)
+            ];
+        }
+        $this->getChildData($data);
+
+        /* 
+            Sort mfos before getting success indicators
+            by code in ASC
+        */
+        usort($this->mfos, function ($item1, $item2) {
+            return $item1['code'] <=> $item2['code'];
+        });
+
+        $items = [];
+
+        foreach ($this->mfos as $rating_scale_matrix) {
+            $success_indicators = RatingScaleMatrixSuccessIndicator::where('rating_scale_matrix_id', '=', $rating_scale_matrix['id'])->get();
+            if (count($success_indicators) === 0) {
+                array_push($items, [
+                    "indent" => $rating_scale_matrix['indent'],
+                    "rating_scale_matrix_id" => $rating_scale_matrix['id'],
+                    "code" => $rating_scale_matrix['code'],
+                    "order_number_mfo" => $rating_scale_matrix['order_number'],
+                    "function" => $rating_scale_matrix['function']
+                ]);
+            }
+            foreach ($success_indicators as $key => $success_indicator) {
+                if ($key === 0) {
+                    $success_indicator['indent'] = $rating_scale_matrix['indent'];
+                    $success_indicator['code'] = $rating_scale_matrix['code'];
+                    $success_indicator['order_number_mfo'] = $rating_scale_matrix['order_number'];
+                    $success_indicator['function'] = $rating_scale_matrix['function'];
+                    $success_indicator['rowspan'] = count($success_indicators);
+                }
+                $success_indicator['order_number_si'] = $success_indicator['order_number'];
+                unset($success_indicator['order_number']);
+                array_push($items, $success_indicator);
+            }
+        }
+
+
+        return response()->json($items);
     }
 
+
+    /* 
+        Function for flattening the mfo list
+    */
+    public function getChildData($children)
+    {
+        foreach ($children as $child) {
+            $this->mfos[] = [
+                'id' => $child['id'],
+                'indent' => $child['indent'],
+                'parent_id' => $child['parent_id'],
+                'order_number' => $child['order_number'],
+                'function' => $child['function'],
+                'code' => $child['code'],
+            ];
+            $this->getChildData($child['children']);
+        }
+    }
+
+    /* 
+        The function being loooped to get children mfos
+    */
+    public function getChildren($indent, $id)
+    {
+        $indent += 1;
+        $data = [];
+        $mfos = RatingScaleMatrix::select('*')
+            ->where('parent_id', '=', $id)
+            ->orderBy('code')
+            ->get();
+        foreach ($mfos as $mfo) {
+            $id = $mfo['id'];
+            $data[] = [
+                'id' => $id,
+                'indent' => $indent,
+                'parent_id' => $mfo['parent_id'],
+                'order_number' => $mfo['order_number'],
+                'function' => $mfo['function'],
+                'code' => $mfo['code'],
+                'children' => $this->getChildren($indent, $id)
+            ];
+        }
+        return $data;
+    }
+
+    /* 
+        Deleting mfo or success indicator
+    */
+    public function delete(Request $req)
+    {
+        $success_indicator_id = $req->success_indicator_id;
+        $rating_scale_matrix_id = $req->rating_scale_matrix_id;
+        $data = null;
+        /* 
+            If success_indicator_id > 0
+            delete success indicator with id
+        */
+        if ($success_indicator_id > 0) {
+            $data = RatingScaleMatrixSuccessIndicator::where('id', $success_indicator_id)->delete();
+        }
+        /* 
+            Else if rating_scale_matrix_id > 0
+            delete only the mfo but check first
+            if mfo does not have any children
+        */ elseif ($rating_scale_matrix_id > 0) {
+            // check first if mfo have any children if none proceed deletion
+            $rsm = RatingScaleMatrix::where('parent_id', $rating_scale_matrix_id)->get();
+            if (count($rsm) > 0) return false;
+            $data = RatingScaleMatrix::where('id', $rating_scale_matrix_id)->delete();
+        }
+        return response()->json($data);
+    }
+
+    /* 
+        Getting success indicator data
+    */
     public function get_success_indicator(Request $request)
     {
         $id = $request->id;
@@ -30,7 +176,7 @@ class RatingScaleMatrixController extends Controller
     {
 
         $id = $request->id;
-
+        $rating_scale_matrix_id = $request->rating_scale_matrix_id;
         $success_indicator = $request->success_indicator;
         $quality = $request->quality;
         $quality = !empty($quality) ? $quality : null;
@@ -52,22 +198,52 @@ class RatingScaleMatrixController extends Controller
 
         $test = [
             'id' => $id,
+            'rating_scale_matrix_id' => $rating_scale_matrix_id,
             'success_indicator' => $success_indicator,
             'quality' => $quality,
             'efficiency' => $efficiency,
             'timeliness' => $timeliness
         ];
 
+        if ($id > 0) {
+            RatingScaleMatrixSuccessIndicator::where('id', $id)
+                ->update([
+                    'success_indicator' => $success_indicator,
+                    'quality' => $quality,
+                    'efficiency' => $efficiency,
+                    'timeliness' => $timeliness
+                ]);
 
-        $rsm_success_indicator = RatingScaleMatrixSuccessIndicator::where('id', $id)
-            ->update([
+            RatingScaleMatrixIncumbent::where('rating_scale_matrix_success_indicator_id', $id)->delete();
+            foreach ($incumbents as $employee) {
+                RatingScaleMatrixIncumbent::create([
+                    'rating_scale_matrix_success_indicator_id' => $id,
+                    'employee_id' => $employee['id'],
+                ]);
+            }
+        } else {
+            /* 
+                create new success indicator 
+                with rating_scale_matrix_id
+            */
+            $rsm_si = RatingScaleMatrixSuccessIndicator::create([
+                'rating_scale_matrix_id' => $rating_scale_matrix_id,
+                'order_number' => 0,
                 'success_indicator' => $success_indicator,
                 'quality' => $quality,
                 'efficiency' => $efficiency,
                 'timeliness' => $timeliness
             ]);
 
-        // $rsm_success_indicator->save();
+            $insert_id = $rsm_si->id;
+
+            foreach ($incumbents as $employee) {
+                RatingScaleMatrixIncumbent::create([
+                    'rating_scale_matrix_success_indicator_id' => $insert_id,
+                    'employee_id' => $employee['id'],
+                ]);
+            }
+        }
 
         return response()->json($test);
     }
@@ -77,14 +253,13 @@ class RatingScaleMatrixController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getRatingScaleMatrix(Request $request)
+    public function getRatingScaleMatrixOLD(Request $request)
     {
         $department_id = auth()->user()->department_id;
         $period = $request->period;
         $year = $request->year;
 
         $items = [];
-
         $rating_scale_matrix = RatingScaleMatrix::select('*')
             ->where('department_id', '=', $department_id)
             ->where('period', '=', $period)

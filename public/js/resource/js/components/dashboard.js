@@ -28,12 +28,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "dashboard",
   data: function data() {
     return {
-      user: this.$store.state.auth.user
+      user: this.$store.state.auth.user,
+      items: []
     };
+  },
+  mounted: function mounted() {
+    var _this = this;
+
+    axios.get("/api/test").then(function (_ref) {
+      var data = _ref.data;
+      _this.items = JSON.parse(JSON.stringify(data));
+    })["catch"](function (_ref2) {
+      var data = _ref2.response.data;
+      console.log(data);
+    });
   }
 });
 
@@ -130,10 +149,17 @@ var render = function () {
           _vm._m(0),
           _vm._v(" "),
           _c("div", { staticClass: "card-body" }, [
-            _c("p", { staticClass: "mb-0" }, [
-              _vm._v("You are logged in as "),
-              _c("b", [_vm._v(_vm._s(_vm.user.email))]),
-            ]),
+            _c(
+              "ul",
+              _vm._l(_vm.items, function (item, i) {
+                return _c("li", { key: i }, [
+                  _vm._v(
+                    "\n                  " + _vm._s(item) + "\n              "
+                  ),
+                ])
+              }),
+              0
+            ),
           ]),
         ]),
       ]),

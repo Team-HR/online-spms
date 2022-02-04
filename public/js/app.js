@@ -2276,7 +2276,7 @@ var Dashboard = function Dashboard() {
 };
 
 var RatingScaleMatrix = function RatingScaleMatrix() {
-  return __webpack_require__.e(/*! import() */ "resources_js_components_RatingScaleMatrixComponent_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../components/RatingScaleMatrixComponent.vue */ "./resources/js/components/RatingScaleMatrixComponent.vue"));
+  return __webpack_require__.e(/*! import() */ "resources_js_pages_rating_scale_matrix_Index_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../pages/rating_scale_matrix/Index.vue */ "./resources/js/pages/rating_scale_matrix/Index.vue"));
 };
 /* Authenticated Component */
 
@@ -43348,7 +43348,7 @@ var index = {
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resource/js/components/login":1,"resource/js/components/register":1,"resource/js/components/layouts/appnavbarcomponent":1,"resource/js/components/dashboard":1,"resources_js_components_RatingScaleMatrixComponent_vue":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resource/js/components/login":1,"resource/js/components/register":1,"resource/js/components/layouts/appnavbarcomponent":1,"resource/js/components/dashboard":1,"resources_js_pages_rating_scale_matrix_Index_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

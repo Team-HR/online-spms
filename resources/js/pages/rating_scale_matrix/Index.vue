@@ -1,15 +1,23 @@
 <template>
   <div class="container-fluid">
-    <SuccessIndicatorModal
-      id="successindicatormodal"
+    <SuccessIndicatorEditor
+      id="successIndicatorEditor"
       :success_indicator_id="edit_success_indicator_id"
-      :rating_scale_matrix_id = "edit_rating_scale_matrix_id"
-      @submittedform="getItems()"
+      :rating_scale_matrix_id="edit_rating_scale_matrix_id"
+      @submittedForm="getItems()"
     />
+    <DeleteConfirmation
+      id="deleteConfirmation"
+      :text="'the item'"
+      :success_indicator_id="edit_success_indicator_id"
+      :rating_scale_matrix_id="edit_rating_scale_matrix_id"
+      @deleteConfirmed="getItems()"
+    />
+
     <div
+      class="modal fade"
       data-bs-backdrop="static"
       data-bs-keyboard="false"
-      class="modal fade"
       id="editMfoModal"
       tabindex="-1"
     >
@@ -136,8 +144,10 @@
                             class="dropdown-item"
                             type="button"
                             data-bs-toggle="modal"
-                            data-bs-target="#successindicatormodal"
-                            @click="add_success_indicator(item)"
+                            data-bs-target="#successIndicatorEditor"
+                            @click="
+                              add_success_indicator(item.rating_scale_matrix_id)
+                            "
                           >
                             <i class="fa-solid fa-square-plus"></i>
                             Add Success Indicator
@@ -159,7 +169,13 @@
                         </li>
                         <li><hr class="dropdown-divider" /></li>
                         <li>
-                          <a class="dropdown-item text-danger" href="#">
+                          <a
+                            class="dropdown-item text-danger"
+                            href="#"
+                            data-bs-toggle="modal"
+                            data-bs-target="#deleteConfirmation"
+                            @click="deleteMfo(item.rating_scale_matrix_id)"
+                          >
                             <i class="fa-solid fa-trash-can"></i>
                             Delete MFO/PAP
                           </a>
@@ -173,7 +189,7 @@
                     :colspan="!item.success_indicator ? '9' : ''"
                     style="vertical-align: middle"
                   >
-                    <span :style="set_text_indent(item.order_number_mfo)">
+                    <span :style="set_text_indent(item.indent)">
                       {{ item.code + " " + item.function }}
                     </span>
                   </td>
@@ -231,7 +247,7 @@
                         class="btn btn-sm text-success"
                         title="Edit success indicator"
                         data-bs-toggle="modal"
-                        data-bs-target="#successindicatormodal"
+                        data-bs-target="#successIndicatorEditor"
                         @click="edit_success_indicator(item.id)"
                       >
                         <i class="fa-solid fa-pen-to-square text-success"></i>
@@ -241,7 +257,11 @@
                       <button
                         class="btn btn-sm text-danger"
                         title="Delete success indicator"
+                        data-bs-toggle="modal"
+                        data-bs-target="#deleteConfirmation"
+                        @click="deleteSuccessIndicator(item.id)"
                       >
+                        <!-- @click="add_success_indicator(item)" -->
                         <i class="fa-solid fa-eraser text-danger"></i>
                       </button>
                     </td>
@@ -277,116 +297,4 @@
   </div>
 </template>
 
-<script>
-import SuccessIndicatorModal from "./RSM/SuccessIndicatorModal.vue";
-export default {
-  name: "ratingscalematrix",
-  components: {
-    SuccessIndicatorModal,
-  },
-  data() {
-    return {
-      period: 1,
-      year: 2022,
-      new_mfo: {
-        category: "",
-        title: "",
-      },
-      items: [],
-      edit_mfo_item: {},
-      edit_rating_scale_matrix_id: 0,
-      edit_success_indicator_id: 0,
-    };
-  },
-  methods: {
-    add_success_indicator(item) {
-      // console.log(item.rating_scale_matrix_id);
-      this.edit_rating_scale_matrix_id = item.rating_scale_matrix_id
-      this.edit_success_indicator_id = 0
-    },
-    edit_success_indicator(id) {
-      this.edit_rating_scale_matrix_id = 0
-      this.edit_success_indicator_id = id;
-    },
-    edit_mfo(item) {
-      var item = JSON.parse(JSON.stringify(item));
-      this.edit_mfo_item = {
-        id: item.rating_scale_matrix_id,
-        code: item.code,
-        function: item.function,
-      };
-      console.log(this.edit_mfo_item);
-    },
-    async save_edit_mfo() {
-      await axios
-        .post("/api/rsm/save_edit_mfo", {
-          id: this.edit_mfo_item.id,
-          code: this.edit_mfo_item.code,
-          function: this.edit_mfo_item.function,
-        })
-        .then(({ data }) => {
-          console.log("action submit form!: ", data);
-          var myModalEl = document.getElementById("editMfoModal");
-          var modal = bootstrap.Modal.getInstance(myModalEl); // Returns a Bootstrap modal instance
-          modal.hide();
-          this.getItems().then(() => {});
-        })
-        .catch(({ response: { data } }) => {
-          // alert(response);
-          // console.log(response);
-        });
-    },
-    async submit_new_mfo() {
-      await axios
-        .post("/api/rsm/add_new_mfo", {
-          new_mfo: this.new_mfo,
-          period: this.period,
-          year: this.year,
-        })
-        .then(({ data }) => {
-          this.getItems().then(() => {
-            this.new_mfo.category = "";
-            this.new_mfo.title = "";
-          });
-        })
-        .catch(({ response: { data } }) => {
-          alert(data.message);
-          console.log(data);
-        });
-    },
-    async getItems() {
-      await axios
-        .get("/api/rsm", {
-          params: {
-            period: this.period,
-            year: this.year,
-          },
-        })
-        .then(({ data }) => {
-          this.items = JSON.parse(JSON.stringify(data));
-        })
-        .catch(({ response: { data } }) => {
-          alert(data.message);
-          // console.log(data);
-        });
-    },
-
-    set_text_indent(order_number_mfo) {
-      var tabs = "";
-      if (!order_number_mfo) return tabs;
-      tabs = "margin-left:" + 15 * order_number_mfo + "px;";
-      return tabs;
-    },
-  },
-  mounted() {
-    this.getItems();
-
-    // successindicatormodal
-
-    // var myModalEl = document.getElementById("successindicatormodal");
-    // var modal = bootstrap.Modal.getOrCreateInstance(myModalEl); // Returns a Bootstrap modal instance
-    // modal.show();
-    
-  },
-};
-</script>
+<script src="./Index.js"></script>
