@@ -13,6 +13,19 @@ class RatingScaleMatrixController extends Controller
 {
     public $mfos = [];
 
+    public function add_subfunction(Request $request)
+    {
+        $rsm = RatingScaleMatrix::create([
+            'parent_id' => $request->parent_id,
+            'order_number' => 0,
+            'code' => $request->code,
+            'function' => $request->function,
+            'period' => $request->period,
+            'year' => $request->year,
+            'department_id' => $request->department_id
+        ]);
+        return response()->json($rsm);
+    }
     public function getRatingScaleMatrix()
     {
         $department_id = 13;
@@ -35,8 +48,11 @@ class RatingScaleMatrixController extends Controller
                 'indent' => $indent,
                 'parent_id' => $mfo['parent_id'],
                 'order_number' => $mfo['order_number'],
-                'function' => $mfo['function'],
                 'code' => $mfo['code'],
+                'function' => $mfo['function'],
+                'period' => $mfo['period'],
+                'year' => $mfo['year'],
+                'department_id' => $mfo['department_id'],
                 /* 
                     Iterate function to get children mfos so and so...
                 */
@@ -63,7 +79,10 @@ class RatingScaleMatrixController extends Controller
                     "rating_scale_matrix_id" => $rating_scale_matrix['id'],
                     "code" => $rating_scale_matrix['code'],
                     "order_number_mfo" => $rating_scale_matrix['order_number'],
-                    "function" => $rating_scale_matrix['function']
+                    "function" => $rating_scale_matrix['function'],
+                    'period' => $rating_scale_matrix['period'],
+                    'year' => $rating_scale_matrix['year'],
+                    'department_id' => $rating_scale_matrix['department_id'],
                 ]);
             }
             foreach ($success_indicators as $key => $success_indicator) {
@@ -73,6 +92,9 @@ class RatingScaleMatrixController extends Controller
                     $success_indicator['order_number_mfo'] = $rating_scale_matrix['order_number'];
                     $success_indicator['function'] = $rating_scale_matrix['function'];
                     $success_indicator['rowspan'] = count($success_indicators);
+                    $success_indicator['period'] = $rating_scale_matrix['period'];
+                    $success_indicator['year'] = $rating_scale_matrix['year'];
+                    $success_indicator['department_id'] = $rating_scale_matrix['department_id'];
                 }
                 $success_indicator['order_number_si'] = $success_indicator['order_number'];
                 unset($success_indicator['order_number']);
@@ -98,6 +120,9 @@ class RatingScaleMatrixController extends Controller
                 'order_number' => $child['order_number'],
                 'function' => $child['function'],
                 'code' => $child['code'],
+                'period' => $child['period'],
+                'year' => $child['year'],
+                'department_id' => $child['department_id'],
             ];
             $this->getChildData($child['children']);
         }
@@ -123,6 +148,9 @@ class RatingScaleMatrixController extends Controller
                 'order_number' => $mfo['order_number'],
                 'function' => $mfo['function'],
                 'code' => $mfo['code'],
+                'period' => $mfo['period'],
+                'year' => $mfo['year'],
+                'department_id' => $mfo['department_id'],
                 'children' => $this->getChildren($indent, $id)
             ];
         }

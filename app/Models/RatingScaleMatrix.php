@@ -18,7 +18,7 @@ class RatingScaleMatrix extends Model
         'parent_id',
         'department_id',
         'code',
-        'order',
+        'order_number',
         'function',
         'period',
         'year'
