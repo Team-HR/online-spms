@@ -43,9 +43,8 @@ class RatingScaleMatrixController extends Controller
                 // search parent if disabled
                 foreach ($data as $mfo) {
                     if ($mfo['id'] === $rsm['parent_id']) {
-                        $disabled = $mfo['disabled']?true:false;
+                        $disabled = $mfo['disabled'] ? true : false;
                     }
-
                 }
 
                 if ($rsm['rating_scale_matrix_id'] == $mfoIdToTransfer || $disabled) {
@@ -54,6 +53,7 @@ class RatingScaleMatrixController extends Controller
 
                 $rsm = [
                     'id' => $rsm['rating_scale_matrix_id'],
+                    'isToBeTransfered' => $rsm['rating_scale_matrix_id'] == $mfoIdToTransfer ? true : false,
                     'parent_id' => $rsm['parent_id'],
                     'disabled' => $disabled,
                     'code' => $rsm['code'],
@@ -88,6 +88,26 @@ class RatingScaleMatrixController extends Controller
 
         return response()->json($data);
     }
+
+    public function changeMfoParent(Request $request)
+    {
+        $mfoIdToTransfer = $request->mfoIdToTransfer;
+        $newParentId = $request->newParentId;
+        $rsm = RatingScaleMatrix::find($mfoIdToTransfer);
+        $rsm->parent_id = $newParentId;
+        $rsm->save();
+        return response()->json($rsm);
+    }
+    
+    public function removeMfoParent(Request $request)
+    {
+        $mfoIdToTransfer = $request->mfoIdToTransfer;
+        $rsm = RatingScaleMatrix::find($mfoIdToTransfer);
+        $rsm->parent_id = null;
+        $rsm->save();
+        return response()->json($rsm);
+    }
+    
 
     public function getRatingScaleMatrixPeriods()
     {

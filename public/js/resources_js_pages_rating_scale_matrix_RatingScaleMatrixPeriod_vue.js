@@ -322,18 +322,22 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "MfoParentEditor",
-  props: {
-    mfo: Object,
-    mfos: Array,
-    year: String,
-    period: String
-  },
   data: function data() {
     return {
       el: null,
-      mfoParents: []
+      mfo: {},
+      mfoParents: [],
+      mfoIdToTransfer: 0,
+      year: 0,
+      period: 0
     };
   },
   watch: {},
@@ -341,28 +345,57 @@ __webpack_require__.r(__webpack_exports__);
     getMfoParents: function getMfoParents() {
       var _this = this;
 
-      // this.mfoParents = []
-      // this.mfos.forEach(mfo => {
-      //   if (mfo.code) {
-      //     this.mfoParents.push(mfo) 
-      //   }
-      // });
-      // console.log(this.mfoParents);
-      axios.post('/api/rsm/getMfoParents', {
-        mfoIdToTransfer: this.mfo.rating_scale_matrix_id,
+      axios.post("/api/rsm/getMfoParents", {
+        mfoIdToTransfer: this.mfoIdToTransfer,
         year: this.year,
         period: this.period
       }).then(function (_ref) {
         var data = _ref.data;
-        console.log('getMfoParents:', data);
+        console.log("getMfoParents:", data);
         _this.mfoParents = data;
+      })["catch"](function (err) {
+        console.error(err);
+      });
+    },
+    clearData: function clearData() {
+      this.mfoParents = [];
+    },
+    moveMfoHere: function moveMfoHere(newMfoParentId) {
+      var _this2 = this;
+
+      axios.post("/api/rsm/changeMfoParent", {
+        mfoIdToTransfer: this.mfoIdToTransfer,
+        newParentId: newMfoParentId
+      }).then(function (_ref2) {
+        var data = _ref2.data;
+
+        // console.log(data)
+        _this2.getMfoParents();
+
+        _this2.$emit("transferedMfo");
+      })["catch"](function (err) {
+        console.error(err);
+      });
+    },
+    removeMfoParent: function removeMfoParent() {
+      var _this3 = this;
+
+      axios.post("/api/rsm/removeMfoParent", {
+        mfoIdToTransfer: this.mfoIdToTransfer
+      }).then(function (_ref3) {
+        var data = _ref3.data;
+
+        // console.log(data)
+        _this3.getMfoParents();
+
+        _this3.$emit("transferedMfo");
       })["catch"](function (err) {
         console.error(err);
       });
     }
   },
   mounted: function mounted() {
-    var _this2 = this;
+    var _this4 = this;
 
     /* 
         get this child modal element id
@@ -372,17 +405,23 @@ __webpack_require__.r(__webpack_exports__);
         everytime the modal shows the data are fetched
     */
 
-    this.el.addEventListener("shown.bs.modal", function (event) {
-      _this2.getMfoParents(); // console.log(event);
+    this.el.addEventListener("show.bs.modal", function (event) {
+      var button = event.relatedTarget;
+      var mfos = button.getAttribute("data-bs-mfos");
+      mfos = JSON.parse(mfos);
+      _this4.mfoIdToTransfer = mfos.mfo.rating_scale_matrix_id;
+      _this4.mfo = mfos.mfo;
+      _this4.year = mfos.year;
+      _this4.period = mfos.period;
 
+      _this4.getMfoParents();
     });
     /* 
         everytime the modal hides the data are cleared!
     */
 
     this.el.addEventListener("hidden.bs.modal", function (event) {
-      _this2.code = "";
-      _this2.mfoTitle = "";
+      _this4.clearData();
     });
   }
 });
@@ -439,11 +478,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   methods: {
-    editMfoParent: function editMfoParent(edit_mfo_item) {
-      this.edit_mfo_item = edit_mfo_item; // var myModalEl = document.getElementById("mfoParentEditor");
-      // var modal = bootstrap.Modal.getOrCreateInstance(myModalEl); // Returns a Bootstrap modal instance
-      // modal.show();
-    },
     addSubFunction: function addSubFunction(edit_mfo_item) {
       this.edit_mfo_item = edit_mfo_item;
     },
@@ -2068,15 +2102,9 @@ var render = function () {
       }),
       _vm._v(" "),
       _c("MfoParentEditor", {
-        attrs: {
-          id: "mfoParentEditor",
-          mfos: _vm.items,
-          mfo: _vm.edit_mfo_item,
-          year: _vm.year,
-          period: _vm.period,
-        },
+        attrs: { id: "mfoParentEditor" },
         on: {
-          addedSubFunction: function ($event) {
+          transferedMfo: function ($event) {
             return _vm.getItems()
           },
         },
@@ -2203,13 +2231,15 @@ var render = function () {
             _c("div", { staticClass: "card-header text-center" }, [
               _c("h3", [_vm._v("Rating Scale Matrix")]),
               _vm._v(" "),
-              _c("strong", [
+              _c("h3", { staticClass: "text-red" }, [
                 _vm._v(
-                  _vm._s(
-                    (_vm.period == 1 ? "January-June" : "July-December") +
-                      ", " +
-                      _vm.year
-                  )
+                  "\n            " +
+                    _vm._s(
+                      (_vm.period == 1 ? "January-June" : "July-December") +
+                        ", " +
+                        _vm.year
+                    ) +
+                    "\n          "
                 ),
               ]),
             ]),
@@ -2318,11 +2348,11 @@ var render = function () {
                                               "data-bs-toggle": "modal",
                                               "data-bs-target":
                                                 "#mfoParentEditor",
-                                            },
-                                            on: {
-                                              click: function ($event) {
-                                                return _vm.editMfoParent(item)
-                                              },
+                                              "data-bs-mfos": JSON.stringify({
+                                                mfo: item,
+                                                year: _vm.year,
+                                                period: _vm.period,
+                                              }),
                                             },
                                           },
                                           [
@@ -2331,7 +2361,7 @@ var render = function () {
                                                 "fa-solid fa-layer-group",
                                             }),
                                             _vm._v(
-                                              "\n                          Change MFO Parent\n                        "
+                                              "\n                          Move MFO/PAP\n                        "
                                             ),
                                           ]
                                         ),
@@ -3127,34 +3157,65 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    {
-      staticClass: "modal fade",
-      attrs: {
-        "data-bs-backdrop": "static",
-        "data-bs-keyboard": "false",
-        tabindex: "-1",
-      },
-    },
-    [
-      _c("div", { staticClass: "modal-dialog modal-lg" }, [
-        _c("div", { staticClass: "modal-content" }, [
-          _vm._m(0),
+  return _c("div", { staticClass: "modal fade", attrs: { tabindex: "-1" } }, [
+    _c("div", { staticClass: "modal-dialog modal-lg" }, [
+      _c("div", { staticClass: "modal-content" }, [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("div", { staticClass: "modal-body" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-primary me-3",
+              on: {
+                click: function ($event) {
+                  return _vm.removeMfoParent()
+                },
+              },
+            },
+            [_vm._v("\n          Set as a Main MFO/PAP\n        ")]
+          ),
           _vm._v(" "),
-          _c("div", { staticClass: "modal-body" }, [
-            _c("table", { staticClass: "table" }, [
-              _vm._m(1),
-              _vm._v(" "),
-              _c(
-                "tbody",
-                _vm._l(_vm.mfoParents, function (mfo, m) {
-                  return _c("tr", { key: m }, [
+          _c("span", [
+            _c("strong", [
+              _vm._v(_vm._s(_vm.mfo.code) + " " + _vm._s(_vm.mfo.function)),
+            ]),
+          ]),
+          _vm._v(" "),
+          _c("table", { staticClass: "table" }, [
+            _vm._m(1),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.mfoParents, function (mfo, m) {
+                return _c(
+                  "tr",
+                  {
+                    key: m,
+                    class: mfo.isToBeTransfered ? "bg-primary text-white" : "",
+                  },
+                  [
                     _c("td", [
                       !mfo.disabled
-                        ? _c("button", { staticClass: "btn btn-info " }, [
-                            _vm._v("Move here"),
-                          ])
+                        ? _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-sm btn-primary text-white",
+                              on: {
+                                click: function ($event) {
+                                  return _vm.moveMfoHere(mfo.id)
+                                },
+                              },
+                            },
+                            [
+                              _vm._v(
+                                "\n                  Move here\n                  "
+                              ),
+                              _c("i", {
+                                staticClass: "fa-solid fa-arrow-turn-down",
+                              }),
+                            ]
+                          )
                         : _vm._e(),
                     ]),
                     _vm._v(" "),
@@ -3165,18 +3226,18 @@ var render = function () {
                         [_vm._v(_vm._s(mfo.code) + " " + _vm._s(mfo.function))]
                       ),
                     ]),
-                  ])
-                }),
-                0
-              ),
-            ]),
+                  ]
+                )
+              }),
+              0
+            ),
           ]),
-          _vm._v(" "),
-          _vm._m(2),
         ]),
+        _vm._v(" "),
+        _vm._m(2),
       ]),
-    ]
-  )
+    ]),
+  ])
 }
 var staticRenderFns = [
   function () {
@@ -3186,8 +3247,7 @@ var staticRenderFns = [
     return _c("div", { staticClass: "modal-header" }, [
       _c("h5", { staticClass: "modal-title" }, [
         _c("i", { staticClass: "fas fa-layer-group" }),
-        _vm._v(" "),
-        _vm._v("\n          Change MFO/PAP Parent\n        "),
+        _vm._v("\n          Move MFO/PAP\n        "),
       ]),
       _vm._v(" "),
       _c("button", {
@@ -3217,16 +3277,7 @@ var staticRenderFns = [
           staticClass: "btn btn-secondary",
           attrs: { type: "button", "data-bs-dismiss": "modal" },
         },
-        [_vm._v("\n          Cancel\n        ")]
-      ),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-primary",
-          attrs: { type: "submit", "data-bs-dismiss": "modal" },
-        },
-        [_vm._v("\n          Save changes\n        ")]
+        [_vm._v("\n          Close\n        ")]
       ),
     ])
   },

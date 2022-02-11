@@ -29,6 +29,8 @@ Route::middleware('auth:sanctum')->get('/rsm', [RatingScaleMatrixController::cla
 Route::middleware('auth:sanctum')->get('/rsm/get_success_indicator', [RatingScaleMatrixController::class, 'get_success_indicator']);
 Route::middleware('auth:sanctum')->get('/rsm/getRatingScaleMatrixPeriods', [RatingScaleMatrixController::class, 'getRatingScaleMatrixPeriods']);
 Route::middleware('auth:sanctum')->post('/rsm/getMfoParents', [RatingScaleMatrixController::class, 'getMfoParents']);
+Route::middleware('auth:sanctum')->post('/rsm/changeMfoParent', [RatingScaleMatrixController::class, 'changeMfoParent']);
+Route::middleware('auth:sanctum')->post('/rsm/removeMfoParent', [RatingScaleMatrixController::class, 'removeMfoParent']);
 Route::middleware('auth:sanctum')->post('/rsm/save_success_indicator', [RatingScaleMatrixController::class, 'save_success_indicator']);
 Route::middleware('auth:sanctum')->post('/rsm/delete', [RatingScaleMatrixController::class, 'delete']);
 Route::middleware('auth:sanctum')->post('/rsm/add_new_mfo', [RatingScaleMatrixController::class, 'add_new_mfo']);

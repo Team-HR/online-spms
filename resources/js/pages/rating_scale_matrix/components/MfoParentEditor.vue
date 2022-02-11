@@ -1,19 +1,11 @@
 <template>
-  <div
-    class="modal fade"
-    data-bs-backdrop="static"
-    data-bs-keyboard="false"
-    tabindex="-1"
-  >
+  <div class="modal fade" tabindex="-1">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">
             <i class="fas fa-layer-group"></i>
-            <!-- {{ mfo.code }}
-            {{ mfo.function }} -->
-            <!-- <i class="text-success">(Change Parent)</i> -->
-            Change MFO/PAP Parent
+            Move MFO/PAP
           </h5>
           <button
             type="button"
@@ -23,6 +15,10 @@
           ></button>
         </div>
         <div class="modal-body">
+          <button class="btn btn-primary me-3" @click="removeMfoParent()">
+            Set as a Main MFO/PAP
+          </button>
+          <span><strong>{{mfo.code}} {{mfo.function}}</strong></span>
           <table class="table">
             <thead>
               <tr>
@@ -31,12 +27,25 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(mfo, m) in mfoParents" :key="m">
+              <tr
+                v-for="(mfo, m) in mfoParents"
+                :key="m"
+                :class="mfo.isToBeTransfered ? 'bg-primary text-white' : ''"
+              >
                 <td>
-                  <button v-if="!mfo.disabled" class="btn btn-info ">Move here</button>
+                  <button
+                    v-if="!mfo.disabled"
+                    class="btn btn-sm btn-primary text-white"
+                    @click="moveMfoHere(mfo.id)"
+                  >
+                    Move here
+                    <i class="fa-solid fa-arrow-turn-down"></i>
+                  </button>
                 </td>
                 <td>
-                  <span :style="'margin-left:'+(mfo.indent*15)+'px;'">{{ mfo.code }} {{mfo.function}}</span>
+                  <span :style="'margin-left:' + mfo.indent * 15 + 'px;'"
+                    >{{ mfo.code }} {{ mfo.function }}</span
+                  >
                 </td>
               </tr>
             </tbody>
@@ -48,10 +57,7 @@
             class="btn btn-secondary"
             data-bs-dismiss="modal"
           >
-            Cancel
-          </button>
-          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal">
-            Save changes
+            Close
           </button>
         </div>
       </div>
@@ -62,41 +68,64 @@
 <script>
 export default {
   name: "MfoParentEditor",
-  props: {
-    mfo: Object,
-    mfos: Array,
-    year: String,
-    period: String,
-  },
   data() {
     return {
       el: null,
+      mfo: {},
       mfoParents: [],
+      mfoIdToTransfer: 0,
+      year: 0,
+      period: 0,
     };
   },
   watch: {},
   methods: {
     getMfoParents() {
-      // this.mfoParents = []
-      // this.mfos.forEach(mfo => {
-      //   if (mfo.code) {
-      //     this.mfoParents.push(mfo) 
-      //   }
-      // });
-      // console.log(this.mfoParents);
-      axios.post('/api/rsm/getMfoParents',{
-        mfoIdToTransfer: this.mfo.rating_scale_matrix_id,
-        year: this.year,
-        period: this.period
-      })
-      .then(({data}) => {
-        console.log('getMfoParents:',data)
-        this.mfoParents = data
-      })
-      .catch(err => {
-        console.error(err); 
-      })
-
+      axios
+        .post("/api/rsm/getMfoParents", {
+          mfoIdToTransfer: this.mfoIdToTransfer,
+          year: this.year,
+          period: this.period,
+        })
+        .then(({ data }) => {
+          console.log("getMfoParents:", data);
+          this.mfoParents = data;
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+    clearData() {
+      this.mfoParents = [];
+    },
+    moveMfoHere(newMfoParentId) {
+      axios
+        .post("/api/rsm/changeMfoParent", {
+          mfoIdToTransfer: this.mfoIdToTransfer,
+          newParentId: newMfoParentId,
+        })
+        .then(({ data }) => {
+          // console.log(data)
+          this.getMfoParents();
+          this.$emit("transferedMfo");
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
+    removeMfoParent() {
+      axios
+        .post("/api/rsm/removeMfoParent", {
+          mfoIdToTransfer: this.mfoIdToTransfer
+        })
+        .then(({ data }) => {
+          // console.log(data)
+          this.getMfoParents();
+          this.$emit("transferedMfo");
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     },
   },
   mounted() {
@@ -108,17 +137,22 @@ export default {
     /*
         everytime the modal shows the data are fetched
     */
-    this.el.addEventListener("shown.bs.modal", (event) => {
+    this.el.addEventListener("show.bs.modal", (event) => {
+      var button = event.relatedTarget;
+      var mfos = button.getAttribute("data-bs-mfos");
+      mfos = JSON.parse(mfos);
+      this.mfoIdToTransfer = mfos.mfo.rating_scale_matrix_id;
+      this.mfo = mfos.mfo;
+      this.year = mfos.year;
+      this.period = mfos.period;
       this.getMfoParents();
-      // console.log(event);
     });
 
     /* 
         everytime the modal hides the data are cleared!
     */
     this.el.addEventListener("hidden.bs.modal", (event) => {
-      this.code = "";
-      this.mfoTitle = "";
+      this.clearData();
     });
   },
 };

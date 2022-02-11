@@ -18,14 +18,7 @@
       :mfo="edit_mfo_item"
       @addedSubFunction="getItems()"
     />
-    <MfoParentEditor
-      id="mfoParentEditor"
-      :mfos="items"
-      :mfo="edit_mfo_item"
-      :year="year"
-      :period="period"
-      @addedSubFunction="getItems()"
-    />
+    <MfoParentEditor id="mfoParentEditor" @transferedMfo="getItems()" />
     <!-- 
     Edit MFO start
    -->
@@ -101,9 +94,11 @@
         <div class="card shadow-sm">
           <div class="card-header text-center">
             <h3>Rating Scale Matrix</h3>
-            <strong>{{
-              (period == 1 ? "January-June" : "July-December") + ", " + year
-            }}</strong>
+            <h3 class="text-red">
+              {{
+                (period == 1 ? "January-June" : "July-December") + ", " + year
+              }}
+            </h3>
           </div>
           <div class="card-body">
             <table class="table table-bordered">
@@ -180,10 +175,17 @@
                             type="button"
                             data-bs-toggle="modal"
                             data-bs-target="#mfoParentEditor"
-                            @click="editMfoParent(item)"
+                            :data-bs-mfos="
+                              JSON.stringify({
+                                mfo: item,
+                                year: year,
+                                period: period,
+                              })
+                            "
                           >
+                            <!-- @click="editMfoParent(item)" -->
                             <i class="fa-solid fa-layer-group"></i>
-                            Change MFO Parent
+                            Move MFO/PAP
                           </button>
                         </li>
                         <li><hr class="dropdown-divider" /></li>

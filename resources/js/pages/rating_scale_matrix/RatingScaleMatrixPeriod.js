@@ -25,12 +25,6 @@ export default {
         };
     },
     methods: {
-        editMfoParent(edit_mfo_item) {
-            this.edit_mfo_item = edit_mfo_item
-            // var myModalEl = document.getElementById("mfoParentEditor");
-            // var modal = bootstrap.Modal.getOrCreateInstance(myModalEl); // Returns a Bootstrap modal instance
-            // modal.show();
-        },
         addSubFunction(edit_mfo_item) {
             this.edit_mfo_item = edit_mfo_item
         },
