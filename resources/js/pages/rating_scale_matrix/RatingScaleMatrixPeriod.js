@@ -1,17 +1,19 @@
 import SuccessIndicatorEditor from "./components/SuccessIndicatorEditor.vue"
 import DeleteConfirmation from "./components/DeleteConfirmation.vue"
 import MfoEditor from "./components/MfoEditor.vue"
+import MfoParentEditor from "./components/MfoParentEditor.vue"
 export default {
     name: "RatingScaleMatrix",
     components: {
         SuccessIndicatorEditor,
         DeleteConfirmation,
-        MfoEditor
+        MfoEditor,
+        MfoParentEditor
     },
     data() {
         return {
-            period: 1,
-            year: 2022,
+            period: this.$route.params.period,
+            year: this.$route.params.year,
             new_mfo: {
                 category: "",
                 title: "",
@@ -20,18 +22,23 @@ export default {
             edit_mfo_item: {},
             edit_rating_scale_matrix_id: 0,
             edit_success_indicator_id: 0,
-        }; 
+        };
     },
     methods: {
-        addSubFunction(edit_mfo_item){
-            // console.log(rating_scale_matrix_id);
+        editMfoParent(edit_mfo_item) {
+            this.edit_mfo_item = edit_mfo_item
+            // var myModalEl = document.getElementById("mfoParentEditor");
+            // var modal = bootstrap.Modal.getOrCreateInstance(myModalEl); // Returns a Bootstrap modal instance
+            // modal.show();
+        },
+        addSubFunction(edit_mfo_item) {
             this.edit_mfo_item = edit_mfo_item
         },
-        deleteMfo(rating_scale_matrix_id){
+        deleteMfo(rating_scale_matrix_id) {
             this.edit_rating_scale_matrix_id = rating_scale_matrix_id
             this.edit_success_indicator_id = 0
         },
-        deleteSuccessIndicator(id){
+        deleteSuccessIndicator(id) {
             this.edit_rating_scale_matrix_id = 0
             this.edit_success_indicator_id = id
         },
@@ -117,12 +124,7 @@ export default {
     },
     mounted() {
         this.getItems()
-
-        // successindicatormodal
-
-        // var myModalEl = document.getElementById("successindicatormodal");
-        // var modal = bootstrap.Modal.getOrCreateInstance(myModalEl); // Returns a Bootstrap modal instance
-        // modal.show();
-
+        // console.log(this.year);
+        // console.log(this.period);
     },
 };

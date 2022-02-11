@@ -112,6 +112,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "dashboard-layout",
@@ -1079,6 +1085,25 @@ var render = function () {
                         [
                           _c("i", { staticClass: "fa-solid fa-house" }),
                           _vm._v("\n              Home"),
+                        ]
+                      ),
+                    ],
+                    1
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "li",
+                    { staticClass: "nav-item" },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          staticClass: "nav-link",
+                          attrs: { to: { name: "rsm" } },
+                        },
+                        [
+                          _c("i", { staticClass: "fas fa-tachometer-alt" }),
+                          _vm._v("\n              Performance Rating"),
                         ]
                       ),
                     ],

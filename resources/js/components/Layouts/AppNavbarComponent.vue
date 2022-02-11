@@ -34,6 +34,12 @@
             </li>
             <li class="nav-item">
               <router-link :to="{ name: 'rsm' }" class="nav-link">
+                <i class="fas fa-tachometer-alt"></i>
+                Performance Rating</router-link
+              >
+            </li>
+            <li class="nav-item">
+              <router-link :to="{ name: 'rsm' }" class="nav-link">
                 <i class="fa-solid fa-scale-balanced"></i>
                 Rating Scale Matrix</router-link
               >

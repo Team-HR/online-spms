@@ -175,7 +175,7 @@ export default {
         */
         async get_employees_list() {
             await axios
-                .post("api/employees", {
+                .post("/api/employees", {
                     name: this.employeeSearch,
                     excepts: this.incumbents,
                 })

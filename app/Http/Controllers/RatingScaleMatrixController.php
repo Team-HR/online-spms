@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\RatingScaleMatrix;
 use App\Models\RatingScaleMatrixIncumbent;
 use App\Models\RatingScaleMatrixSuccessIndicator;
+use App\Models\RatingScaleMatrixPeriod;
 use Facade\FlareClient\Http\Response;
 use Illuminate\Http\Request;
 use PhpParser\Node\Stmt\Echo_;
@@ -12,6 +13,104 @@ use PhpParser\Node\Stmt\Echo_;
 class RatingScaleMatrixController extends Controller
 {
     public $mfos = [];
+
+    public function test()
+    {
+        $data = [];
+        $ratingScaleMatrix = RatingScaleMatrix::select('id', 'parent_id', 'code', 'function')
+            ->where('parent_id', '=', null)
+            ->orderBy('code')
+            ->get();
+        $data = $ratingScaleMatrix;
+        return response()->json($data);
+    }
+
+    public function getMfoParents(Request $request)
+    {
+        $data = [];
+        $mfoIdToTransfer = $request->mfoIdToTransfer;
+        // $year = $request->year;
+        // $period = $request->period;
+        // $mfos = RatingScaleMatrix::select('id','function','code')->where('period','=',$period)->where('year','=',$year)->where('id','!=',$mfoIdToTransfer)->orderByDesc('function')->get();
+        // $data = $mfos;
+
+        $ratingScaleMatrices = $this->getRatingScaleMatrix($request)->original;
+
+        foreach ($ratingScaleMatrices as $rsm) {
+            if (isset($rsm['code'])) {
+
+                $disabled = false;
+                // search parent if disabled
+                foreach ($data as $mfo) {
+                    if ($mfo['id'] === $rsm['parent_id']) {
+                        $disabled = $mfo['disabled']?true:false;
+                    }
+
+                }
+
+                if ($rsm['rating_scale_matrix_id'] == $mfoIdToTransfer || $disabled) {
+                    $disabled = true;
+                }
+
+                $rsm = [
+                    'id' => $rsm['rating_scale_matrix_id'],
+                    'parent_id' => $rsm['parent_id'],
+                    'disabled' => $disabled,
+                    'code' => $rsm['code'],
+                    'indent' => $rsm['indent'],
+                    'function' => $rsm['function'],
+                    'department_id' => $rsm['department_id']
+                ];
+
+                array_push($data, $rsm);
+            }
+        }
+
+
+        /* 
+            find parent and also disable it
+        */
+        // get parent_id of the mfoToTransfer
+        $parent_id = 0;
+        foreach ($data as $mfo) {
+            if ($mfo['id'] == $mfoIdToTransfer) {
+                $parent_id = $mfo['parent_id'];
+                break;
+            }
+        }
+        //disable the prarent mfo
+        foreach ($data as $key => $mfo) {
+            if ($mfo['id'] == $parent_id) {
+                $data[$key]['disabled'] = true;
+                break;
+            }
+        }
+
+        return response()->json($data);
+    }
+
+    public function getRatingScaleMatrixPeriods()
+    {
+        $periods = RatingScaleMatrixPeriod::select('*')->orderByDesc('year')->get();
+        $data = [];
+        foreach ($periods as $period) {
+            if (!in_array($period['year'], array_column($data, 'year'))) {
+                $data[] = [
+                    'year' => $period['year'],
+                    'first' => $this->getPeriod($period['year'], 1),
+                    'second' => $this->getPeriod($period['year'], 2)
+                ];
+            }
+        }
+
+        return response()->json($data);
+    }
+
+    private function getPeriod($year, $period)
+    {
+        $period = RatingScaleMatrixPeriod::select('*')->where('year', '=', $year)->where('period', '=', $period)->first();
+        return $period ? $period : [];
+    }
 
     public function add_subfunction(Request $request)
     {
@@ -26,11 +125,11 @@ class RatingScaleMatrixController extends Controller
         ]);
         return response()->json($rsm);
     }
-    public function getRatingScaleMatrix()
+    public function getRatingScaleMatrix(Request $request)
     {
-        $department_id = 13;
-        $period = 1;
-        $year = 2022;
+        $department_id = auth()->user()->department_id;
+        $period = $request->period;
+        $year = $request->year;
 
         $parent_mfos = RatingScaleMatrix::select('*')
             ->where('parent_id', '=', NULL)
@@ -76,6 +175,7 @@ class RatingScaleMatrixController extends Controller
             if (count($success_indicators) === 0) {
                 array_push($items, [
                     "indent" => $rating_scale_matrix['indent'],
+                    "parent_id" => $rating_scale_matrix['parent_id'],
                     "rating_scale_matrix_id" => $rating_scale_matrix['id'],
                     "code" => $rating_scale_matrix['code'],
                     "order_number_mfo" => $rating_scale_matrix['order_number'],
@@ -89,6 +189,7 @@ class RatingScaleMatrixController extends Controller
                 if ($key === 0) {
                     $success_indicator['indent'] = $rating_scale_matrix['indent'];
                     $success_indicator['code'] = $rating_scale_matrix['code'];
+                    $success_indicator['parent_id'] = $rating_scale_matrix['parent_id'];
                     $success_indicator['order_number_mfo'] = $rating_scale_matrix['order_number'];
                     $success_indicator['function'] = $rating_scale_matrix['function'];
                     $success_indicator['rowspan'] = count($success_indicators);

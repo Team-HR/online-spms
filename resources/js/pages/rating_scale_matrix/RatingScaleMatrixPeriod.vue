@@ -18,6 +18,14 @@
       :mfo="edit_mfo_item"
       @addedSubFunction="getItems()"
     />
+    <MfoParentEditor
+      id="mfoParentEditor"
+      :mfos="items"
+      :mfo="edit_mfo_item"
+      :year="year"
+      :period="period"
+      @addedSubFunction="getItems()"
+    />
     <!-- 
     Edit MFO start
    -->
@@ -91,11 +99,13 @@
     <div class="row">
       <div class="col-12">
         <div class="card shadow-sm">
-          <div class="card-header">
+          <div class="card-header text-center">
             <h3>Rating Scale Matrix</h3>
+            <strong>{{
+              (period == 1 ? "January-June" : "July-December") + ", " + year
+            }}</strong>
           </div>
           <div class="card-body">
-            <p class="mb-0">Rating Scale Matrix</p>
             <table class="table table-bordered">
               <thead>
                 <tr class="text-center">
@@ -165,7 +175,13 @@
                         </li>
                         <li><hr class="dropdown-divider" /></li>
                         <li>
-                          <button class="dropdown-item" type="button">
+                          <button
+                            class="dropdown-item"
+                            type="button"
+                            data-bs-toggle="modal"
+                            data-bs-target="#mfoParentEditor"
+                            @click="editMfoParent(item)"
+                          >
                             <i class="fa-solid fa-layer-group"></i>
                             Change MFO Parent
                           </button>
@@ -252,7 +268,7 @@
                     </td>
                     <td nowrap>
                       <div v-for="(incumbent, i) in item.incumbents" :key="i">
-                        <a class="link-info" href="javascript:void(0)">{{
+                        <a class="btn p-0 m-0" href="javascript:void(0)">{{
                           incumbent.full_name
                         }}</a>
                         <br v-if="i + 1 !== item.incumbents.length" />
@@ -313,4 +329,4 @@
   </div>
 </template>
 
-<script src="./Index.js"></script>
+<script src="./RatingScaleMatrixPeriod.js"></script>

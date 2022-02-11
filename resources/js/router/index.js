@@ -16,6 +16,7 @@ const AppNavbarComponent = () => import('../components/Layouts/AppNavbarComponen
 /* Authenticated Component */
 const Dashboard = () => import('../components/Dashboard.vue' /* webpackChunkName: "resource/js/components/dashboard" */)
 const RatingScaleMatrix = () => import('../pages/rating_scale_matrix/Index.vue')
+const RatingScaleMatrixPeriod = () => import('../pages/rating_scale_matrix/RatingScaleMatrixPeriod.vue')
 /* Authenticated Component */
 
 
@@ -60,6 +61,14 @@ const Routes = [
                 component: RatingScaleMatrix,
                 meta: {
                     title: `Rating Scale Matrix`
+                }
+            },
+            {
+                name: "period",
+                path: "/rsm/period/year/:year/period/:period",
+                component: RatingScaleMatrixPeriod,
+                meta: {
+                    title: `RSM Period`
                 }
             },
         ]
