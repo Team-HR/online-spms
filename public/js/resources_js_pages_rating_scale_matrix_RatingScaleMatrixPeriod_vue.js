@@ -2231,7 +2231,11 @@ var render = function () {
             _c("div", { staticClass: "card-header text-center" }, [
               _c("h3", [_vm._v("Rating Scale Matrix")]),
               _vm._v(" "),
-              _c("h3", { staticClass: "text-red" }, [
+              _c("h5", { staticClass: "text-red" }, [
+                _vm._v("\n            " + _vm._s() + "\n          "),
+              ]),
+              _vm._v(" "),
+              _c("h5", { staticClass: "text-red" }, [
                 _vm._v(
                   "\n            " +
                     _vm._s(
@@ -2245,425 +2249,446 @@ var render = function () {
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "card-body" }, [
-              _c("table", { staticClass: "table table-bordered" }, [
+              _c("table", { staticClass: "table table-sm table-bordered" }, [
                 _vm._m(2),
                 _vm._v(" "),
                 _c(
                   "tbody",
-                  _vm._l(_vm.items, function (item, i) {
-                    return _c(
-                      "tr",
-                      { key: i },
-                      [
-                        item.code
-                          ? _c(
-                              "td",
-                              {
-                                staticStyle: { "vertical-align": "middle" },
-                                attrs: { rowspan: item.rowspan },
-                              },
-                              [
-                                _c("span", { staticClass: "dropdown" }, [
-                                  _vm._m(3, true),
-                                  _vm._v(" "),
-                                  _c(
-                                    "ul",
-                                    {
-                                      staticClass: "dropdown-menu shadow-lg",
-                                      attrs: {
-                                        "aria-labelledby": "dropdownMenu2",
+                  [
+                    _vm.items.length < 1 ? _c("tr", [_vm._m(3)]) : _vm._e(),
+                    _vm._v(" "),
+                    _vm._l(_vm.items, function (item, i) {
+                      return _c(
+                        "tr",
+                        { key: i },
+                        [
+                          item.code
+                            ? _c(
+                                "td",
+                                {
+                                  staticStyle: { "vertical-align": "middle" },
+                                  attrs: { rowspan: item.rowspan },
+                                },
+                                [
+                                  _c("span", { staticClass: "dropdown" }, [
+                                    _vm._m(4, true),
+                                    _vm._v(" "),
+                                    _c(
+                                      "ul",
+                                      {
+                                        staticClass: "dropdown-menu shadow-lg",
+                                        attrs: {
+                                          "aria-labelledby": "dropdownMenu2",
+                                        },
                                       },
-                                    },
-                                    [
-                                      _c("li", [
-                                        _c(
-                                          "button",
-                                          {
-                                            staticClass: "dropdown-item",
-                                            attrs: {
-                                              type: "button",
-                                              "data-bs-toggle": "modal",
-                                              "data-bs-target": "#editMfoModal",
-                                            },
-                                            on: {
-                                              click: function ($event) {
-                                                return _vm.edit_mfo(item)
+                                      [
+                                        _c("li", [
+                                          _c(
+                                            "button",
+                                            {
+                                              staticClass: "dropdown-item",
+                                              attrs: {
+                                                type: "button",
+                                                "data-bs-toggle": "modal",
+                                                "data-bs-target":
+                                                  "#editMfoModal",
+                                              },
+                                              on: {
+                                                click: function ($event) {
+                                                  return _vm.edit_mfo(item)
+                                                },
                                               },
                                             },
-                                          },
-                                          [
-                                            _c("i", {
-                                              staticClass:
-                                                "fa-solid fa-pen-to-square",
-                                            }),
-                                            _vm._v(
-                                              "\n                          Edit MFO/PAP\n                        "
-                                            ),
-                                          ]
-                                        ),
-                                      ]),
-                                      _vm._v(" "),
-                                      _vm._m(4, true),
-                                      _vm._v(" "),
-                                      _c("li", [
-                                        _c(
-                                          "button",
-                                          {
-                                            staticClass: "dropdown-item",
-                                            attrs: {
-                                              type: "button",
-                                              "data-bs-toggle": "modal",
-                                              "data-bs-target":
-                                                "#successIndicatorEditor",
-                                            },
-                                            on: {
-                                              click: function ($event) {
-                                                return _vm.add_success_indicator(
-                                                  item.rating_scale_matrix_id
-                                                )
-                                              },
-                                            },
-                                          },
-                                          [
-                                            _c("i", {
-                                              staticClass:
-                                                "fa-solid fa-square-plus",
-                                            }),
-                                            _vm._v(
-                                              "\n                          Add Success Indicator\n                        "
-                                            ),
-                                          ]
-                                        ),
-                                      ]),
-                                      _vm._v(" "),
-                                      _vm._m(5, true),
-                                      _vm._v(" "),
-                                      _c("li", [
-                                        _c(
-                                          "button",
-                                          {
-                                            staticClass: "dropdown-item",
-                                            attrs: {
-                                              type: "button",
-                                              "data-bs-toggle": "modal",
-                                              "data-bs-target":
-                                                "#mfoParentEditor",
-                                              "data-bs-mfos": JSON.stringify({
-                                                mfo: item,
-                                                year: _vm.year,
-                                                period: _vm.period,
+                                            [
+                                              _c("i", {
+                                                staticClass:
+                                                  "fa-solid fa-pen-to-square",
                                               }),
-                                            },
-                                          },
-                                          [
-                                            _c("i", {
-                                              staticClass:
-                                                "fa-solid fa-layer-group",
-                                            }),
-                                            _vm._v(
-                                              "\n                          Move MFO/PAP\n                        "
-                                            ),
-                                          ]
-                                        ),
-                                      ]),
-                                      _vm._v(" "),
-                                      _vm._m(6, true),
-                                      _vm._v(" "),
-                                      _c("li", [
-                                        _c(
-                                          "button",
-                                          {
-                                            staticClass: "dropdown-item",
-                                            attrs: {
-                                              type: "button",
-                                              "data-bs-toggle": "modal",
-                                              "data-bs-target": "#mfoEditor",
-                                            },
-                                            on: {
-                                              click: function ($event) {
-                                                return _vm.addSubFunction(item)
+                                              _vm._v(
+                                                "\n                          Edit MFO/PAP\n                        "
+                                              ),
+                                            ]
+                                          ),
+                                        ]),
+                                        _vm._v(" "),
+                                        _vm._m(5, true),
+                                        _vm._v(" "),
+                                        _c("li", [
+                                          _c(
+                                            "button",
+                                            {
+                                              staticClass: "dropdown-item",
+                                              attrs: {
+                                                type: "button",
+                                                "data-bs-toggle": "modal",
+                                                "data-bs-target":
+                                                  "#successIndicatorEditor",
+                                              },
+                                              on: {
+                                                click: function ($event) {
+                                                  return _vm.add_success_indicator(
+                                                    item.rating_scale_matrix_id
+                                                  )
+                                                },
                                               },
                                             },
-                                          },
-                                          [
-                                            _c("i", {
-                                              staticClass:
-                                                "fa-solid fa-turn-down",
-                                            }),
-                                            _vm._v(
-                                              "\n                          Add Subfunction\n                        "
-                                            ),
-                                          ]
-                                        ),
-                                      ]),
-                                      _vm._v(" "),
-                                      _vm._m(7, true),
-                                      _vm._v(" "),
-                                      _c("li", [
-                                        _c(
-                                          "a",
-                                          {
-                                            staticClass:
-                                              "dropdown-item text-danger",
-                                            attrs: {
-                                              href: "#",
-                                              "data-bs-toggle": "modal",
-                                              "data-bs-target":
-                                                "#deleteConfirmation",
-                                            },
-                                            on: {
-                                              click: function ($event) {
-                                                return _vm.deleteMfo(
-                                                  item.rating_scale_matrix_id
-                                                )
+                                            [
+                                              _c("i", {
+                                                staticClass:
+                                                  "fa-solid fa-square-plus",
+                                              }),
+                                              _vm._v(
+                                                "\n                          Add Success Indicator\n                        "
+                                              ),
+                                            ]
+                                          ),
+                                        ]),
+                                        _vm._v(" "),
+                                        _vm._m(6, true),
+                                        _vm._v(" "),
+                                        _c("li", [
+                                          _c(
+                                            "button",
+                                            {
+                                              staticClass: "dropdown-item",
+                                              attrs: {
+                                                type: "button",
+                                                "data-bs-toggle": "modal",
+                                                "data-bs-target":
+                                                  "#mfoParentEditor",
+                                                "data-bs-mfos": JSON.stringify({
+                                                  mfo: item,
+                                                  year: _vm.year,
+                                                  period: _vm.period,
+                                                }),
                                               },
                                             },
-                                          },
-                                          [
-                                            _c("i", {
+                                            [
+                                              _c("i", {
+                                                staticClass:
+                                                  "fa-solid fa-layer-group",
+                                              }),
+                                              _vm._v(
+                                                "\n                          Move MFO/PAP\n                        "
+                                              ),
+                                            ]
+                                          ),
+                                        ]),
+                                        _vm._v(" "),
+                                        _vm._m(7, true),
+                                        _vm._v(" "),
+                                        _c("li", [
+                                          _c(
+                                            "button",
+                                            {
+                                              staticClass: "dropdown-item",
+                                              attrs: {
+                                                type: "button",
+                                                "data-bs-toggle": "modal",
+                                                "data-bs-target": "#mfoEditor",
+                                              },
+                                              on: {
+                                                click: function ($event) {
+                                                  return _vm.addSubFunction(
+                                                    item
+                                                  )
+                                                },
+                                              },
+                                            },
+                                            [
+                                              _c("i", {
+                                                staticClass:
+                                                  "fa-solid fa-turn-down",
+                                              }),
+                                              _vm._v(
+                                                "\n                          Add Subfunction\n                        "
+                                              ),
+                                            ]
+                                          ),
+                                        ]),
+                                        _vm._v(" "),
+                                        _vm._m(8, true),
+                                        _vm._v(" "),
+                                        _c("li", [
+                                          _c(
+                                            "a",
+                                            {
                                               staticClass:
-                                                "fa-solid fa-trash-can",
-                                            }),
-                                            _vm._v(
-                                              "\n                          Delete MFO/PAP\n                        "
-                                            ),
-                                          ]
-                                        ),
-                                      ]),
+                                                "dropdown-item text-danger",
+                                              attrs: {
+                                                href: "#",
+                                                "data-bs-toggle": "modal",
+                                                "data-bs-target":
+                                                  "#deleteConfirmation",
+                                              },
+                                              on: {
+                                                click: function ($event) {
+                                                  return _vm.deleteMfo(
+                                                    item.rating_scale_matrix_id
+                                                  )
+                                                },
+                                              },
+                                            },
+                                            [
+                                              _c("i", {
+                                                staticClass:
+                                                  "fa-solid fa-trash-can",
+                                              }),
+                                              _vm._v(
+                                                "\n                          Delete MFO/PAP\n                        "
+                                              ),
+                                            ]
+                                          ),
+                                        ]),
+                                      ]
+                                    ),
+                                  ]),
+                                ]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          item.code
+                            ? _c(
+                                "td",
+                                {
+                                  staticStyle: { "vertical-align": "middle" },
+                                  attrs: {
+                                    rowspan: item.rowspan,
+                                    colspan: !item.success_indicator ? "9" : "",
+                                  },
+                                },
+                                [
+                                  _c(
+                                    "span",
+                                    { style: _vm.set_text_indent(item.indent) },
+                                    [
+                                      _vm._v(
+                                        "\n                    " +
+                                          _vm._s(
+                                            item.code + " " + item.function
+                                          ) +
+                                          "\n                  "
+                                      ),
                                     ]
                                   ),
-                                ]),
-                              ]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        item.code
-                          ? _c(
-                              "td",
-                              {
-                                staticStyle: { "vertical-align": "middle" },
-                                attrs: {
-                                  rowspan: item.rowspan,
-                                  colspan: !item.success_indicator ? "9" : "",
-                                },
-                              },
-                              [
+                                ]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          item.success_indicator
+                            ? [
                                 _c(
-                                  "span",
-                                  { style: _vm.set_text_indent(item.indent) },
+                                  "td",
+                                  {
+                                    staticStyle: { "vertical-align": "middle" },
+                                  },
                                   [
                                     _vm._v(
                                       "\n                    " +
-                                        _vm._s(
-                                          item.code + " " + item.function
-                                        ) +
+                                        _vm._s(item.success_indicator) +
                                         "\n                  "
                                     ),
                                   ]
                                 ),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  _vm._l(
+                                    item.performance_measures,
+                                    function (performance_measure, pf) {
+                                      return _c("span", { key: pf }, [
+                                        _vm._v(
+                                          "\n                      " +
+                                            _vm._s(performance_measure) +
+                                            "\n                      "
+                                        ),
+                                        pf + 1 !==
+                                        item.performance_measures.length
+                                          ? _c("br")
+                                          : _vm._e(),
+                                      ])
+                                    }
+                                  ),
+                                  0
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  { staticStyle: { "white-space": "nowrap" } },
+                                  _vm._l(item.quality, function (quality, q) {
+                                    return _c("span", { key: q }, [
+                                      item.quality[5 - q - 1]
+                                        ? _c("div", [
+                                            _c("b", [_vm._v(_vm._s(5 - q))]),
+                                            _vm._v(
+                                              " - " +
+                                                _vm._s(
+                                                  item.quality[5 - q - 1]
+                                                ) +
+                                                "\n                        "
+                                            ),
+                                            _c("br"),
+                                          ])
+                                        : _vm._e(),
+                                    ])
+                                  }),
+                                  0
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  { staticStyle: { "white-space": "nowrap" } },
+                                  _vm._l(
+                                    item.efficiency,
+                                    function (efficiency, e) {
+                                      return _c("span", { key: e }, [
+                                        item.efficiency[5 - e - 1]
+                                          ? _c("div", [
+                                              _c("b", [_vm._v(_vm._s(5 - e))]),
+                                              _vm._v(
+                                                " - " +
+                                                  _vm._s(
+                                                    item.efficiency[5 - e - 1]
+                                                  ) +
+                                                  "\n                        "
+                                              ),
+                                              _c("br"),
+                                            ])
+                                          : _vm._e(),
+                                      ])
+                                    }
+                                  ),
+                                  0
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  { staticStyle: { "white-space": "nowrap" } },
+                                  _vm._l(
+                                    item.timeliness,
+                                    function (timeliness, t) {
+                                      return _c("span", { key: t }, [
+                                        item.timeliness[5 - t - 1]
+                                          ? _c("div", [
+                                              _c("b", [_vm._v(_vm._s(5 - t))]),
+                                              _vm._v(
+                                                " - " +
+                                                  _vm._s(
+                                                    item.timeliness[5 - t - 1]
+                                                  ) +
+                                                  "\n                        "
+                                              ),
+                                              _c("br"),
+                                            ])
+                                          : _vm._e(),
+                                      ])
+                                    }
+                                  ),
+                                  0
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  { attrs: { nowrap: "" } },
+                                  _vm._l(
+                                    item.incumbents,
+                                    function (incumbent, i) {
+                                      return _c("div", { key: i }, [
+                                        _c(
+                                          "a",
+                                          {
+                                            staticClass: "btn p-0 m-0",
+                                            attrs: {
+                                              href: "javascript:void(0)",
+                                            },
+                                          },
+                                          [_vm._v(_vm._s(incumbent.full_name))]
+                                        ),
+                                        _vm._v(" "),
+                                        i + 1 !== item.incumbents.length
+                                          ? _c("br")
+                                          : _vm._e(),
+                                      ])
+                                    }
+                                  ),
+                                  0
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  {
+                                    staticStyle: { "vertical-align": "middle" },
+                                  },
+                                  [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "btn btn-sm text-success",
+                                        attrs: {
+                                          title: "Edit success indicator",
+                                          "data-bs-toggle": "modal",
+                                          "data-bs-target":
+                                            "#successIndicatorEditor",
+                                        },
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.edit_success_indicator(
+                                              item.id
+                                            )
+                                          },
+                                        },
+                                      },
+                                      [
+                                        _c("i", {
+                                          staticClass:
+                                            "fa-solid fa-pen-to-square text-success",
+                                        }),
+                                      ]
+                                    ),
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "td",
+                                  {
+                                    staticStyle: { "vertical-align": "middle" },
+                                  },
+                                  [
+                                    _c(
+                                      "button",
+                                      {
+                                        staticClass: "btn btn-sm text-danger",
+                                        attrs: {
+                                          title: "Delete success indicator",
+                                          "data-bs-toggle": "modal",
+                                          "data-bs-target":
+                                            "#deleteConfirmation",
+                                        },
+                                        on: {
+                                          click: function ($event) {
+                                            return _vm.deleteSuccessIndicator(
+                                              item.id
+                                            )
+                                          },
+                                        },
+                                      },
+                                      [
+                                        _c("i", {
+                                          staticClass:
+                                            "fa-solid fa-eraser text-danger",
+                                        }),
+                                      ]
+                                    ),
+                                  ]
+                                ),
                               ]
-                            )
-                          : _vm._e(),
-                        _vm._v(" "),
-                        item.success_indicator
-                          ? [
-                              _c(
-                                "td",
-                                { staticStyle: { "vertical-align": "middle" } },
-                                [
-                                  _vm._v(
-                                    "\n                    " +
-                                      _vm._s(item.success_indicator) +
-                                      "\n                  "
-                                  ),
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "td",
-                                _vm._l(
-                                  item.performance_measures,
-                                  function (performance_measure, pf) {
-                                    return _c("span", { key: pf }, [
-                                      _vm._v(
-                                        "\n                      " +
-                                          _vm._s(performance_measure) +
-                                          "\n                      "
-                                      ),
-                                      pf + 1 !==
-                                      item.performance_measures.length
-                                        ? _c("br")
-                                        : _vm._e(),
-                                    ])
-                                  }
-                                ),
-                                0
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "td",
-                                _vm._l(item.quality, function (quality, q) {
-                                  return _c("span", { key: q }, [
-                                    item.quality[5 - q - 1]
-                                      ? _c("div", [
-                                          _c("b", [_vm._v(_vm._s(5 - q))]),
-                                          _vm._v(
-                                            " - " +
-                                              _vm._s(item.quality[5 - q - 1]) +
-                                              "\n                        "
-                                          ),
-                                          _c("br"),
-                                        ])
-                                      : _vm._e(),
-                                  ])
-                                }),
-                                0
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "td",
-                                _vm._l(
-                                  item.efficiency,
-                                  function (efficiency, e) {
-                                    return _c("span", { key: e }, [
-                                      item.efficiency[5 - e - 1]
-                                        ? _c("div", [
-                                            _c("b", [_vm._v(_vm._s(5 - e))]),
-                                            _vm._v(
-                                              " - " +
-                                                _vm._s(
-                                                  item.efficiency[5 - e - 1]
-                                                ) +
-                                                "\n                        "
-                                            ),
-                                            _c("br"),
-                                          ])
-                                        : _vm._e(),
-                                    ])
-                                  }
-                                ),
-                                0
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "td",
-                                _vm._l(
-                                  item.timeliness,
-                                  function (timeliness, t) {
-                                    return _c("span", { key: t }, [
-                                      item.timeliness[5 - t - 1]
-                                        ? _c("div", [
-                                            _c("b", [_vm._v(_vm._s(5 - t))]),
-                                            _vm._v(
-                                              " - " +
-                                                _vm._s(
-                                                  item.timeliness[5 - t - 1]
-                                                ) +
-                                                "\n                        "
-                                            ),
-                                            _c("br"),
-                                          ])
-                                        : _vm._e(),
-                                    ])
-                                  }
-                                ),
-                                0
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "td",
-                                { attrs: { nowrap: "" } },
-                                _vm._l(
-                                  item.incumbents,
-                                  function (incumbent, i) {
-                                    return _c("div", { key: i }, [
-                                      _c(
-                                        "a",
-                                        {
-                                          staticClass: "btn p-0 m-0",
-                                          attrs: { href: "javascript:void(0)" },
-                                        },
-                                        [_vm._v(_vm._s(incumbent.full_name))]
-                                      ),
-                                      _vm._v(" "),
-                                      i + 1 !== item.incumbents.length
-                                        ? _c("br")
-                                        : _vm._e(),
-                                    ])
-                                  }
-                                ),
-                                0
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "td",
-                                { staticStyle: { "vertical-align": "middle" } },
-                                [
-                                  _c(
-                                    "button",
-                                    {
-                                      staticClass: "btn btn-sm text-success",
-                                      attrs: {
-                                        title: "Edit success indicator",
-                                        "data-bs-toggle": "modal",
-                                        "data-bs-target":
-                                          "#successIndicatorEditor",
-                                      },
-                                      on: {
-                                        click: function ($event) {
-                                          return _vm.edit_success_indicator(
-                                            item.id
-                                          )
-                                        },
-                                      },
-                                    },
-                                    [
-                                      _c("i", {
-                                        staticClass:
-                                          "fa-solid fa-pen-to-square text-success",
-                                      }),
-                                    ]
-                                  ),
-                                ]
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "td",
-                                { staticStyle: { "vertical-align": "middle" } },
-                                [
-                                  _c(
-                                    "button",
-                                    {
-                                      staticClass: "btn btn-sm text-danger",
-                                      attrs: {
-                                        title: "Delete success indicator",
-                                        "data-bs-toggle": "modal",
-                                        "data-bs-target": "#deleteConfirmation",
-                                      },
-                                      on: {
-                                        click: function ($event) {
-                                          return _vm.deleteSuccessIndicator(
-                                            item.id
-                                          )
-                                        },
-                                      },
-                                    },
-                                    [
-                                      _c("i", {
-                                        staticClass:
-                                          "fa-solid fa-eraser text-danger",
-                                      }),
-                                    ]
-                                  ),
-                                ]
-                              ),
-                            ]
-                          : _vm._e(),
-                      ],
-                      2
-                    )
-                  }),
-                  0
+                            : _vm._e(),
+                        ],
+                        2
+                      )
+                    }),
+                  ],
+                  2
                 ),
               ]),
               _vm._v(" "),
@@ -2727,7 +2752,7 @@ var render = function () {
                     }),
                   ]),
                   _vm._v(" "),
-                  _vm._m(8),
+                  _vm._m(9),
                 ]
               ),
             ]),
@@ -2781,29 +2806,71 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", { staticClass: "text-center" }, [
-        _c("th", { attrs: { scope: "col" } }),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("MFO/PAP")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("SUCCESS INDICATOR")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("PERFORMANCE MEASURE")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("Q")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("E")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("T")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col" } }, [_vm._v("IN-CHARGE")]),
-        _vm._v(" "),
-        _c("th", { attrs: { scope: "col", colspan: "2" } }, [
-          _vm._v("OPTIONS"),
-        ]),
-      ]),
+    return _c("thead", { staticClass: "table-primary" }, [
+      _c(
+        "tr",
+        {
+          staticClass: "text-center",
+          staticStyle: { "vertical-align": "middle" },
+        },
+        [
+          _c("th", { attrs: { scope: "col", rowspan: "2" } }),
+          _vm._v(" "),
+          _c("th", { attrs: { scope: "col", rowspan: "2" } }, [
+            _vm._v("MFO/PAP"),
+          ]),
+          _vm._v(" "),
+          _c("th", { attrs: { scope: "col", rowspan: "2" } }, [
+            _vm._v("SUCCESS INDICATOR"),
+          ]),
+          _vm._v(" "),
+          _c("th", { attrs: { scope: "col", rowspan: "2" } }, [
+            _vm._v("PERFORMANCE MEASURE"),
+          ]),
+          _vm._v(" "),
+          _c("th", { attrs: { scope: "col", colspan: "3" } }, [
+            _vm._v("RATING"),
+          ]),
+          _vm._v(" "),
+          _c("th", { attrs: { scope: "col", rowspan: "2" } }, [
+            _vm._v("IN-CHARGE"),
+          ]),
+          _vm._v(" "),
+          _c("th", { attrs: { scope: "col", rowspan: "2", colspan: "2" } }, [
+            _vm._v("OPTIONS"),
+          ]),
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "tr",
+        {
+          staticClass: "text-center",
+          staticStyle: { "vertical-align": "middle" },
+        },
+        [
+          _c("th", { attrs: { scope: "col" } }, [_vm._v("QUALITY")]),
+          _vm._v(" "),
+          _c("th", { attrs: { scope: "col" } }, [_vm._v("EFFICIENCY")]),
+          _vm._v(" "),
+          _c("th", { attrs: { scope: "col" } }, [_vm._v("TIMELINESS")]),
+        ]
+      ),
     ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "td",
+      { staticStyle: { "text-align": "center" }, attrs: { colspan: "9" } },
+      [
+        _c("h4", { staticClass: "text-secondary" }, [
+          _vm._v("No records found!"),
+        ]),
+      ]
+    )
   },
   function () {
     var _vm = this
@@ -2821,10 +2888,7 @@ var staticRenderFns = [
           "aria-expanded": "false",
         },
       },
-      [
-        _c("i", { staticClass: "fa-solid fa-gear" }),
-        _vm._v("\n                      Configure\n                    "),
-      ]
+      [_c("i", { staticClass: "fa-solid fa-gear" })]
     )
   },
   function () {
@@ -3378,7 +3442,7 @@ var render = function () {
                       _c(
                         "div",
                         {
-                          staticClass: "accordion-collapse collapse",
+                          staticClass: "accordion-collapse collapse show",
                           attrs: {
                             id: "panelsStayOpen-collapseOne",
                             "aria-labelledby": "panelsStayOpen-headingOne",
@@ -3453,7 +3517,7 @@ var render = function () {
                       _c(
                         "div",
                         {
-                          staticClass: "accordion-collapse collapse",
+                          staticClass: "accordion-collapse collapse show",
                           attrs: {
                             id: "panelsStayOpen-collapseTwo",
                             "aria-labelledby": "panelsStayOpen-headingTwo",
@@ -3529,7 +3593,7 @@ var render = function () {
                       _c(
                         "div",
                         {
-                          staticClass: "accordion-collapse collapse",
+                          staticClass: "accordion-collapse collapse show",
                           attrs: {
                             id: "panelsStayOpen-collapseThree",
                             "aria-labelledby": "panelsStayOpen-headingThree",
@@ -3819,7 +3883,7 @@ var staticRenderFns = [
         _c(
           "button",
           {
-            staticClass: "accordion-button collapsed",
+            staticClass: "accordion-button",
             attrs: {
               type: "button",
               "data-bs-toggle": "collapse",
@@ -3847,7 +3911,7 @@ var staticRenderFns = [
         _c(
           "button",
           {
-            staticClass: "accordion-button collapsed",
+            staticClass: "accordion-button",
             attrs: {
               type: "button",
               "data-bs-toggle": "collapse",
@@ -3875,7 +3939,7 @@ var staticRenderFns = [
         _c(
           "button",
           {
-            staticClass: "accordion-button collapsed",
+            staticClass: "accordion-button",
             attrs: {
               type: "button",
               "data-bs-toggle": "collapse",

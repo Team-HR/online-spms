@@ -23,25 +23,25 @@
             style="--bs-scroll-height: 100px"
           >
             <li class="nav-item">
-              <router-link
+              <!-- <router-link
                 :to="{ name: 'dashboard' }"
                 class="nav-link"
                 aria-current="page"
               >
                 <i class="fa-solid fa-house"></i>
                 Home</router-link
-              >
+              > -->
             </li>
             <li class="nav-item">
-              <router-link :to="{ name: 'rsm' }" class="nav-link">
+              <router-link :to="{ name: 'pcr' }" class="nav-link">
                 <i class="fas fa-tachometer-alt"></i>
-                Performance Rating</router-link
+                (PCR) Performance Commitment & Review</router-link
               >
             </li>
             <li class="nav-item">
               <router-link :to="{ name: 'rsm' }" class="nav-link">
                 <i class="fa-solid fa-scale-balanced"></i>
-                Rating Scale Matrix</router-link
+                (RSM) Rating Scale Matrix</router-link
               >
             </li>
           </ul>
@@ -54,7 +54,7 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                {{user.name}}
+                {{ user.name }}
               </button>
               <ul
                 class="dropdown-menu dropdown-menu-dark"
@@ -66,13 +66,26 @@
                   <a class="dropdown-item" href="#">Something else here</a>
                 </li> -->
                 <li><hr class="dropdown-divider" /></li>
-                <li><a class="dropdown-item" href="#" @click="logout()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a></li>
+                <li>
+                  <a class="dropdown-item" href="#" @click="logout()"
+                    ><i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    Logout</a
+                  >
+                </li>
               </ul>
             </div>
           </div>
         </div>
       </div>
     </nav>
+    <!-- <router-link :to="{ name: 'rsm' }" class="btn btn-light m-2"
+      ><i class="fa-solid fa-arrow-left"></i> Back</router-link
+    > -->
+    <div class="container" v-if="this.$store.getters.path != '/'">
+      <button class="btn btn-light my-2" @click="historyBack()">
+        <i class="fa-solid fa-arrow-left"></i> Back
+      </button>
+    </div>
     <main class="mt-3">
       <router-view></router-view>
     </main>
@@ -88,6 +101,11 @@ export default {
       user: this.$store.state.auth.user,
     };
   },
+  // computed: {
+  //   path() {
+  //     return this.$store.getters.path 
+  //   },
+  // },
   methods: {
     ...mapActions({
       signOut: "auth/logout",
@@ -105,6 +123,16 @@ export default {
         // this.$router.push({name:"login"})
       });
     },
+    historyBack() {
+      history.back();
+    },
   },
+  mounted(){
+    // console.log();
+    // this.$store.dispatch('getUrl',{url: 'test'});
+    // console.log();
+    // this.path = this.$store.getters.path
+    // console.log('appnav',this.path);
+  }
 };
 </script>

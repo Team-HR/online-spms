@@ -17,6 +17,9 @@ const AppNavbarComponent = () => import('../components/Layouts/AppNavbarComponen
 const Dashboard = () => import('../components/Dashboard.vue' /* webpackChunkName: "resource/js/components/dashboard" */)
 const RatingScaleMatrix = () => import('../pages/rating_scale_matrix/Index.vue')
 const RatingScaleMatrixPeriod = () => import('../pages/rating_scale_matrix/RatingScaleMatrixPeriod.vue')
+const PerformanceReview = () => import('../pages/performance_review/Index.vue')
+const PerformanceReviewPeriod = () => import('../pages/performance_review/PerformanceReview.vue')
+const PerformanceReviewPeriodSignatories = () => import('../pages/performance_review/components/SignatoriesEditor.vue')
 /* Authenticated Component */
 
 
@@ -64,13 +67,39 @@ const Routes = [
                 }
             },
             {
-                name: "period",
-                path: "/rsm/period/year/:year/period/:period",
+                name: "rsmPeriod",
+                path: "/rsm/year/:year/period/:period",
                 component: RatingScaleMatrixPeriod,
                 meta: {
                     title: `RSM Period`
                 }
             },
+            {
+                name: "pcr",
+                path: "/pcr",
+                component: PerformanceReview,
+                meta: {
+                    title: `Performance Review`
+                }
+            },
+            {
+                name: "pcrPeriod",
+                path: "/pcr/year/:year/period/:period",
+                component: PerformanceReviewPeriod,
+                meta: {
+                    title: `PCR Period`
+                }
+
+            },
+            {
+                name: "pcrPeriodSignatories",
+                path: "/pcr/year/:year/period/:period/signatories",
+                component: PerformanceReviewPeriodSignatories,
+                meta: {
+                    title: `Edit Signatories`
+                }
+
+            }
         ]
     }
 ]
@@ -81,6 +110,8 @@ var router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+    store.dispatch('setPath',to.path)
+    
     document.title = `${to.meta.title} - ${process.env.MIX_APP_NAME}`
     if (to.meta.middleware == "guest") {
         if (store.state.auth.authenticated) {

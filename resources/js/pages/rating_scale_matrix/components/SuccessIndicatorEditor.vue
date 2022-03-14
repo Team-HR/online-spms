@@ -50,7 +50,7 @@
               <div class="accordion-item">
                 <h2 class="accordion-header" id="panelsStayOpen-headingOne">
                   <button
-                    class="accordion-button collapsed"
+                    class="accordion-button"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#panelsStayOpen-collapseOne"
@@ -62,7 +62,7 @@
                 </h2>
                 <div
                   id="panelsStayOpen-collapseOne"
-                  class="accordion-collapse collapse"
+                  class="accordion-collapse collapse show"
                   aria-labelledby="panelsStayOpen-headingOne"
                 >
                   <div class="accordion-body">
@@ -88,7 +88,7 @@
               <div class="accordion-item">
                 <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
                   <button
-                    class="accordion-button collapsed"
+                    class="accordion-button"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#panelsStayOpen-collapseTwo"
@@ -100,7 +100,7 @@
                 </h2>
                 <div
                   id="panelsStayOpen-collapseTwo"
-                  class="accordion-collapse collapse"
+                  class="accordion-collapse collapse show"
                   aria-labelledby="panelsStayOpen-headingTwo"
                 >
                   <div class="accordion-body">
@@ -126,7 +126,7 @@
               <div class="accordion-item">
                 <h2 class="accordion-header" id="panelsStayOpen-headingThree">
                   <button
-                    class="accordion-button collapsed"
+                    class="accordion-button"
                     type="button"
                     data-bs-toggle="collapse"
                     data-bs-target="#panelsStayOpen-collapseThree"
@@ -138,7 +138,7 @@
                 </h2>
                 <div
                   id="panelsStayOpen-collapseThree"
-                  class="accordion-collapse collapse"
+                  class="accordion-collapse collapse show"
                   aria-labelledby="panelsStayOpen-headingThree"
                 >
                   <div class="accordion-body">

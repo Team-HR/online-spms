@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-   <PeriodSelector title="Rating Scale Matrix" path="rsm" icon="fa-solid fa-scale-balanced"/>
+   <PeriodSelector title="Performance Commitment and Review" path="pcr" icon="fas fa-tachometer-alt"/>
   </div>
 </template>
 <script>

@@ -2282,6 +2282,18 @@ var RatingScaleMatrix = function RatingScaleMatrix() {
 var RatingScaleMatrixPeriod = function RatingScaleMatrixPeriod() {
   return __webpack_require__.e(/*! import() */ "resources_js_pages_rating_scale_matrix_RatingScaleMatrixPeriod_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../pages/rating_scale_matrix/RatingScaleMatrixPeriod.vue */ "./resources/js/pages/rating_scale_matrix/RatingScaleMatrixPeriod.vue"));
 };
+
+var PerformanceReview = function PerformanceReview() {
+  return __webpack_require__.e(/*! import() */ "resources_js_pages_performance_review_Index_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../pages/performance_review/Index.vue */ "./resources/js/pages/performance_review/Index.vue"));
+};
+
+var PerformanceReviewPeriod = function PerformanceReviewPeriod() {
+  return __webpack_require__.e(/*! import() */ "resources_js_pages_performance_review_PerformanceReview_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../pages/performance_review/PerformanceReview.vue */ "./resources/js/pages/performance_review/PerformanceReview.vue"));
+};
+
+var PerformanceReviewPeriodSignatories = function PerformanceReviewPeriodSignatories() {
+  return __webpack_require__.e(/*! import() */ "resources_js_pages_performance_review_components_SignatoriesEditor_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../pages/performance_review/components/SignatoriesEditor.vue */ "./resources/js/pages/performance_review/components/SignatoriesEditor.vue"));
+};
 /* Authenticated Component */
 
 
@@ -2322,11 +2334,32 @@ var Routes = [{
       title: "Rating Scale Matrix"
     }
   }, {
-    name: "period",
-    path: "/rsm/period/year/:year/period/:period",
+    name: "rsmPeriod",
+    path: "/rsm/year/:year/period/:period",
     component: RatingScaleMatrixPeriod,
     meta: {
       title: "RSM Period"
+    }
+  }, {
+    name: "pcr",
+    path: "/pcr",
+    component: PerformanceReview,
+    meta: {
+      title: "Performance Review"
+    }
+  }, {
+    name: "pcrPeriod",
+    path: "/pcr/year/:year/period/:period",
+    component: PerformanceReviewPeriod,
+    meta: {
+      title: "PCR Period"
+    }
+  }, {
+    name: "pcrPeriodSignatories",
+    path: "/pcr/year/:year/period/:period/signatories",
+    component: PerformanceReviewPeriodSignatories,
+    meta: {
+      title: "Edit Signatories"
     }
   }]
 }];
@@ -2335,7 +2368,8 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]({
   routes: Routes
 });
 router.beforeEach(function (to, from, next) {
-  document.title = "".concat(to.meta.title, " - ").concat("Laravel");
+  _store__WEBPACK_IMPORTED_MODULE_0__["default"].dispatch('setPath', to.path);
+  document.title = "".concat(to.meta.title, " - ").concat("Online Spms");
 
   if (to.meta.middleware == "guest") {
     if (_store__WEBPACK_IMPORTED_MODULE_0__["default"].state.auth.authenticated) {
@@ -2466,6 +2500,31 @@ vue__WEBPACK_IMPORTED_MODULE_3__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_4_
   modules: {
     auth: _auth__WEBPACK_IMPORTED_MODULE_1__["default"],
     rsm: _rsm__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
+  state: {
+    path: ''
+  },
+  getters: {
+    path: function path(state) {
+      return state.path;
+    }
+  },
+  mutations: {
+    SET_PATH: function SET_PATH(state, value) {
+      state.path = value;
+    }
+  },
+  actions: {
+    setPath: function setPath(_ref, payload) {
+      var commit = _ref.commit;
+      // console.log(payload);
+      // var pathName = new URL(location.href).pathname
+      commit('SET_PATH', payload); // return axios.get('/api/rsm').then(({data})=>{
+      //     commit('SET_ITEMS',data)
+      // }).catch(({response:{data}})=>{
+      //     alert("ERROR FETCHING DATA!");
+      // })
+    }
   }
 }));
 
@@ -43359,7 +43418,7 @@ var index = {
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resource/js/components/login":1,"resource/js/components/register":1,"resource/js/components/layouts/appnavbarcomponent":1,"resource/js/components/dashboard":1,"resources_js_pages_rating_scale_matrix_Index_vue":1,"resources_js_pages_rating_scale_matrix_RatingScaleMatrixPeriod_vue":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resource/js/components/login":1,"resource/js/components/register":1,"resource/js/components/layouts/appnavbarcomponent":1,"resource/js/components/dashboard":1,"resources_js_pages_rating_scale_matrix_Index_vue":1,"resources_js_pages_rating_scale_matrix_RatingScaleMatrixPeriod_vue":1,"resources_js_pages_performance_review_Index_vue":1,"resources_js_pages_performance_review_PerformanceReview_vue":1,"resources_js_pages_performance_review_components_SignatoriesEditor_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

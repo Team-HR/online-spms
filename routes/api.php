@@ -65,7 +65,7 @@ Route::post('/employees', function (Request $request) {
 
     $data = [];
     foreach ($items as $key => $employee) {
-        if (!in_array($employee->id,$excepts)) {
+        if (!in_array($employee->id, $excepts)) {
             $data[] = [
                 'id' => $employee->id,
                 'full_name' => $employee->full_name,
@@ -75,5 +75,3 @@ Route::post('/employees', function (Request $request) {
 
     return response()->json($data);
 });
-
-

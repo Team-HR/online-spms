@@ -118,6 +118,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   name: "dashboard-layout",
@@ -126,6 +139,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       user: this.$store.state.auth.user
     };
   },
+  // computed: {
+  //   path() {
+  //     return this.$store.getters.path 
+  //   },
+  // },
   methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapActions)({
     signOut: "auth/logout"
   })), {}, {
@@ -176,8 +194,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           }
         }, _callee2);
       }))();
+    },
+    historyBack: function historyBack() {
+      history.back();
     }
-  })
+  }),
+  mounted: function mounted() {// console.log();
+    // this.$store.dispatch('getUrl',{url: 'test'});
+    // console.log();
+    // this.path = this.$store.getters.path
+    // console.log('appnav',this.path);
+  }
 });
 
 /***/ }),
@@ -1069,27 +1096,7 @@ var render = function () {
                   staticStyle: { "--bs-scroll-height": "100px" },
                 },
                 [
-                  _c(
-                    "li",
-                    { staticClass: "nav-item" },
-                    [
-                      _c(
-                        "router-link",
-                        {
-                          staticClass: "nav-link",
-                          attrs: {
-                            to: { name: "dashboard" },
-                            "aria-current": "page",
-                          },
-                        },
-                        [
-                          _c("i", { staticClass: "fa-solid fa-house" }),
-                          _vm._v("\n              Home"),
-                        ]
-                      ),
-                    ],
-                    1
-                  ),
+                  _c("li", { staticClass: "nav-item" }),
                   _vm._v(" "),
                   _c(
                     "li",
@@ -1099,11 +1106,13 @@ var render = function () {
                         "router-link",
                         {
                           staticClass: "nav-link",
-                          attrs: { to: { name: "rsm" } },
+                          attrs: { to: { name: "pcr" } },
                         },
                         [
                           _c("i", { staticClass: "fas fa-tachometer-alt" }),
-                          _vm._v("\n              Performance Rating"),
+                          _vm._v(
+                            "\n              (PCR) Performance Commitment & Review"
+                          ),
                         ]
                       ),
                     ],
@@ -1124,7 +1133,7 @@ var render = function () {
                           _c("i", {
                             staticClass: "fa-solid fa-scale-balanced",
                           }),
-                          _vm._v("\n              Rating Scale Matrix"),
+                          _vm._v("\n              (RSM) Rating Scale Matrix"),
                         ]
                       ),
                     ],
@@ -1181,7 +1190,7 @@ var render = function () {
                               staticClass:
                                 "fa-solid fa-arrow-right-from-bracket",
                             }),
-                            _vm._v(" Logout"),
+                            _vm._v("\n                  Logout"),
                           ]
                         ),
                       ]),
@@ -1195,6 +1204,26 @@ var render = function () {
         1
       ),
     ]),
+    _vm._v(" "),
+    this.$store.getters.path != "/"
+      ? _c("div", { staticClass: "container" }, [
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-light my-2",
+              on: {
+                click: function ($event) {
+                  return _vm.historyBack()
+                },
+              },
+            },
+            [
+              _c("i", { staticClass: "fa-solid fa-arrow-left" }),
+              _vm._v(" Back\n    "),
+            ]
+          ),
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c("main", { staticClass: "mt-3" }, [_c("router-view")], 1),
   ])

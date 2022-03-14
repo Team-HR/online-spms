@@ -94,28 +94,39 @@
         <div class="card shadow-sm">
           <div class="card-header text-center">
             <h3>Rating Scale Matrix</h3>
-            <h3 class="text-red">
+            <h5 class="text-red">
+              {{ }}
+            </h5>
+            <h5 class="text-red">
               {{
                 (period == 1 ? "January-June" : "July-December") + ", " + year
               }}
-            </h3>
+            </h5>
           </div>
           <div class="card-body">
-            <table class="table table-bordered">
-              <thead>
-                <tr class="text-center">
-                  <th scope="col"></th>
-                  <th scope="col">MFO/PAP</th>
-                  <th scope="col">SUCCESS INDICATOR</th>
-                  <th scope="col">PERFORMANCE MEASURE</th>
-                  <th scope="col">Q</th>
-                  <th scope="col">E</th>
-                  <th scope="col">T</th>
-                  <th scope="col">IN-CHARGE</th>
-                  <th scope="col" colspan="2">OPTIONS</th>
+            <table class="table table-sm table-bordered">
+              <thead class="table-primary">
+                <tr class="text-center" style="vertical-align: middle">
+                  <th scope="col" rowspan="2"></th>
+                  <th scope="col" rowspan="2">MFO/PAP</th>
+                  <th scope="col" rowspan="2">SUCCESS INDICATOR</th>
+                  <th scope="col" rowspan="2">PERFORMANCE MEASURE</th>
+                  <th scope="col" colspan="3">RATING</th>
+                  <th scope="col" rowspan="2">IN-CHARGE</th>
+                  <th scope="col" rowspan="2" colspan="2">OPTIONS</th>
+                </tr>
+                <tr class="text-center" style="vertical-align: middle">
+                  <th scope="col">QUALITY</th>
+                  <th scope="col">EFFICIENCY</th>
+                  <th scope="col">TIMELINESS</th>
                 </tr>
               </thead>
               <tbody>
+                <tr v-if="items.length < 1">
+                  <td colspan="9" style="text-align: center">
+                    <h4 class="text-secondary">No records found!</h4>
+                  </td>
+                </tr>
                 <tr v-for="(item, i) in items" :key="i">
                   <td
                     style="vertical-align: middle"
@@ -135,7 +146,6 @@
                         aria-expanded="false"
                       >
                         <i class="fa-solid fa-gear"></i>
-                        Configure
                       </button>
                       <ul
                         class="dropdown-menu shadow-lg"
@@ -244,7 +254,7 @@
                         />
                       </span>
                     </td>
-                    <td>
+                    <td style="white-space: nowrap">
                       <span v-for="(quality, q) in item.quality" :key="q">
                         <div v-if="item.quality[5 - q - 1]">
                           <b>{{ 5 - q }}</b> - {{ item.quality[5 - q - 1] }}
@@ -252,7 +262,8 @@
                         </div>
                       </span>
                     </td>
-                    <td>
+
+                    <td style="white-space: nowrap">
                       <span v-for="(efficiency, e) in item.efficiency" :key="e">
                         <div v-if="item.efficiency[5 - e - 1]">
                           <b>{{ 5 - e }}</b> - {{ item.efficiency[5 - e - 1] }}
@@ -260,7 +271,7 @@
                         </div>
                       </span>
                     </td>
-                    <td>
+                    <td style="white-space: nowrap">
                       <span v-for="(timeliness, t) in item.timeliness" :key="t">
                         <div v-if="item.timeliness[5 - t - 1]">
                           <b>{{ 5 - t }}</b> - {{ item.timeliness[5 - t - 1] }}
