@@ -105,7 +105,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                   _this.signIn();
                 })["catch"](function (_ref2) {
                   var data = _ref2.response.data;
-                  alert('Login Message:', data.message);
+                  alert('Login Message (vue):', data.message);
                 })["finally"](function () {
                   _this.processing = false;
                 });

@@ -54,7 +54,7 @@ export default {
             await axios.post('/login',this.auth).then(({data})=>{
                 this.signIn()
             }).catch(({response:{data}})=>{
-                alert('Login Message:',data.message)
+                alert('Login Message (vue):',data.message)
             }).finally(()=>{
                 this.processing = false
             })

@@ -58,7 +58,11 @@ class User extends Authenticatable
      */
     public function getDepartmentIdAttribute()
     {
+        
         $employee = Employee::find($this->employee_id);
+        if (!$employee) {
+            return null;
+        }
         return $employee->department_id;
     }
 }

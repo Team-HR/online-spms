@@ -4,16 +4,27 @@
       <div class="col-12">
         <div class="card shadow-sm">
           <div class="card-header">
-            <h3>Dashboard</h3>
+            <h3>Performance Commitment and Review</h3>
           </div>
           <div class="card-body">
-            <!-- <p class="mb-0">
-              You are logged in as <b>{{ user.email }}</b>
-            </p> -->
-            <ul>
-                <li v-for="(item, i) in items" :key="i">
-                    {{item}}
-                </li>
+            <ul class="nav nav-tabs">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="#">
+                  Signatories
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Core Functions</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Support Functions</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Strategic Functions</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">Submission</a>
+              </li>
             </ul>
           </div>
         </div>
@@ -28,13 +39,14 @@ export default {
   data() {
     return {
       user: this.$store.state.auth.user,
-      items: []
+      items: [],
     };
   },
   mounted() {
-    axios.get("/api/test")
+    axios
+      .get("/api/test")
       .then(({ data }) => {
-        this.items = JSON.parse(JSON.stringify(data))
+        this.items = JSON.parse(JSON.stringify(data));
       })
       .catch(({ response: { data } }) => {
         console.log(data);

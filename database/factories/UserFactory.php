@@ -31,7 +31,7 @@ class UserFactory extends Factory
         //     'remember_token' => Str::random(10),
         // ];
         return [
-            'name' => 'Franz Joshua A. Valencia',
+            'name' => 'VALENCIA, FRANZ JOSHUA A.',
             'employee_id' => 9,
             'username' => 'fjavalencia',
             'email' => 'fjavalencia@example.net',
