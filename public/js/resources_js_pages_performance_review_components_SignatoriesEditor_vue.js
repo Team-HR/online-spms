@@ -1307,20 +1307,7 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "card mb-2" }, [
-      _c("div", { staticClass: "card-body" }, [
-        _vm._m(0),
-        _vm._v(" "),
-        _c("h5", { staticClass: "text-secondary" }, [
-          _vm.period == 1
-            ? _c("span", [_vm._v("January-June")])
-            : _c("span", [_vm._v("July-December")]),
-          _vm._v("\n        " + _vm._s(_vm.year) + "\n      "),
-        ]),
-      ]),
-    ]),
-    _vm._v(" "),
+  return _c("div", { staticClass: "mt-2" }, [
     _c("div", { staticClass: "card" }, [
       _c(
         "div",
@@ -1328,31 +1315,25 @@ var render = function () {
         [
           _c("div", { staticClass: "h4" }, [_vm._v("Employee Type:")]),
           _vm._v(" "),
-          _vm._m(1),
+          _vm._m(0),
           _vm._v(" "),
-          _vm._m(2),
+          _vm._m(1),
           _vm._v(" "),
           _c("hr"),
           _vm._v(" "),
           _c("div", { staticClass: "h4" }, [_vm._v("Form Type:")]),
           _vm._v(" "),
+          _vm._m(2),
+          _vm._v(" "),
           _vm._m(3),
           _vm._v(" "),
           _vm._m(4),
-          _vm._v(" "),
-          _vm._m(5),
           _vm._v(" "),
           _c("hr"),
           _vm._v(" "),
           _c("div", { staticClass: "h4" }, [_vm._v("Immediate Supervisor:")]),
           _vm._v(" "),
-          _c("EmployeeSelector", {
-            on: {
-              selectedEmployee: function ($event) {
-                return _vm.showSelected("sup")
-              },
-            },
-          }),
+          _vm._m(5),
           _vm._v(" "),
           _c("hr"),
           _vm._v(" "),
@@ -1380,7 +1361,7 @@ var render = function () {
                 },
               },
             },
-            [_vm._v("Show Selecteds")]
+            [_vm._v("\n        Show Selecteds\n      ")]
           ),
         ],
         1
@@ -1389,15 +1370,6 @@ var render = function () {
   ])
 }
 var staticRenderFns = [
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("h1", { staticClass: "mb-1" }, [
-      _vm._v("\n        Performance Commitments and Review\n        "),
-      _c("small", { staticClass: "text-muted" }, [_vm._v("/Signatories")]),
-    ])
-  },
   function () {
     var _vm = this
     var _h = _vm.$createElement
@@ -1495,6 +1467,30 @@ var staticRenderFns = [
         { staticClass: "form-check-label", attrs: { for: "dpcrType" } },
         [_vm._v("\n          DPCR (Department Head)\n        ")]
       ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "mb-3" }, [
+      _c(
+        "label",
+        {
+          staticClass: "form-label",
+          attrs: { for: "exampleFormControlInput1" },
+        },
+        [_vm._v("Email address")]
+      ),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: {
+          type: "email",
+          id: "exampleFormControlInput1",
+          placeholder: "name@example.com",
+        },
+      }),
     ])
   },
 ]

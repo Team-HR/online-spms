@@ -2294,6 +2294,10 @@ var PerformanceReviewPeriod = function PerformanceReviewPeriod() {
 var PerformanceReviewPeriodSignatories = function PerformanceReviewPeriodSignatories() {
   return __webpack_require__.e(/*! import() */ "resources_js_pages_performance_review_components_SignatoriesEditor_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../pages/performance_review/components/SignatoriesEditor.vue */ "./resources/js/pages/performance_review/components/SignatoriesEditor.vue"));
 };
+
+var PerformanceReviewFormStatus = function PerformanceReviewFormStatus() {
+  return __webpack_require__.e(/*! import() */ "resources_js_pages_performance_review_components_PerformanceReviewFormStatus_vue").then(__webpack_require__.bind(__webpack_require__, /*! ../pages/performance_review/components/PerformanceReviewFormStatus.vue */ "./resources/js/pages/performance_review/components/PerformanceReviewFormStatus.vue"));
+};
 /* Authenticated Component */
 
 
@@ -2353,14 +2357,22 @@ var Routes = [{
     component: PerformanceReviewPeriod,
     meta: {
       title: "PCR Period"
-    }
-  }, {
-    name: "pcrPeriodSignatories",
-    path: "/pcr/year/:year/period/:period/signatories",
-    component: PerformanceReviewPeriodSignatories,
-    meta: {
-      title: "Edit Signatories"
-    }
+    },
+    children: [{
+      name: "status",
+      path: "/pcr/year/:year/period/:period",
+      component: PerformanceReviewFormStatus,
+      meta: {
+        title: "PCR Status"
+      }
+    }, {
+      name: "signatories",
+      path: "/pcr/year/:year/period/:period/signatories",
+      component: PerformanceReviewPeriodSignatories,
+      meta: {
+        title: "Edit Signatories"
+      }
+    }]
   }]
 }];
 var router = new vue_router__WEBPACK_IMPORTED_MODULE_2__["default"]({
@@ -43418,7 +43430,7 @@ var index = {
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames not based on template
-/******/ 			if ({"resource/js/components/login":1,"resource/js/components/register":1,"resource/js/components/layouts/appnavbarcomponent":1,"resource/js/components/dashboard":1,"resources_js_pages_rating_scale_matrix_Index_vue":1,"resources_js_pages_rating_scale_matrix_RatingScaleMatrixPeriod_vue":1,"resources_js_pages_performance_review_Index_vue":1,"resources_js_pages_performance_review_PerformanceReview_vue":1,"resources_js_pages_performance_review_components_SignatoriesEditor_vue":1}[chunkId]) return "js/" + chunkId + ".js";
+/******/ 			if ({"resource/js/components/login":1,"resource/js/components/register":1,"resource/js/components/layouts/appnavbarcomponent":1,"resource/js/components/dashboard":1,"resources_js_pages_rating_scale_matrix_Index_vue":1,"resources_js_pages_rating_scale_matrix_RatingScaleMatrixPeriod_vue":1,"resources_js_pages_performance_review_Index_vue":1,"resources_js_pages_performance_review_PerformanceReview_vue":1,"resources_js_pages_performance_review_components_SignatoriesEditor_vue":1,"resources_js_pages_performance_review_components_PerformanceReviewFormStatus_vue":1}[chunkId]) return "js/" + chunkId + ".js";
 /******/ 			// return url for filenames based on template
 /******/ 			return undefined;
 /******/ 		};

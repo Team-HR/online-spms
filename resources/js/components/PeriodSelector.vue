@@ -7,7 +7,7 @@
       class="table table-sm table-bordered text-center mx-auto"
       style="width: 800px"
     >
-      <thead class="table-primary">
+      <thead>
         <tr>
           <th scope="col">
             1st Period <br />
@@ -30,7 +30,7 @@
                   '/period/' +
                   period.first.period,
               }"
-              class="btn btn-light px-5"
+              class="btn btn-warning px-5"
               :class="period.first.is_current == 1 ? 'text-success' : ''"
             >
               <i class="fa-solid fa-folder me-2"></i> January - June,
@@ -46,8 +46,8 @@
                   '/period/' +
                   period.second.period,
               }"
-              class="btn btn-light px-5"
-              :class="period.second.is_current == 1 ? 'text-primary' : ''"
+              class="btn btn-warning px-5"
+              :class="period.second.is_current == 1 ? 'text-success' : ''"
             >
               <i class="fa-solid fa-folder me-2"></i> July - December,
               {{ period.year }}

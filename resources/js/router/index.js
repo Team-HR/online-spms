@@ -20,6 +20,8 @@ const RatingScaleMatrixPeriod = () => import('../pages/rating_scale_matrix/Ratin
 const PerformanceReview = () => import('../pages/performance_review/Index.vue')
 const PerformanceReviewPeriod = () => import('../pages/performance_review/PerformanceReview.vue')
 const PerformanceReviewPeriodSignatories = () => import('../pages/performance_review/components/SignatoriesEditor.vue')
+const PerformanceReviewFormStatus = () => import('../pages/performance_review/components/PerformanceReviewFormStatus.vue')
+
 /* Authenticated Component */
 
 
@@ -88,18 +90,26 @@ const Routes = [
                 component: PerformanceReviewPeriod,
                 meta: {
                     title: `PCR Period`
-                }
-
+                },
+                children: [
+                    {
+                        name: "status",
+                        path: "/pcr/year/:year/period/:period",
+                        component: PerformanceReviewFormStatus,
+                        meta: {
+                            title: `PCR Status`
+                        }
+                    },
+                    {
+                        name: "signatories",
+                        path: "/pcr/year/:year/period/:period/signatories",
+                        component: PerformanceReviewPeriodSignatories,
+                        meta: {
+                            title: `Edit Signatories`
+                        }
+                    }
+                ]
             },
-            {
-                name: "pcrPeriodSignatories",
-                path: "/pcr/year/:year/period/:period/signatories",
-                component: PerformanceReviewPeriodSignatories,
-                meta: {
-                    title: `Edit Signatories`
-                }
-
-            }
         ]
     }
 ]
@@ -110,8 +120,8 @@ var router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    store.dispatch('setPath',to.path)
-    
+    store.dispatch('setPath', to.path)
+
     document.title = `${to.meta.title} - ${process.env.MIX_APP_NAME}`
     if (to.meta.middleware == "guest") {
         if (store.state.auth.authenticated) {

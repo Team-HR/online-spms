@@ -1,19 +1,5 @@
 <template>
-  <div class="container">
-    <div class="card mb-2">
-      <div class="card-body">
-        <h1 class="mb-1">
-          Performance Commitments and Review
-          <small class="text-muted">/Signatories</small>
-        </h1>
-        <h5 class="text-secondary">
-          <span v-if="period == 1">January-June</span>
-          <span v-else>July-December</span>
-          {{ year }}
-        </h5>
-      </div>
-    </div>
-
+  <div class="mt-2">
     <!-- Form starts here -->
 
     <div class="card">
@@ -83,7 +69,18 @@
         <!-- Immediate Supervisor start -->
         <hr />
         <div class="h4">Immediate Supervisor:</div>
-        <EmployeeSelector @selectedEmployee="showSelected('sup')" />
+        <!-- <EmployeeSelector @selectedEmployee="showSelected('sup')" /> -->
+        <div class="mb-3">
+          <label for="exampleFormControlInput1" class="form-label"
+            >Email address</label
+          >
+          <input
+            type="email"
+            class="form-control"
+            id="exampleFormControlInput1"
+            placeholder="name@example.com"
+          />
+        </div>
         <!-- Immediate Supervisor end -->
         <!-- Department Head start -->
         <hr />
@@ -96,10 +93,10 @@
         <div class="h4">Head of Agency:</div>
         <!-- <EmployeeSelector /> -->
         <!-- Head of Agency end -->
-        <button class="btn btn-primary" @click="showSelecteds()">Show Selecteds</button>
+        <button class="btn btn-primary" @click="showSelecteds()">
+          Show Selecteds
+        </button>
       </div>
-
-
     </div>
     <!-- Form ends here -->
   </div>
