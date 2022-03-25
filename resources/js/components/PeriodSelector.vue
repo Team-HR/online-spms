@@ -30,7 +30,7 @@
                   '/period/' +
                   period.first.period,
               }"
-              class="btn btn-warning px-5"
+              class="btn px-5"
               :class="period.first.is_current == 1 ? 'text-success' : ''"
             >
               <i class="fa-solid fa-folder me-2"></i> January - June,
@@ -46,7 +46,7 @@
                   '/period/' +
                   period.second.period,
               }"
-              class="btn btn-warning px-5"
+              class="btn px-5"
               :class="period.second.is_current == 1 ? 'text-success' : ''"
             >
               <i class="fa-solid fa-folder me-2"></i> July - December,

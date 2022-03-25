@@ -1120,7 +1120,7 @@ var render = function () {
                   _c(
                     "router-link",
                     {
-                      staticClass: "btn btn-warning px-5",
+                      staticClass: "btn px-5",
                       class: period.first.is_current == 1 ? "text-success" : "",
                       attrs: {
                         to: {
@@ -1152,7 +1152,7 @@ var render = function () {
                   _c(
                     "router-link",
                     {
-                      staticClass: "btn btn-warning px-5",
+                      staticClass: "btn px-5",
                       class:
                         period.second.is_current == 1 ? "text-success" : "",
                       attrs: {

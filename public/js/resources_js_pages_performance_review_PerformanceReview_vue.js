@@ -205,75 +205,11 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       year: this.$route.params.year,
-      period: this.$route.params.period,
-      steps: [{
-        title: 'Status',
-        desc: 'Shows an overview of the pcr form status.',
-        routeName: 'status',
-        icon: '',
-        buttonName: 'Fill out',
-        isActive: true
-      }, {
-        title: 'Signatories',
-        desc: 'Set the form type, immediate supervisor, department head and head of agency.',
-        routeName: 'signatories',
-        icon: '',
-        buttonName: 'Fill out',
-        isDone: true,
-        isActive: false
-      }, {
-        title: 'Core Functions',
-        desc: 'Assess your major function commitments.',
-        routeName: '',
-        icon: '',
-        buttonName: 'Fill out',
-        isDone: false,
-        isActive: false
-      }, {
-        title: 'Support Functions',
-        desc: 'Assess your support function commitments.',
-        routeName: '',
-        icon: '',
-        buttonName: 'Fill out',
-        isDone: false,
-        isActive: false
-      }, {
-        title: 'Strategic Functions',
-        desc: 'Assess your strategic function commitments.',
-        routeName: '',
-        icon: '',
-        buttonName: 'Fill out',
-        isDone: false,
-        isActive: false
-      }, {
-        title: 'Submission',
-        desc: 'Submit the accomplished performance commitment and review form for approval and certification.',
-        routeName: '',
-        icon: 'fa-solid fa-paper-plane',
-        buttonName: 'Submit',
-        isDone: false,
-        isActive: false
-      }]
+      period: this.$route.params.period
     };
   },
-  computed: {
-    activeStep: function activeStep() {
-      for (var index = 0; index < this.steps.length; index++) {
-        if (this.steps[index].isActive) {
-          return this.steps[index];
-        }
-      }
-    }
-  },
-  methods: {
-    setActive: function setActive(s) {
-      for (var index = 0; index < this.steps.length; index++) {
-        this.steps[index].isActive = false;
-      }
-
-      this.steps[s].isActive = true;
-    }
-  },
+  computed: {},
+  methods: {},
   mounted: function mounted() {}
 });
 
@@ -1550,7 +1486,7 @@ var render = function () {
         _c(
           "ul",
           { staticClass: "nav nav-tabs" },
-          _vm._l(_vm.steps, function (step, s) {
+          _vm._l(_vm.$store.state.pcr.steps, function (step, s) {
             return _c(
               "li",
               {
@@ -1558,7 +1494,7 @@ var render = function () {
                 staticClass: "nav-item",
                 on: {
                   click: function ($event) {
-                    return _vm.setActive(s)
+                    return _vm.$store.dispatch("pcr/setActiveTab", s)
                   },
                 },
               },
@@ -1600,19 +1536,25 @@ var render = function () {
             "div",
             { staticClass: "card-body" },
             [
-              _c("h4", [_vm._v(_vm._s(_vm.activeStep.title))]),
+              _c("h4", [
+                _vm._v(_vm._s(_vm.$store.getters["pcr/activeTab"].title)),
+              ]),
               _vm._v(" "),
               _c("p", [
                 _vm._v(
                   "\n            " +
-                    _vm._s(_vm.activeStep.desc) +
+                    _vm._s(_vm.$store.getters["pcr/activeTab"].desc) +
                     " \n          "
                 ),
               ]),
-              _vm._v(" "),
-              _vm.activeStep.routeName == "status"
+              _vm._v(
+                "\n          " +
+                  _vm._s(_vm.$store.getters["pcr/activeTab"].tabName) +
+                  "\n          "
+              ),
+              _vm.$store.getters["pcr/activeTab"].tabName == "status"
                 ? _c("Status")
-                : _vm.activeStep.routeName == "signatories"
+                : _vm.$store.getters["pcr/activeTab"].tabName == "signatories"
                 ? _c("SignatoriesEditor")
                 : _vm._e(),
             ],
@@ -1813,14 +1755,10 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "mb-3" }, [
-      _c(
-        "label",
-        {
-          staticClass: "form-label",
-          attrs: { for: "exampleFormControlInput1" },
-        },
-        [_vm._v("Email address")]
-      ),
+      _c("label", {
+        staticClass: "form-label",
+        attrs: { for: "exampleFormControlInput1" },
+      }),
       _vm._v(" "),
       _c("input", {
         staticClass: "form-control",

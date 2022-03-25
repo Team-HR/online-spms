@@ -3,6 +3,16 @@ import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 import auth from './auth'
 import rsm from './rsm'
+import pcr from './pcr'
+
+/*
+##########################################
+#getting getters
+this.store.getters['pcr/steps']
+#getting states
+ this.store.state.pcr.steps
+##########################################
+*/
 
 Vue.use(Vuex)
 
@@ -12,7 +22,8 @@ export default new Vuex.Store({
     ],
     modules:{
         auth,
-        rsm
+        rsm,
+        pcr
     },
     state:{
         path:''

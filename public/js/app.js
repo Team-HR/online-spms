@@ -2496,22 +2496,34 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var vuex_persistedstate__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex-persistedstate */ "./node_modules/vuex-persistedstate/dist/vuex-persistedstate.es.js");
 /* harmony import */ var _auth__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./auth */ "./resources/js/store/auth.js");
 /* harmony import */ var _rsm__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./rsm */ "./resources/js/store/rsm.js");
+/* harmony import */ var _pcr__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pcr */ "./resources/js/store/pcr.js");
 
 
 
 
 
-vue__WEBPACK_IMPORTED_MODULE_3__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_4__["default"]);
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_4__["default"].Store({
+
+/*
+##########################################
+#getting getters
+this.store.getters['pcr/steps']
+#getting states
+ this.store.state.pcr.steps
+##########################################
+*/
+
+vue__WEBPACK_IMPORTED_MODULE_4__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_5__["default"]);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (new vuex__WEBPACK_IMPORTED_MODULE_5__["default"].Store({
   plugins: [(0,vuex_persistedstate__WEBPACK_IMPORTED_MODULE_0__["default"])()],
   modules: {
     auth: _auth__WEBPACK_IMPORTED_MODULE_1__["default"],
-    rsm: _rsm__WEBPACK_IMPORTED_MODULE_2__["default"]
+    rsm: _rsm__WEBPACK_IMPORTED_MODULE_2__["default"],
+    pcr: _pcr__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   state: {
     path: ''
@@ -2539,6 +2551,102 @@ vue__WEBPACK_IMPORTED_MODULE_3__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_4_
     }
   }
 }));
+
+/***/ }),
+
+/***/ "./resources/js/store/pcr.js":
+/*!***********************************!*\
+  !*** ./resources/js/store/pcr.js ***!
+  \***********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../router */ "./resources/js/router/index.js");
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  namespaced: true,
+  state: {
+    steps: [{
+      title: 'Status',
+      desc: 'Shows an overview of the pcr form status.',
+      rtName: 'status',
+      icon: '',
+      buttonName: 'Fill out',
+      isActive: true
+    }, {
+      title: 'Signatories',
+      desc: 'Set the form type, immediate supervisor, department head and head of agency.',
+      rtName: 'signatories',
+      icon: '',
+      buttonName: 'Fill out',
+      isDone: true,
+      isActive: false
+    }, {
+      title: 'Core Functions',
+      desc: 'Assess your major function commitments.',
+      rtName: '',
+      icon: '',
+      buttonName: 'Fill out',
+      isDone: false,
+      isActive: false
+    }, {
+      title: 'Support Functions',
+      desc: 'Assess your support function commitments.',
+      rtName: '',
+      icon: '',
+      buttonName: 'Fill out',
+      isDone: false,
+      isActive: false
+    }, {
+      title: 'Strategic Functions',
+      desc: 'Assess your strategic function commitments.',
+      rtName: '',
+      icon: '',
+      buttonName: 'Fill out',
+      isDone: false,
+      isActive: false
+    }, {
+      title: 'Submission',
+      desc: 'Submit the accomplished performance commitment and review form for approval and certification.',
+      rtName: '',
+      icon: 'fa-solid fa-paper-plane',
+      buttonName: 'Submit',
+      isDone: false,
+      isActive: false
+    }]
+  },
+  getters: {
+    activeTab: function activeTab(state) {
+      for (var index = 0; index < state.steps.length; index++) {
+        if (state.steps[index].isActive) {
+          return state.steps[index];
+        }
+      }
+    }
+  },
+  mutations: {
+    SET_ACTIVE_TAB: function SET_ACTIVE_TAB(state, value) {
+      for (var index = 0; index < state.steps.length; index++) {
+        state.steps[index].isActive = false;
+      }
+
+      state.steps[value].isActive = true;
+    }
+  },
+  actions: {
+    setActiveTab: function setActiveTab(_ref, payload) {
+      var commit = _ref.commit;
+      commit('SET_ACTIVE_TAB', payload);
+    }
+  }
+});
 
 /***/ }),
 

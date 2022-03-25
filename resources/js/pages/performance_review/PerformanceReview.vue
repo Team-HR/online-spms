@@ -12,9 +12,9 @@
         <ul class="nav nav-tabs">
           <li
             class="nav-item"
-            v-for="(step, s) in steps"
+            v-for="(step, s) in $store.state.pcr.steps"
             :key="s"
-            @click="setActive(s)"
+            @click="$store.dispatch('pcr/setActiveTab',s)"
           >
             <button
               :class="step.isActive ? 'active' : ''"
@@ -30,13 +30,13 @@
 
         <div class="card mt-2">
           <div class="card-body">
-            <h4>{{ activeStep.title }}</h4>
+            <h4>{{ $store.getters['pcr/activeTab'].title }}</h4>
             <p>
-              {{activeStep.desc}} 
+              {{$store.getters['pcr/activeTab'].desc}} 
             </p>
-
-            <Status v-if="activeStep.routeName == 'status'"/>
-            <SignatoriesEditor v-else-if="activeStep.routeName == 'signatories'" />
+            {{$store.getters['pcr/activeTab'].tabName}}
+            <Status v-if="$store.getters['pcr/activeTab'].tabName == 'status'"/>
+            <SignatoriesEditor v-else-if="$store.getters['pcr/activeTab'].tabName == 'signatories'" />
 
           </div>
         </div>

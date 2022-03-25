@@ -1474,14 +1474,10 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "mb-3" }, [
-      _c(
-        "label",
-        {
-          staticClass: "form-label",
-          attrs: { for: "exampleFormControlInput1" },
-        },
-        [_vm._v("Email address")]
-      ),
+      _c("label", {
+        staticClass: "form-label",
+        attrs: { for: "exampleFormControlInput1" },
+      }),
       _vm._v(" "),
       _c("input", {
         staticClass: "form-control",
